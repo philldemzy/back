@@ -1,0 +1,11 @@
+.font1 {
+    font-family: 'Roboto Mono', serif;
+}
+
+.font2 {
+    font-family: 'Titillium Web', serif;
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;

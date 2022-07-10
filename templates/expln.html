@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Set Test | CBEasy</title>
+        <link href="/css/tailwind.css" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono&family=Titillium+Web" rel="stylesheet">
+    </head>
+    <body class="bg-brown1">
+        <div class="grid grid-cols-2 mx-4">
+            <div class="font-['Trebuchet MS']">
+                <h2 class="p-2 lg:p-3 font-bold text-xl sm:text-2xl tracking-tight">
+                    <b class="text-brown4">C</b>
+                    <b class="text-red-400">B</b>
+                    Easy
+                </h2>
+            </div>
+        </div>
+
+        <div class="bg-[#facea2] grid px-6 sm:px-14 lg:px-0">
+            <div class="mb-3 lg:ml-6 lg:w-5/6">
+                <h2 class="text-lg font-semibold font1 mb-4 mt-6 text-lg lg:text-xl">How to format the ".txt" file to include all of the question's details</h2>
+                <div class="text-center">
+                    <div class="font2 px-5">
+                        <p class="text-left italic md:text-xl">
+                            <span class="text-left">
+                                { <br>
+                                    <b>%N</b> Q (The number should be separated by space or a character from the question)<br>
+                                    <b>%O</b> o (max of 4) <br>
+                                    <b>answer=</b>A <br>
+                                }
+                            </span> <br>
+                            <br>
+                            where <b>N</b> is number of question <br>
+                            where <b>O</b> is option identifier (max of 4, <span class="underline font-medium">must be alphabet</span>) <br>
+                            where <b>answer=</b> is answer identifier <br>
+                            where <b>Q</b> is question <br>
+                            where <b>o</b> is option <br>
+                            where <b>A</b> is the answer <br>
+                        </p>
+                            <br>
+                        <p class="bg-white px-3 text-left text-lg md:text-xl">
+                            <b><span class="uppercase">example</span></b> <br>
+                                <u>%1</u> A small handcart, one wheel and tire shafts used for moving farm crop material is ? <br>
+                                <u>%a</u> cup <u>%b</u> wheelbarrow <u>%c</u> kettle  <br>
+                                <u>answer=</u>wheelbarrow <br>
+                                . . . <br>
+                                <u>%14</u> Weeds are ? <br>
+                                <u>%a</u> planted plants <u>%b</u> timber tree <u>%c</u> unwanted plants <br>
+                                <u>answer=</u>unwanted plants <br>
+                                . . .
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="mb-4 flex justify-center">
+                <a  href="/templates/new_test.html" class="hover:bg-brown4 inline-block px-5 py-3 rounded-lg bg-brown3 uppercase tracking-wider font-semibold text-sm text-white shadow-lg sm:text-base">
+                    Set Test
+                </a>
+            </div>
+        </div>
+    </body>
+</html>
