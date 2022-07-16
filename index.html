@@ -5,7 +5,6 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>CBEasy</title>
         <link href="/css/tailwind.css" rel="stylesheet">
-        <script src="/js/index.js"></script>
     </head>
     <body class="bg-brown1">
 
@@ -17,21 +16,26 @@
                     Easy
                 </h2>
             </div>
-            <div onclick="takeTest()">
+            <div class="cursor-pointer" id="open">
                 <div class="rounded-lg lg:rounded-2xl float-right uppercase tracking-wider font-semibold text-sm m-1 text-dark1 border-2 border-dark1 text-center sm:text-base transform transition hover:bg-brown2 hover:shadow-2xl">
                     <h2 class="p-2 lg:p-3">Take Test</h2>
                 </div>
-
-                <div id="takeTest" class="hidden">
-                    <form id="takeTestForm" action="">
-                        <div>
-                            <label for="test_link">Enter test link:</label>
-                            <input type="text" id="test_link" name="test_link">
-                            <input type="submit" value="Enter">
-                        </div>
-                    </form>
-                </div>
             </div>
+        </div>
+
+        <div id="takeTest" class="hidden absolute opacity-80 w-52 lg:w-60 h-44 bg-dark1 top-13 lg:top-[59.5px] right-8">
+            <button class="float-right mr-2 mt-2 text-gray-200">
+                <svg xmlns="http://www.w3.org/2000/svg" id="close" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
+                </svg>
+            </button>
+            <form class="ml-3.5 lg:ml-8 mt-12" id="takeTestForm" action="">
+                <div>
+                    <label for="test_link" class="uppercase text-sm text-gray-200 lg:text-md">Enter test link:</label>
+                    <input type="text" class="pb-1 text-black text-center" id="test_link" name="test_link">
+                    <input type="submit" class="ml-[136.5px] rounded-b-sm bg-brown1 mt-2 p-1 text-gray-900" value="Enter">
+                </div>
+            </form>
         </div>
 
         <div class="bg-brown3 grid lg:grid-cols-2 2xl:grid-cols-5 lg:mb-3 justify-center">
@@ -59,5 +63,20 @@
             </div>
         </div>
 
+        <script>
+            let butt = document.getElementById("open");
+            let closeb = document.getElementById("close");
+    
+            butt.addEventListener("click", ()=>{
+                document.getElementById("takeTest").style.display = 'block';
+                document.getElementById("takeTest").style.visibility = 'visible';
+                let a = document.getElementById("takeTest").className;
+                document.getElementById("takeTest").className = `${a} ease-in duration-300`;
+            })
+
+            closeb.addEventListener("click", ()=>{
+                document.getElementById("takeTest").style.visibility = 'hidden';
+            })
+        </script>
     </body>
 </html>

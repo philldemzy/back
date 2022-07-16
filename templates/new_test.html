@@ -19,15 +19,11 @@
         </div>
 
         <div class="bg-[#facea2] w-full grid px-6 sm:px-14 lg:px-0">
-            <div class="w-3/5 md:w-4/5 mx-5 my-4">
+            <div class="w-4/5 mx-5 my-4">
                 <form class="flex flex-col w-full space-y-4 justify-items-center">
                     <div class="lg:flex">
                         <label class="my-4 text-lg lg:text-xl lg:w-1/6" for="test_name">Title</label>
                         <input type="text" id="test_name" name="exam_name" class="hover:outline text-lg lg:text-2xl h-9 lg:h-14 border-1 border-dark1 rounded-sm w-full lg:w-3/4">
-                    </div>
-                    <div class="lg:flex">
-                        <label class="my-4 text-lg lg:text-xl lg:w-1/6" for="test_file">Test File</label>
-                        <input type="file" id="test_file" name="exam_file" accept=".txt" class="lg:h-14 h-9">
                     </div>
                     <div class="lg:flex">
                         <label class="my-4 text-lg lg:text-xl lg:w-1/6" for="final_score">Final Score</label>
@@ -43,11 +39,19 @@
                     </div>
                     <div class="lg:flex">
                         <label class="my-4 text-lg lg:text-xl lg:w-1/6" for="exam_dur">Duration</label>
-                        <input type="time" id="exam_dur" name="exam_dur" class="hover:outline text-lg lg:text-2xl h-9 lg:h-14 border-1 border-dark1 rounded-sm w-full lg:w-3/4">
+                        <input placeholder="IN MINUTES" type="text" id="exam_dur" name="exam_dur" class="hover:outline text-lg lg:text-2xl h-9 lg:h-14 border-1 border-dark1 rounded-sm w-full lg:w-3/4">
                     </div>
                     <div class="lg:flex">
                         <label class="my-4 text-lg lg:text-xl lg:w-1/6" for="test_instructions">Instructions</label>
                         <input type="text" id="test_instructions" name="test_instructions" class="hover:outline text-lg lg:text-2xl h-9 lg:h-14 border-1 border-dark1 rounded-sm w-full lg:w-3/4">
+                    </div>
+                    <div class="lg:flex">
+                        <span class="my-4 text-lg lg:text-xl lg:w-1/6">Test File</span>
+                        <label class="flex w-full lg:w-3/4" for="test_file">
+                            <input type="file" id="test_file" name="exam_file" accept=".txt" class="hidden lg:h-14 h-9">
+                            <div class="text-md lg:text-xl inline-block py-1 lg:py-3 align-middle text-center rounded-sm w-3/5 bg-gray-400 h-9 lg:h-14" id="imageName"></div>
+                            <div class="text-md lg:text-xl border-1 border-dark1 inline-block py-1 lg:py-3 align-middle text-center hover:outline rounded-sm w-2/5 bg-white h-9 lg:h-14">Select File</div>
+                        </label>
                     </div>
                     <div class="flex flex-row-reverse mt-6 lg:mt-0 sm:mt-8 lg:w-11/12">
                         <input type="submit" value="Submit" class="hover:-translate-y-0.5 bg-brown4 hover:bg-brown3 inline-block px-5 py-3 rounded-lg uppercase tracking-wider font-semibold text-sm text-white shadow-lg sm:text-base">
@@ -56,5 +60,15 @@
             </div>
         </div>
         
+        <script>
+            let input = document.getElementById("test_file");
+            let imageName = document.getElementById("imageName")
+    
+            input.addEventListener("change", ()=>{
+                let inputImage = document.querySelector("input[type=file]").files[0];
+    
+                imageName.innerText = inputImage.name;
+            })
+        </script>
     </body>
 </html>
