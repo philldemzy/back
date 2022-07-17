@@ -82,6 +82,14 @@ def set_test_progress(request, task_id):
     return JsonResponse(response, status=200)
 
 
+def expln(request):
+    return render(request, "myApp/expln.html")
+
+
+def newtst(request):
+    return render(request, "myApp/new_test.html")
+
+
 # View for getting questions for exam and registration
 @csrf_exempt
 def get_test(request, link):

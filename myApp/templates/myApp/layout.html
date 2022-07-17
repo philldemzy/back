@@ -5,25 +5,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %} {% endblock %}CBEasy</title>
+    <title>{% block title %} {% endblock %} | CBEasy</title>
     <link href="{% static 'myApp/style.css' %}" rel="stylesheet">
-    {% block script %}
-    {% endblock %}
 </head>
     <body {% block bg %}class="bg-brown1" {% endblock %}>
-        <div class="grid grid-cols-2 pl-5 mx-16 lg:mx-9">
-            <div class="font-['Trebuchet MS']">
-                <h2 class="p-2 lg:p-3 font-bold text-3xl tracking-tight">
-                    <b class="text-brown4">C</b>
-                    <b class="text-red-400">B</b>
-                    Easy
-                </h2>
-            </div>
-            <div>
-                <div class="mr-10 rounded-lg lg:rounded-2xl float-right uppercase tracking-wider font-semibold text-sm m-1 text-dark1 border-2 border-dark1 text-center sm:text-base transform transition hover:bg-brown2 hover:shadow-2xl">
-                    <h2 class="p-2 lg:p-3">Take Test</h2>
+        {% block taketest %}
+            <div class="grid grid-cols-2">
+                <div class="font-['Trebuchet MS']">
+                    <h2 class="p-3 lg:p-3 font-bold text-3xl tracking-tight">
+                        <b class="text-brown4">C</b>
+                        <b class="text-red-400">B</b>
+                        Easy
+                    </h2>
                 </div>
             </div>
+        {% endblock %}
         </div>
         {% block body %}
         {% endblock %}
