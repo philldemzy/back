@@ -102,8 +102,8 @@ def get_test(request, link):
         request.session.set_expiry(exam.duration.total_seconds())
 
     if request.method == "POST":
-        student_id = request.POST.get('student_id')
-        student_name = request.POST.get('student_name')
+        student_id = request.POST["student_id"]
+        student_name = request.POST["student_name"]
 
         # Checking if user has registered for that exam
         registered = TestTaker.objects.filter(test=exam, student_id=student_id, student_name=student_name).first()
@@ -151,7 +151,14 @@ def get_test(request, link):
         return JsonResponse({'Not time': 'Test has not started'}, status=403)
 
     # Get method
-    return render(request, "myApp/take_test.html")
+    return render(request, "myApp/take_test.html", {
+        'name': exam.exam_name,
+        'start_time': exam.start_time,
+        'duration': exam.duration,
+        'mark': exam.total_score,
+        'instructions': exam.test_instructions,
+        'ended': datetime.now(exam.start_time.tzinfo) >= exam.start_time + exam.duration,
+    })
 
 
 # View for submitting answers

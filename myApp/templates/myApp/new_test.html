@@ -8,7 +8,8 @@
 {% block body %}
     <div class="bg-[#facea2] w-full grid px-6 sm:px-14 lg:px-0">
         <div class="w-4/5 mx-5 my-4">
-            <form class="flex flex-col w-full space-y-4 justify-items-center">
+            <form method="post" class="flex flex-col w-full space-y-4 justify-items-center">
+                {% csrf_token %}
                 <div class="lg:flex">
                     <label class="my-4 text-lg lg:text-xl lg:w-1/6" for="test_name">Title</label>
                     <input type="text" id="test_name" name="exam_name" class="hover:outline text-lg lg:text-2xl h-9 lg:h-14 border-1 border-dark1 rounded-sm w-full lg:w-3/4">

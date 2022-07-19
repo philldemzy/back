@@ -6,5 +6,48 @@
 {% endblock %}
 
 {% block body %}
-
+    <div class="grid bg-brown2 justify-items-center">
+        <div class="grid gap-y-2 p-6 lg:w-2/3">
+            <div class="flex space-x-6 w-full">
+                <h4 class="text-lg lg:text-2xl w-1/2">Title</h4>
+                <span class="lg:w-3/4 w-1/2 text-sm lg:text-md inline-block mt-2 uppercase font-medium">{{ name }}</span>
+            </div>
+            {% if instructions %}
+            <div class="flex space-x-6 w-full">
+                <h4 class="text-lg lg:text-2xl w-1/2">Instructions</h4>
+                <span class="lg:w-3/4 w-1/2 text-sm lg:text-md inline-block mt-2 uppercase font-medium">{{ instructions }}</span>
+            </div>
+            {% endif %}
+            <div class="flex space-x-6 w-full">
+                <h4 class="text-lg lg:text-2xl w-1/2">Time</h4>
+                <span class="lg:w-3/4 w-1/2 text-sm lg:text-md inline-block mt-2 uppercase font-medium">{{ start_time }}</span>
+            </div>
+            <div class="flex space-x-6 w-full">
+                <h4 class="text-lg lg:text-2xl w-1/2">Score</h4>
+                <span class="lg:w-3/4 w-1/2 text-sm lg:text-md inline-block mt-2 uppercase font-medium">{{ mark }}</span>
+            </div>
+            <div class="flex space-x-6 w-full">
+                <h4 class="text-lg lg:text-2xl w-1/2">Duration</h4>
+                <span class="lg:w-3/4 w-1/2 text-sm lg:text-md inline-block mt-2 uppercase font-medium">{{ duration }}</span>
+            </div>
+            <div class="pt-1 flex space-x-6 w-full">
+                <p class="text-lg lg:text-2xl w-1/2">Countdown</p>
+                <span class="lg:w-3/4 w-1/2 text-sm lg:text-md inline-block mt-2 uppercase font-medium">{{ ended }}</span>
+            </div>
+            <form method="post" class="pt-7 lg:space-y-3">
+                {% csrf_token %}
+                <div class="lg:flex lg:space-x-20">
+                    <label class="my-4 lg:mt-0 text-lg lg:text-2xl lg:w-1/5" for="student_id">Student Id</label>
+                    <input type="text" id="student_id" name="student_id" class="rounded-t-sm lg:rounded-t-md hover:outline text-lg lg:text-2xl h-9 lg:h-14 border-1 border-dark1 rounded-sm w-full lg:w-3/4">
+                </div>
+                <div class="lg:flex lg:space-x-20">
+                    <label class="my-4 lg:mt-0 text-lg lg:text-2xl lg:w-1/5" for="student_name">Student Name</label>
+                    <input type="text" id="student_name" name="student_name" class="rounded-b-sm lg:rounded-b-md hover:outline text-lg lg:text-2xl h-9 lg:h-14 border-1 border-dark1 rounded-sm w-full lg:w-3/4">
+                </div>
+                <div class="flex flex-row-reverse mt-6 lg:mt-0 sm:mt-8 lg:w-full">
+                    <input type="submit" value="Start Exam" class="hover:-translate-y-0.5 bg-brown4 hover:bg-brown3 inline-block px-3 py-2 lg:px-5 lg:py-3 rounded-lg uppercase tracking-wider font-semibold text-sm text-white shadow-lg sm:text-base">
+                </div>
+            </form>
+        </div>
+    </div>
 {% endblock %}
