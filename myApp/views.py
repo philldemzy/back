@@ -10,7 +10,7 @@ from celery.result import AsyncResult
 
 from .serializer import send_question, send_exam_info
 from .models import Exam, TestTaker, Question
-from .utils import generate_examiner_link, generate_exam_link, get_datetime_obj, read_file
+from .utils import generate_examiner_link, generate_exam_link, get_datetime_obj, read_file, get_duration
 from .tasks import process_file, mark_tests
 
 
@@ -154,7 +154,7 @@ def get_test(request, link):
     return render(request, "myApp/take_test.html", {
         'name': exam.exam_name,
         'start_time': exam.start_time,
-        'duration': exam.duration,
+        'duration': get_duration(exam.duration.total_seconds()),
         'mark': exam.total_score,
         'instructions': exam.test_instructions,
         'ended': datetime.now(exam.start_time.tzinfo) >= exam.start_time + exam.duration,

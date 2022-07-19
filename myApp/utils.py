@@ -32,6 +32,18 @@ def get_datetime_obj(time):
     return start_time
 
 
+# Get duration in hours and minutes
+def get_duration(total_seconds):
+    hr = total_seconds // 3600
+    hours = f'{hr} hours' if hr > 1 else f'{hr} hour'
+
+    mins = total_seconds % 3600
+    minutes = mins / 60
+    minutes = f'{minutes} minutes'
+
+    return f'{hours} {minutes}' if hr > 0 else f'{minutes}'
+
+
 # reading and analysing file
 def read_file(file_location, exam_id):
     """
