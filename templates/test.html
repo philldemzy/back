@@ -7,7 +7,7 @@
         <link href="/css/tailwind.css" rel="stylesheet">
     </head>
     <body class="bg-brown1">
-        <header class="grid grid-cols-2 mx-6 md:mx-24 lg:mx-6">
+        <header class="sticky grid grid-cols-2 mx-6 md:mx-24 lg:mx-6">
             <div class="font-['Trebuchet MS']">
                 <h2 class="p-2 lg:p-3 font-bold text-xl sm:text-2xl tracking-tight">
                     <b class="text-brown4">C</b>
@@ -15,10 +15,17 @@
                     Easy
                 </h2>
             </div>
+            <div class="lg:hidden relative bg-brown1">
+                <span id="menu" class="absolute top-2 right-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 stroke-2" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd" />
+                    </svg>
+                </span>
+            </div>
         </header>
 
         <div class="p-4 grid lg:grid-rows-6 lg:grid-flow-col">
-            <div class="lg:row-span-6 bg-brown2 flex lg:grid p-3 md:space-x-10 lg:-space-x-1 justify-center">
+            <div class="hidden lg:block lg:row-span-6 bg-brown2 flex lg:grid p-3 md:space-x-10 lg:-space-x-1 justify-center">
                 <div class="p-2 lg:p-0 text-base lg:text-xl font-medium lg:font-semibold uppercase">
                     <h4>Title</h4>
                     <h4>Student ID</h4>
