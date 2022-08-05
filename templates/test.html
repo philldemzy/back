@@ -21,10 +21,18 @@
                         <path fill-rule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd" />
                     </svg>
                 </span>
+                <span style="display: none;" class="absolute top-1 right-20">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
+                    </svg>
+                </span>
             </div>
         </header>
 
-        <div class="grid lg:grid-rows-6 lg:grid-flow-col">
+        <main class="grid lg:grid-rows-6 lg:grid-flow-col">
+
+            <div class="absolute w-full bg-brown2"></div>        
+
             <div class="hidden lg:block lg:row-span-6 bg-brown2 flex lg:grid p-3 md:space-x-10 lg:-space-x-1 justify-center">
                 <div class="p-2 lg:p-0 text-base lg:text-xl font-medium lg:font-semibold uppercase">
                     <h4>Title</h4>
@@ -63,7 +71,7 @@
                     Submit
                 </button>
             </div>
-            <div class="bg-brown3 lg:col-span-5 lg:row-span-6 space-y-10 border-y ">
+            <div class="bg-brown3 lg:col-span-5 lg:row-span-6 space-y-10 border-y">
                 <div class="w-full border-b border-dark1">
                     <span class="text-semibold text-base lg:text-lg p-3 font-semibold">Question 10 of 25</span>
                 </div>
@@ -71,8 +79,7 @@
                     A small handcart, one wheel and tire shafts used for moving farm crop material is ___
                 </div>
 
-                <div class="lg:h-4"></div>
-                <div class="relative flex justify-center ">
+                <div class="relative flex justify-center">
                     <section class="grid grid-cols-2 p-3 gap-6 place-items-stretch w-full">
                         <div class="flex border border-dark1 min-w-min cursor-pointer hover:shadow-lg text-left min-h-max">
                             <div class="text-lg lg:text-2xl font-semibold border-r border-dark1 p-2 md:p-3 lg:p-4 inline-block align-middle">A</div>
@@ -98,7 +105,13 @@
                     </section>
                 </div>
 
+                <div class="grid grid-cols-2 mx-4">
+                    <button class="uppercase p-2 border font-semibold border-dark1 w-24 hover:bg-brown4 hover:text-white hover:border-0">previous</button>
+                    <button class="place-self-end uppercase p-2 border font-semibold border-dark1 w-24 hover:bg-brown4 hover:text-white hover:border-0">next</button>
+                </div>
+
+                <div class="h-0"></div>
             </div>
-        </div>
+        </main>
     </body>
 </html>
