@@ -22,7 +22,7 @@ export default {
     methods: {
         testOneTwo (ans) {
             const ans_ = ans;
-            this.$emit('answer-picked', ans_)
+            this.$emit('answer-picked', ans_, this.question.id)
         },
     },
 

@@ -40,9 +40,10 @@ export default {
     },
 
     methods: {
-        testOneTwo (ans) {
+        testOneTwo (ans, id) {
             this.pickedAns = ans;
-        }
+            console.log(id);
+        },
     }
 }
 </script>

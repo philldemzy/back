@@ -1,6 +1,6 @@
 <template>
   <div v-for="question in questions" :key="question.id">
-    <Nav :num="questions.indexOf(question) + 1" :question="question" />
+    <Nav @question-changed="navToQuest" :num="questions.indexOf(question) + 1" :question="question" :currentPage="currentPage"/>
   </div>
 </template>
 
@@ -12,10 +12,21 @@
 
     props: {
       questions: Array,
+      currentPage: Number,
     },
 
     components: {
       Nav,
     },
+
+    methods: {
+      navToQuest(id, num) {
+        const id_ = id;
+        const num_ = num;
+        this.$emit('question-changed', id_, num_);
+      },
+    },
+
+    emits: ["question-changed",],
   }
 </script>

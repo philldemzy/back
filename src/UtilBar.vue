@@ -1,7 +1,7 @@
 <template>
   <Details :details="details" />
   <nav class="lg:ml-1 mb-5 mt-4 grid grid-cols-5 gap-2 text-base lg:text-xl lg:mt-5 xl:mt-10">
-    <Navs :questions="questions" />
+    <Navs @question-changed="navToQuest" :questions="questions" :currentPage="currentPage" />
   </nav>
   <Submit/>
 </template>
@@ -24,7 +24,20 @@ export default {
   props: {
     questions: Array,
     details: Object
-  }
+  },
+  
+  data() {
+    return {
+      currentPage: 1,
+    }
+  },
+
+  methods: {
+    navToQuest (id, num) {
+      this.currentPage = num;
+      console.log(id);
+    },
+  },
 
 }
 </script>
