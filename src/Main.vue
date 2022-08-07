@@ -1,14 +1,14 @@
 <template>
-    <questNum :curr="questions.indexOf(questions[0]) + 1" :total="questions.length"/>
-    <Question :question=questions[0] />
+    <questNum :curr="questions.indexOf(currQuestion) + 1" :total="questions.length"/>
+    <Question :question=currQuestion />
     <div class="lg:h-4"></div>
     <div class="relative flex justify-center">
         <section class="grid grid-cols-1 p-3 gap-6 place-items-stretch w-full">
-            <Answers @answer-picked="testOneTwo" :pickedAns="pickedAns" :question=questions[0] />
+            <Answers @answer-picked="testOneTwo" :pickedAns="pickedAns" :question=currQuestion />
         </section>
     </div>
     <div class="grid grid-cols-2 mx-4">
-        <PrevNext :questions="questions" :question=questions[0] />
+        <PrevNext @go-to-prev="$emit('go-to-prev')"  @go-to-next="$emit('go-to-next')" :questions="questions" :question=currQuestion />
     </div>
     <div class="h-0"></div>
 </template>
@@ -24,6 +24,7 @@ export default {
 
     props: {
         questions: Array,
+        currQuestion: Object,
     },
 
     components: {
@@ -43,7 +44,10 @@ export default {
         testOneTwo (ans, id) {
             this.pickedAns = ans;
             console.log(id);
+            this.$emit('answer-picked', ans, id);
         },
-    }
+    },
+
+    emits: ["go-to-prev", "go-to-next", "answer-picked"],
 }
 </script>

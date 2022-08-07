@@ -1,5 +1,5 @@
 <template>
-  <div @click="$emit('question-changed', question.id, num)">
+  <div @click="questChanged">
     <div :class="[num === currentPage ? 'bg-red-700 text-white' : 'bg-red-400 hover:bg-red-700 hover:text-white shadow-md ', 'p-1 sm:p-3 xl:p-3 rounded-md text-center cursor-pointer']">{{ num }}</div>
   </div>
 </template>
@@ -14,10 +14,21 @@ export default {
     currentPage: Number,
   },
 
-  data() {
-    return {
-      showId: false,
-    }
-  }
+  methods: {
+    questChanged () {
+      const nav_ = document.getElementById("utilbar");
+      const ques_ = document.getElementById("main");
+
+      //hide nav show ques only for small screens
+      if (window.innerWidth < 1024) {
+        let navClass = nav_.className;
+        let quesClass = ques_.className;
+        ques_.className = quesClass.replace('hidden lg:', '');
+        nav_.className = `hidden lg:${navClass}`;
+      }
+
+      this.$emit('question-changed', this.question.id, this.num)
+    },
+  },
 }
 </script>

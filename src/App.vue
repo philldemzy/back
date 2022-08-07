@@ -1,16 +1,15 @@
 <template>
     <header id="header" class="sticky grid grid-cols-2 mx-6">
-        <Header />
+        <Header @change-show-menu="changeShowMenu" :showMenu="showMenu" />
     </header>
     <main class="grid lg:grid-rows-6 lg:grid-flow-col">
         <div id="utilbar" class="hidden lg:block lg:row-span-6 bg-brown2 grid p-3 md:space-x-10 lg:-space-x-1 justify-center">
-            <UtilBar :details="details" :questions="questions" />
+            <UtilBar @question-changed="navToQuest" :details="details" :questions="questions" :currentPage="currentPage" />
         </div>
-        
+
         <div id="main" class="block bg-brown3 lg:col-span-5 lg:row-span-6 space-y-10 border-y">
-            <Main :questions="questions" />
+            <Main @go-to-prev="goToPrev" @go-to-next="goToNext" :questions="questions" :currQuestion="currQuestion" />
         </div>
-        
     </main>
 </template>
 
@@ -27,15 +26,49 @@ export default {
         UtilBar,
         Main,
     },
-    
+
     data() {
         return {
             details: {},
             questions: [],
+            currQuestion: {},
+            showMenu: true,
+            currentPage: 1,
         }
     },
 
     methods: {
+        changeShowMenu() {
+            this.showMenu = !this.showMenu;
+        },
+
+        changeAnswer(ans) {
+            this.isActive = ans;
+        },
+
+        goToPrev() {
+            const index = this.questions.indexOf(this.currQuestion);
+            if (index > 0) {
+                this.currQuestion = this.questions[index - 1];
+                this.currentPage--;
+            }
+        },
+
+        goToNext() {
+            const index = this.questions.indexOf(this.currQuestion);
+            if (index < this.questions.length - 1) {
+                this.currQuestion = this.questions[index + 1];
+                this.currentPage++;
+            }
+        },
+
+        navToQuest(id, index) {
+            this.currQuestion = this.questions[index-1];
+            if (window.innerWidth < 1024) {
+                this.showMenu = !this.showMenu;
+            }
+        },
+
         shuffuleQuest(arr) {
             for (let i = arr.length - 1; i > 0; i--) {
                 const j = Math.floor(Math.random() * (i + 1));
@@ -98,10 +131,6 @@ export default {
             };
             return data;
         },
-
-        changeAnswer(ans) {
-            this.isActive = ans;
-        },
     },
 
     created() {
@@ -112,7 +141,9 @@ export default {
             student_id: this.getData().student_id,
             student_name: this.getData().name,
             duration: this.getData().duration,
-        }
+        },
+
+        this.currQuestion = this.questions[0]
     },
 }
 </script>

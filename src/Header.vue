@@ -6,7 +6,7 @@
       Easy
     </h2>
   </div>
-  <Menu />
+  <Menu @change-show-menu="$emit('change-show-menu')" :showMenu="showMenu"/>
 </template>
 
 <script>
@@ -15,9 +15,15 @@ import './assets/tailwind.css'
 
 export default {
   name: 'Header',
+
+  emits: ["change-show-menu"],
+
+  props: {
+    showMenu: Boolean,
+  },
   
   components: {
-    Menu
+    Menu,
   },
 }
 </script>

@@ -23,22 +23,18 @@ export default {
 
   props: {
     questions: Array,
-    details: Object
-  },
-  
-  data() {
-    return {
-      currentPage: 1,
-    }
+    details: Object,
+    currentPage: Number,
   },
 
   methods: {
     navToQuest (id, num) {
       this.currentPage = num;
-      console.log(id);
+      this.$emit('question-changed', id, num);
     },
   },
 
+  emits: ["question-changed",],
 }
 </script>
 
