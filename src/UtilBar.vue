@@ -29,7 +29,6 @@ export default {
 
   methods: {
     navToQuest (id, num) {
-      this.currentPage = num;
       this.$emit('question-changed', id, num);
     },
   },

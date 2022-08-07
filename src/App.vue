@@ -63,6 +63,7 @@ export default {
         },
 
         navToQuest(id, index) {
+            this.currentPage = index;
             this.currQuestion = this.questions[index-1];
             if (window.innerWidth < 1024) {
                 this.showMenu = !this.showMenu;
