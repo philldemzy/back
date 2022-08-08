@@ -1,7 +1,5 @@
 <template>
-  <div @click="questChanged">
-    <div :class="[num === currentPage ? 'bg-red-700 text-white' : 'bg-red-400 hover:bg-red-700 hover:text-white shadow-md ', 'p-1 sm:p-3 xl:p-3 rounded-md text-center cursor-pointer']">{{ num }}</div>
-  </div>
+  <div @click="questChanged" :class="[num === currentPage ? 'bg-red-700 text-white' : 'bg-red-400 hover:bg-red-700 hover:text-white shadow-md ', 'p-1 sm:p-3 xl:p-3 rounded-md text-center cursor-pointer']">{{ num }}</div>
 </template>
 
 <script>

@@ -1,7 +1,5 @@
 <template>
-  <div v-for="question in questions" :key="question.id">
-    <Nav @question-changed="navToQuest" :num="questions.indexOf(question) + 1" :question="question" :currentPage="currentPage"/>
-  </div>
+  <Nav v-for="question in questions" :key="question.id" @question-changed="navToQuest" :num="questions.indexOf(question) + 1" :question="question" :currentPage="currentPage"/>
 </template>
 
 <script>
