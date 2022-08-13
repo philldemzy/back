@@ -1,18 +1,22 @@
 <template>
-    <div v-for="option in question.options" :key="option.main" >
+    <div v-for="option in dataStore.currQuestion.options" :key="option.main" >
         <Answer @answer-picked="testOneTwo" :option="option" :pickedAns="pickedAns" />
     </div>
 </template>
 
 <script>
 import Answer from './Answer.vue'
+import { useDataStore } from '../store/data.js'
 
 export default {
     name: 'Answers',
 
-    props: {
-        question: Object,
-        pickedAns: String,
+    setup() {
+        const dataStore = useDataStore()
+
+        return {
+            dataStore,
+        }
     },
 
     components: {
@@ -25,7 +29,5 @@ export default {
             this.$emit('answer-picked', ans_, this.question.id)
         },
     },
-
-    emits: ["answer-picked",],
 }
 </script>

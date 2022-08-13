@@ -1,6 +1,6 @@
 <template>
     <header id="header" class="sticky grid grid-cols-2 mx-6">
-        <Header @change-show-menu="changeShowMenu" :showMenu="showMenu" />
+        <Header />
     </header>
     <main class="grid lg:grid-rows-6 lg:grid-flow-col">
         <div id="utilbar" class="hidden lg:block lg:row-span-6 bg-brown2 grid p-3 md:space-x-10 lg:-space-x-1 justify-center">
@@ -17,6 +17,8 @@
 import Header from './Header.vue'
 import UtilBar from './UtilBar.vue'
 import Main from './Main.vue'
+import { useDataStore } from './store/data.js'
+import { storeToRefs } from 'pinia'
 
 export default {
     name: 'App',
@@ -37,29 +39,17 @@ export default {
         }
     },
 
-    methods: {
-        changeShowMenu() {
-            this.showMenu = !this.showMenu;
-        },
+    setup() {
+        const dataStore = useDataStore()
 
+        return {
+            dataStore,
+        }
+    },
+
+    methods: {
         changeAnswer(ans) {
             this.isActive = ans;
-        },
-
-        goToPrev() {
-            const index = this.questions.indexOf(this.currQuestion);
-            if (index > 0) {
-                this.currQuestion = this.questions[index - 1];
-                this.currentPage--;
-            }
-        },
-
-        goToNext() {
-            const index = this.questions.indexOf(this.currQuestion);
-            if (index < this.questions.length - 1) {
-                this.currQuestion = this.questions[index + 1];
-                this.currentPage++;
-            }
         },
 
         navToQuest(id, index) {
@@ -134,8 +124,12 @@ export default {
         },
     },
 
+    mounted() {
+        console.log(this.dataStore.showMenu)
+    },
+
     created() {
-        this.questions = this.doOptions(this.shuffuleQuest(this.getData().questions)),
+        this.dataStore.setQuestions(this.doOptions(this.shuffuleQuest(this.getData().questions))),
 
         this.details = {
             title: this.getData().title,
@@ -144,7 +138,7 @@ export default {
             duration: this.getData().duration,
         },
 
-        this.currQuestion = this.questions[0]
+        this.dataStore.setCurrQuestion()
     },
 }
 </script>
