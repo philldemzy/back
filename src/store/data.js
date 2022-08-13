@@ -8,14 +8,25 @@ export const useDataStore = defineStore({
             questions: [],
             currQuestion: {},
             showMenu: true,
-            currentPage: 1,
+            currentPage: 0,
             pickedAns: [],
         }
     },
 
     actions: {
+        addAnswer(answer) {
+            this.pickedAns = this.pickedAns.filter((elemnt) => {
+                return elemnt.id !== answer.id;
+            });
+            this.pickedAns.push(answer);
+        },
+
         changeShowMenu() {
             this.showMenu = !this.showMenu;
+        },
+
+        changeQues(index) {
+            this.currQuestion = this.questions[index];
         },
 
         goToPrev() {
@@ -34,6 +45,15 @@ export const useDataStore = defineStore({
             }
         },
 
+        setDetails(data) {
+            this.details = {
+                title: data.title,
+                student_id: data.student_id,
+                student_name: data.name,
+                duration: data.duration,
+            }
+        },
+
         setQuestions(arr) {
             this.questions = arr
         },
@@ -44,6 +64,17 @@ export const useDataStore = defineStore({
     },
 
     getters: {
+        isAnswered: (state) => {
+            const answered = state.pickedAns.find((elemnt) => {
+                return elemnt.id === state.currQuestion.id
+            });
+            
+            if (answered) {
+                return answered.answer;
+            }
+            return undefined;
+        },
+
         isNext: (state) => {
             return state.questions.indexOf(state.currQuestion) < state.questions.length - 1
         },

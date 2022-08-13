@@ -1,10 +1,10 @@
 <template>
     <questNum />
-    <Question :question=dataStore.currQuestion />
+    <Question />
     <div class="lg:h-4"></div>
     <div class="relative flex justify-center">
         <section class="grid grid-cols-1 p-3 gap-6 place-items-stretch w-full">
-            <Answers @answer-picked="testOneTwo" :pickedAns="pickedAns" />
+            <Answers />
         </section>
     </div>
     <div class="grid grid-cols-2 mx-4">
@@ -23,22 +23,11 @@ import { useDataStore } from './store/data.js'
 export default {
     name: 'Main',
 
-    props: {
-        questions: Array,
-        currQuestion: Object,
-    },
-
     components: {
         questNum,
         Question,
         Answers,
         PrevNext,
-    },
-
-    data() {
-        return {
-            pickedAns: '-$#!',
-        }
     },
 
     setup() {
@@ -56,7 +45,5 @@ export default {
             this.$emit('answer-picked', ans, id);
         },
     },
-
-    emits: ["go-to-prev", "go-to-next", "answer-picked"],
 }
 </script>

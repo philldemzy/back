@@ -1,5 +1,5 @@
 <template>
-  <Nav v-for="question in questions" :key="question.id" @question-changed="navToQuest" :num="questions.indexOf(question) + 1" :question="question" :currentPage="currentPage"/>
+  <Nav v-for="question in dataStore.questions" :key="question.id" :num="dataStore.questions.indexOf(question) + 1" />
 </template>
 
 <script>
@@ -9,15 +9,6 @@
   export default {
     name: 'Navs',
 
-    props: {
-      questions: Array,
-      currentPage: Number,
-    },
-
-    components: {
-      Nav,
-    },
-
     setup() {
       const dataStore = useDataStore()
 
@@ -26,14 +17,8 @@
       }
     },
 
-    methods: {
-      navToQuest(id, num) {
-        const id_ = id;
-        const num_ = num;
-        this.$emit('question-changed', id_, num_);
-      },
+    components: {
+      Nav,
     },
-
-    emits: ["question-changed",],
   }
 </script>

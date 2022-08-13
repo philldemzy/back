@@ -1,15 +1,23 @@
 <template>
-  <div @click="questChanged" :class="[num === currentPage ? 'bg-red-700 text-white' : 'bg-red-400 hover:bg-red-700 hover:text-white shadow-md ', 'p-1 sm:p-3 xl:p-3 rounded-md text-center cursor-pointer']">{{ num }}</div>
+  <div @click="questChanged" :class="[num === dataStore.currQuestNum ? 'bg-red-700 text-white' : 'bg-red-400 hover:bg-red-700 hover:text-white shadow-md ', 'p-1 sm:p-3 xl:p-3 rounded-md text-center cursor-pointer']">{{ num }}</div>
 </template>
 
 <script>
+import { useDataStore } from '../store/data.js'
+
 export default {
   name: 'Nav',
 
   props: {
     num: Number,
-    question: Object,
-    currentPage: Number,
+  },
+
+  setup() {
+    const dataStore = useDataStore()
+
+    return {
+      dataStore,
+    }
   },
 
   methods: {
@@ -25,7 +33,8 @@ export default {
         nav_.className = `hidden lg:${navClass}`;
       }
 
-      this.$emit('question-changed', this.question.id, this.num)
+      this.dataStore.changeQues(this.num - 1);
+      this.dataStore.changeShowMenu();
     },
   },
 }

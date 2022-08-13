@@ -2,18 +2,19 @@
     <header id="header" class="sticky grid grid-cols-2 mx-6">
         <Header />
     </header>
-    <main class="grid lg:grid-rows-6 lg:grid-flow-col">
-        <div id="utilbar" class="hidden lg:block lg:row-span-6 bg-brown2 grid p-3 md:space-x-10 lg:-space-x-1 justify-center">
-            <UtilBar @question-changed="navToQuest" :details="details" :questions="questions" :currentPage="currentPage" />
+    <main class="grid lg:grid-cols-10 lg:w-full">
+        <div id="utilbar" class="hidden lg:block lg:col-span-2 bg-brown2 grid p-3 md:space-x-10 lg:-space-x-1 justify-center">
+            <UtilBar />
         </div>
 
-        <div id="main" class="block bg-brown3 lg:col-span-5 lg:row-span-6 space-y-10 border-y">
-            <Main @go-to-prev="goToPrev" @go-to-next="goToNext" :questions="questions" :currQuestion="currQuestion" />
+        <div id="main" class="block bg-brown3 lg:col-span-8 space-y-10 border-y">
+            <Main />
         </div>
     </main>
 </template>
 
 <script>
+//0031540056 Access
 import Header from './Header.vue'
 import UtilBar from './UtilBar.vue'
 import Main from './Main.vue'
@@ -124,19 +125,10 @@ export default {
         },
     },
 
-    mounted() {
-        console.log(this.dataStore.showMenu)
-    },
-
     created() {
         this.dataStore.setQuestions(this.doOptions(this.shuffuleQuest(this.getData().questions))),
 
-        this.details = {
-            title: this.getData().title,
-            student_id: this.getData().student_id,
-            student_name: this.getData().name,
-            duration: this.getData().duration,
-        },
+        this.dataStore.setDetails(this.getData()),
 
         this.dataStore.setCurrQuestion()
     },

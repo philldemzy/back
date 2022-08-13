@@ -1,7 +1,7 @@
 <template>
-  <Details :details="details" />
+  <Details />
   <nav class="lg:ml-1 mb-5 mt-4 grid grid-cols-5 gap-2 text-base lg:text-xl lg:mt-5 xl:mt-10">
-    <Navs @question-changed="navToQuest" :questions="questions" :currentPage="currentPage" />
+    <Navs />
   </nav>
   <Submit/>
 </template>
@@ -21,19 +21,12 @@ export default {
     Submit,
   },
 
-  props: {
-    questions: Array,
-    details: Object,
-    currentPage: Number,
-  },
-
   methods: {
     navToQuest (id, num) {
       this.$emit('question-changed', id, num);
     },
   },
 
-  emits: ["question-changed",],
 }
 </script>
 
