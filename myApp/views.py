@@ -10,7 +10,7 @@ from celery.result import AsyncResult
 
 from .serializer import send_question, send_exam_info
 from .models import Exam, TestTaker, Question
-from .utils import generate_examiner_link, generate_exam_link, get_datetime_obj, read_file, get_duration
+from .utils import generate_examiner_link, generate_exam_link, get_datetime_obj, get_duration
 from .tasks import process_file, mark_tests
 
 
@@ -94,7 +94,7 @@ def newtst(request):
 @csrf_exempt
 def get_test(request, link):
     # Getting exam info
-    if 'exam' in request.session:  # Check if user has started exam before
+    if f'exam_{link}' in request.session:  # Check if exam is in session
         exam = pickle_loads(request.session['exam'])  # Using pickle to get query object from session
     else:  # User just starting exam
         exam = Exam.objects.get(test_link=link)
@@ -157,7 +157,8 @@ def get_test(request, link):
         'duration': get_duration(exam.duration.total_seconds()),
         'mark': exam.total_score,
         'instructions': exam.test_instructions,
-        'ended': datetime.now(exam.start_time.tzinfo) >= exam.start_time + exam.duration,
+        'ended': datetime.now(exam.start_time.tzinfo) > (exam.start_time + exam.duration)
+        if datetime.now(exam.start_time.tzinfo) > (exam.start_time + exam.duration) else exam.start_time.isoformat(),
     })
 
 
@@ -175,7 +176,6 @@ def mark_test(request):
     }
     """
     if request.method == "POST":
-
         # Get info from client side
         data = json_loads(request.body)
         res = mark_tests.delay(data)
