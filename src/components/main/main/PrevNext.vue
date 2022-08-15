@@ -4,7 +4,7 @@
 </template>
 
 <script>
-import { useDataStore } from '../store/data.js'
+import { useDataStore } from '../../../store/data.js'
 
 export default {
     name: 'PrevNext',

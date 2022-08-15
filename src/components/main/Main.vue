@@ -14,11 +14,11 @@
 </template>
 
 <script>
-import questNum from './components/questNum.vue'
-import Question from './components/Question.vue'
-import Answers from './components/Answers.vue'
-import PrevNext from './components/PrevNext.vue'
-import { useDataStore } from './store/data.js'
+import questNum from './main/questNum.vue'
+import Question from './main/Question.vue'
+import Answers from './main/Answers.vue'
+import PrevNext from './main/PrevNext.vue'
+import { useDataStore } from '../../store/data.js'
 
 export default {
     name: 'Main',

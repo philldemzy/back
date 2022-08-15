@@ -7,10 +7,9 @@
 </template>
 
 <script>
-import Details from './components/Details.vue'
-import Navs from './components/Navs.vue'
-import Submit from './components/Submit.vue'
-import './assets/tailwind.css'
+import Details from './utilbar/Details.vue'
+import Navs from './utilbar/Navs.vue'
+import Submit from './utilbar/Submit.vue'
 
 export default {
   name: 'UtilBar',

@@ -6,7 +6,7 @@
 
 <script>
 import Answer from './Answer.vue'
-import { useDataStore } from '../store/data.js'
+import { useDataStore } from '../../../store/data.js'
 
 export default {
     name: 'Answers',

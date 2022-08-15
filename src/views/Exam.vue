@@ -1,19 +1,26 @@
 <template>
-    <header id="header" class="sticky grid grid-cols-2 mx-6">
-        <Header />
-    </header>
-    <router-view></router-view>
+    <main class="grid lg:grid-cols-10 lg:w-full">
+        <div id="utilbar" class="hidden lg:block lg:col-span-2 bg-brown2 grid p-3 md:space-x-10 lg:-space-x-1 justify-center">
+            <UtilBar />
+        </div>
+
+        <div id="main" class="block bg-brown3 lg:col-span-8 space-y-10 border-y">
+            <Main />
+        </div>
+    </main>
 </template>
 
 <script>
-import Header from './components/header/Header.vue'
-import { useDataStore } from './store/data.js'
+import UtilBar from '../components/main/UtilBar.vue'
+import Main from '../components/main/Main.vue'
+import { useDataStore } from '../store/data.js'
 
 export default {
-    name: 'App',
+    name: 'Exam',
 
     components: {
-        Header,
+        UtilBar,
+        Main,
     },
 
     setup() {
@@ -24,7 +31,6 @@ export default {
         }
     },
 
-    /*
     methods: {
         shuffuleQuest(arr) {
             for (let i = arr.length - 1; i > 0; i--) {
@@ -89,8 +95,7 @@ export default {
             return data;
         },
     },
-    */
-    /*
+
     created() {
         this.dataStore.setQuestions(this.doOptions(this.shuffuleQuest(this.getData().questions))),
 
@@ -98,6 +103,5 @@ export default {
 
         this.dataStore.setCurrQuestion()
     },
-    */
 }
 </script>

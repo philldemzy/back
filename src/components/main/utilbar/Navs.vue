@@ -3,7 +3,7 @@
 </template>
 
 <script>
-  import { useDataStore } from '../store/data.js'
+  import { useDataStore } from '../../../store/data.js'
   import Nav from './Nav.vue'
 
   export default {

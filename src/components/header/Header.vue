@@ -10,8 +10,7 @@
 </template>
 
 <script>
-import Menu from './components/Menu.vue'
-import './assets/tailwind.css'
+import Menu from './menu/Menu.vue'
 
 export default {
   name: 'Header',
