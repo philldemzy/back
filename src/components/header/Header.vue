@@ -6,19 +6,22 @@
       Easy
     </h2>
   </div>
-  <Menu @change-show-menu="$emit('change-show-menu')" :showMenu="showMenu"/>
+  <Menu v-if="dataStore.isMenu"/>
 </template>
 
 <script>
 import Menu from './menu/Menu.vue'
+import { useDataStore } from '../../store/data.js'
 
 export default {
   name: 'Header',
 
-  emits: ["change-show-menu"],
+  setup() {
+    const dataStore = useDataStore()
 
-  props: {
-    showMenu: Boolean,
+    return {
+      dataStore,
+    }
   },
   
   components: {

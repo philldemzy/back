@@ -89,6 +89,10 @@ export const useDataStore = defineStore({
 
         totalQuestNum: (state) => {
             return state.questions.length
+        },
+
+        isMenu: (state) => {
+            return state.questions.length > 0
         }
     }
 })
