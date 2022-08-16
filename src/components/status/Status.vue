@@ -12,7 +12,7 @@
         </div>
         
         <div v-show="dataStore.isUnsuccessful">
-            <Failure />
+            <Failure/>
         </div>
     </div>
 </template>
@@ -20,13 +20,13 @@
 <script>
 import Success from './status/Success.vue';
 import Failure from './status/Failure.vue';
-import { useSuccessStore } from '../../store/success.js'
+import { useGenStore } from '../../store/store.js'
 
 export default {
     name: 'Status',
 
     setup() {
-        const dataStore = useSuccessStore()
+        const dataStore = useGenStore()
 
         return {
             dataStore,

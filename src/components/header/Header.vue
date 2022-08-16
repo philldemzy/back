@@ -6,7 +6,7 @@
       Easy
     </h2>
   </div>
-  <Menu v-if="dataStore.isMenu"/>
+  <Menu />
 </template>
 
 <script>

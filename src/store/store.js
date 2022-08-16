@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 
-export const useSuccessStore = defineStore({
+export const useGenStore = defineStore({
     id: 'success',
     state: () => {
         return {

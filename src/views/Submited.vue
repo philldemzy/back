@@ -4,13 +4,13 @@
 
 <script>
 import Status from '../components/status/Status.vue';
-import { useSuccessStore } from '../store/success.js'
+import { useGenStore } from '../store/store.js'
 
 export default {
     name: 'Submited',
 
     setup() {
-        const successStore = useSuccessStore();
+        const genStore = useGenStore();
     },
 
     components: {
