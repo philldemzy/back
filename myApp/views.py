@@ -126,7 +126,7 @@ def get_test(request, link):
             # Send questions to client side only if exam has not ended
             if datetime.now(exam.start_time.tzinfo) <= exam.start_time + exam.duration:
                 questions = Question.objects.prefetch_related('option_question').filter(test=exam)
-                # TODO use Json format?
+                # use Json format
                 return JsonResponse({
                     'name': exam.exam_name,
                     'start_time': exam.start_time,
@@ -135,15 +135,7 @@ def get_test(request, link):
                     'student': registered.id,
                     'questions': [send_question(question) for question in questions]
                 }, safe=False)
-                # TODO or render a html page
-                # return render(request, "myApp/questions.html", {
-                # 'questions': [send_question(question) for question in questions],
-                # 'name': exam.exam_name,
-                # 'start_time': exam.start_time,
-                # 'duration': exam.duration,
-                # 'mark': exam.total_score,
-                # })
-
+                
             # Exam has ended
             return JsonResponse({'Expired': 'Exam has ended'}, status=403)
 
@@ -151,7 +143,7 @@ def get_test(request, link):
         return JsonResponse({'Not time': 'Test has not started'}, status=403)
 
     # Get method
-    return render(request, "myApp/take_test.html", {
+    return JsonResponse({
         'name': exam.exam_name,
         'start_time': exam.start_time,
         'duration': get_duration(exam.duration.total_seconds()),
@@ -159,7 +151,7 @@ def get_test(request, link):
         'instructions': exam.test_instructions,
         'ended': datetime.now(exam.start_time.tzinfo) > (exam.start_time + exam.duration)
         if datetime.now(exam.start_time.tzinfo) > (exam.start_time + exam.duration) else exam.start_time.isoformat(),
-    })
+    }, status=200, safe=False)
 
 
 # View for submitting answers
