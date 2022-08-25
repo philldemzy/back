@@ -7,10 +7,15 @@ export const useGenStore = defineStore({
             success: 0,
             status_: null,
             retries: 0,
+            submitTaskId: null,
         }
     },
 
     actions: {
+        setSubmitTaskId(task_id) {
+            this.submitTaskId = task_id;
+        },
+
         isSuccess() {
             this.success = true;
             this.status_ = 'DONE';

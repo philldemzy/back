@@ -33,30 +33,36 @@ export default {
         }
     },
 
-    mounted() {
-        //this.submitTestProgress()
-    },
-
-    methods: {
-        /** 
-        submitTestProgress() {
-            setInterval((task_id) => {
-                console.log(task_id)
-                //make requests
-                //if request returns success {
-                    dataStore.isSuccess();
-                }
-                if failed {
-                    dataStore.isFailed();
-                }
-            }, 500)
-        }
-        */
-    },
-
     components: {
         Success,
         Failure
     },
+
+    mounted() {
+        //this.submitTestProgress(this.dataStore.submitTaskId)
+    },
+
+    methods: {
+        submitTestProgress() {
+            let myInterval = setInterval((task_id) => {
+                console.log(task_id)
+                const res = await fetch(`http://localhost:8000/mark/task_id`)
+                const data = await res.json()
+                if (data.state == "SUCCESS") {
+                    dataStore.isSuccess();
+                    this.clearInterval(myInterval)
+                }
+                else if (data.state == "FAILURE") {
+                    dataStore.isFailed();
+                    this.clearInterval(myInterval)
+                }
+            }, 500)
+        },
+
+        clearIntervals(func) {
+            clearInterval(func)
+        }
+    },
+
 }
 </script>

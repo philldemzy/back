@@ -89,8 +89,11 @@ export default {
     },
 
     mounted() {
-        this.examCountDown();
+        let timer = this.examCountDown();
         console.log(this.link);
+        return {
+            timer
+        }
     },
 
     methods: {
@@ -119,7 +122,7 @@ export default {
             this.dataStore.setCurrQuestion()
 
             //route to exam
-            console.log(this.link);
+            clearInterval(this.timer);
             this.$router.push({path: `/exam/${this.link}`});
         },
 
@@ -227,6 +230,7 @@ export default {
                     document.getElementById("minutes").children[0].innerHTML = minutes;
                     document.getElementById("seconds").children[0].innerHTML = seconds;
                 }, 1000)
+                return update;
             }
             else {
                 document.getElementById("count").innerHTML = "EXAM ENDED";

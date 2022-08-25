@@ -5,15 +5,39 @@
 </template>
 
 <script>
+import { useGenStore } from '../../store/store.js'
+import { useDataStore } from '../../store/data.js'
+
 export default {
     name: 'Submit',
+
+    setup() {
+        const genStore = useGenStore()
+        const dataStore = useDataStore()
+
+        return {
+            genStore,
+            dataStore,
+        }
+    },
 
     methods: {
         submit(event) {
             event.preventDefault();
 
-            //making post request somewhere
-            //
+            bodyData = {
+                student: useGenStore,
+                answers: this.dataStore.pickedAns
+            }
+
+            // post method
+            const res = await fetch(`http://localhost:8000/mark`, {
+                method: 'POST',
+                headers: {},
+                body: JSON.stringify(bodyData)
+            })
+            const data = await res.json()
+            this.genStore.setSubmitTaskId(data);
 
             this.$router.replace({path: '/submited'});
         },
