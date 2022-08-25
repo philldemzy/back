@@ -55,11 +55,10 @@ export default {
     },
 
     mounted() {
-        //Error below dont know why
         this.fileChange();
     },
 
-    mathods: {
+    methods: {
         fileChange() {
             let input = document.getElementById("test_file");
             let imageName = document.getElementById("imageName")
