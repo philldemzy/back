@@ -5,27 +5,58 @@
                 <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
             </svg>
         </button>
-        <form @click="goToTest" class="ml-3.5 lg:ml-8 mt-12" id="takeTestForm" action="">
+        <form class="ml-3.5 lg:ml-8 mt-12" id="takeTestForm" action="">
             <div>
                 <label for="test_link" class="uppercase text-sm text-gray-200 lg:text-md">Enter test link:</label>
                 <input type="text" class="pb-1 text-black text-center" id="test_link" name="test_link">
-                <input type="submit" class="ml-[136.5px] rounded-b-sm bg-brown1 mt-2 p-1 text-gray-900" value="Enter">
+                <input @click="goToTest" type="submit" class="ml-[136.5px] rounded-b-sm bg-brown1 mt-2 p-1 text-gray-900" value="Enter">
             </div>
         </form>
     </div>
 </template>
 
 <script>
+import { useDataStore } from '../../store/data.js'
+
 export default {
     name: 'TestLink',
+
+    setup() {
+        const dataStore = useDataStore()
+
+        return {
+            dataStore,
+        }
+    },
 
     methods: {
         closeTestLink() {
             document.getElementById("takeTest").style.visibility = 'hidden';
         },
 
-        goToTest() {
-            this.$router.push({path: `/take/${document.getElementById("takeTest").value}`})
+        async goToTest(event) {
+            event.preventDefault();
+            this.dataStore.setExamDet(this.getData()); //this.dataStore.setExamDet(await this.fetchData());
+            this.$router.push({path: `/take_test/${document.getElementById("test_link").value}`});
+        },
+
+        //  TO BE TESTED LATER
+        async fetchData() {
+            //get method
+            const res = await fetch(`http://localhost:8000/take/${useRoute().params.link}`)
+            const data = await res.json()
+            return data
+        },
+        
+        getData() {
+            return {
+                name: 'GET 101',
+                start_time: '2022-08-25T-15:50+00',
+                duration: '30 mins',
+                mark: '30',
+                instructions: null,
+                ended: '2022-08-25T15:55:00+00:00', //might be True,
+            };
         },
     },
 }

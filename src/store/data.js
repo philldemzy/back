@@ -10,10 +10,14 @@ export const useDataStore = defineStore({
             showMenu: true,
             currentPage: 0,
             pickedAns: [],
+            examDet: {},
         }
     },
 
     actions: {
+        setExamDet(dets) {
+            this.examDet = dets;
+        },
         addAnswer(answer) {
             this.pickedAns = this.pickedAns.filter((elemnt) => {
                 return elemnt.id !== answer.id;

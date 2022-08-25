@@ -41,11 +41,13 @@
 <script>
 import TestLink from '@/components/testforms/TestLink.vue';
 import TakeTest from '@/components/header/menu/TakeTest.vue';
+
 export default {
     name: "Index",
+
     components: {
         TestLink,
         TakeTest
-    }
+    },
 }
 </script>
