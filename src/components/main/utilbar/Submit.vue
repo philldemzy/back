@@ -5,8 +5,8 @@
 </template>
 
 <script>
-import { useGenStore } from '../../store/store.js'
-import { useDataStore } from '../../store/data.js'
+import { useGenStore } from '@/store/store'
+import { useDataStore } from '@/store/data.js'
 
 export default {
     name: 'Submit',
@@ -26,17 +26,17 @@ export default {
             event.preventDefault();
 
             bodyData = {
-                student: useGenStore,
+                student: this.dataStore.studentId,
                 answers: this.dataStore.pickedAns
             }
 
             // post method
-            const res = await fetch(`http://localhost:8000/mark`, {
+            const res = fetch(`http://localhost:8000/mark`, {
                 method: 'POST',
                 headers: {},
                 body: JSON.stringify(bodyData)
             })
-            const data = await res.json()
+            const data = res.json()
             this.genStore.setSubmitTaskId(data);
 
             this.$router.replace({path: '/submited'});

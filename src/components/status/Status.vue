@@ -46,8 +46,8 @@ export default {
         submitTestProgress() {
             let myInterval = setInterval((task_id) => {
                 console.log(task_id)
-                const res = await fetch(`http://localhost:8000/mark/task_id`)
-                const data = await res.json()
+                const res = fetch(`http://localhost:8000/mark/task_id`)
+                const data = res.json()
                 if (data.state == "SUCCESS") {
                     dataStore.isSuccess();
                     this.clearInterval(myInterval)

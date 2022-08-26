@@ -7,7 +7,7 @@
                 <h4 class="text-lg lg:text-2xl w-1/2">Title</h4>
                 <span class="lg:w-3/4 w-1/2 text-sm lg:text-md inline-block mt-2 uppercase font-medium">{{ dataStore.examDet.name }}</span>
             </div>
-            <div v-show="" class="flex space-x-4 lg:space-x-6 w-3/4 lg:w-full">
+            <div v-show="dataStore.examDet.instructions" class="flex space-x-4 lg:space-x-6 w-3/4 lg:w-full">
                 <h4 class="text-lg lg:text-2xl w-1/2">Instructions</h4>
                 <span class="lg:w-3/4 w-1/2 text-sm lg:text-md inline-block mt-2 uppercase font-medium">{{ dataStore.examDet.instructions }}</span>
             </div>
@@ -80,7 +80,6 @@ export default {
     setup() {
         const dataStore = useDataStore();
         const link = useRoute().params.link;
-        console.log(dataStore.examDet)
 
         return {
             dataStore,
@@ -108,6 +107,11 @@ export default {
             let formData = new FormData();
             formData.append('student_id', studentId);
             formData.append('student_name', studentName);
+
+            this.dataStore.setStudentId({
+                student_id: studentId,
+                student_name: studentName
+            })
 
             //send data abd get response save in datastore
             /**TO BE TESTED */
