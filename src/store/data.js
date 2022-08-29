@@ -12,10 +12,14 @@ export const useDataStore = defineStore({
             pickedAns: [],
             examDet: {},
             studentId: {},
+            results: {},
         }
     },
 
     actions: {
+        setResults(obj) {
+            this.results = obj;
+        },
         setStudentId(id) {
             this.studentId = id
         },

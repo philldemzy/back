@@ -25,7 +25,7 @@ export default {
         submit(event) {
             event.preventDefault();
 
-            bodyData = {
+            const bodyData = {
                 student: this.dataStore.studentId,
                 answers: this.dataStore.pickedAns
             }

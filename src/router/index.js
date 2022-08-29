@@ -6,6 +6,7 @@ import Index from '../views/Index.vue'
 import Expln from '../views/Expln.vue'
 import NewTest from '../views/NewTest.vue'
 import TakeTest from '../views/TakeTest.vue'
+import Examiner from '../views/Examiner.vue'
 
 const routes = [
     {
@@ -17,6 +18,11 @@ const routes = [
         path: '/exam/:link',
         name: Exam,
         component: Exam
+    },
+    {
+        path: '/check/:link',
+        name: Examiner,
+        component: Examiner
     },
     {
         path: '/submited',
