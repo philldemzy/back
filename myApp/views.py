@@ -217,6 +217,18 @@ def check_test(request, link):
         return JsonResponse(send_exam_info(exam))  # send student scores and info about an exam
 
     elif datetime.now(exam.start_time.tzinfo) <= exam.start_time:
-        return JsonResponse({'Not yet': 'Exam not started'})
+        return JsonResponse({
+            'completed': 'Exam not started',
+            'title': exam.exam_name,
+            'total_score': exam.total_score,
+            'start_time': exam.start_time,
+            'duration': exam.duration,
+        })
 
-    return JsonResponse({'Not yet': 'Exam in progress'})
+    return JsonResponse({
+        'completed': 'Exam in progress',
+        'title': exam.exam_name,
+        'total_score': exam.total_score,
+        'start_time': exam.start_time,
+        'duration': exam.duration,
+    })
