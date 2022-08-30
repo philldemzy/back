@@ -1,6 +1,6 @@
 <template>
     <tr>
-        <td>{{ indexOf(result) }}</td>
+        <td>{{ index }}</td>
         <td>{{ result.student_name }}</td>
         <td>{{ result.student_id }}</td>
         <td>{{ result.score }}</td>
@@ -14,6 +14,7 @@ export default{
 
     props: {
         result: Object,
+        index: Number,
         total: Number,
     }
 }

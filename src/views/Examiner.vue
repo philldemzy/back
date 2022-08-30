@@ -1,13 +1,14 @@
 <template>
     <Logo/>
     
-    <h2>{{ examDets.title }}</h2>
-    <h2>{{ examDets.total_score }}</h2>
-    <h2>{{ examDets.start_time }}</h2>
-    <h2>{{ examDets.duration }}</h2>
-    <ScoreOverview :results="useDataSCore.results"/>
-    <ScoreTable :results="useDataSCore.results"/>
-
+    <div class="flex justify-center">
+        <h2>{{ examDets.title }}</h2>
+        <h2>{{ examDets.total_score }}</h2>
+        <h2>{{ examDets.start_time }}</h2>
+        <h2>{{ examDets.duration }}</h2>
+        <ScoreOverview :results="dataStore.results"/>
+        <ScoreTable :results="dataStore.results"/>
+    </div>
     <!--
     <button @click="fetchFile"> Button for downloading test report in excel format </button>
     -->
@@ -30,13 +31,13 @@ export default{
     },
 
     setup() {
-        const useDataScore = useDataStore();
+        const dataStore = useDataStore();
         const link = useRoute().params.link;
 
         return {
-            useDataScore,
+            dataStore,
             link,
-        };
+        }
     },
 
     data() {
@@ -46,9 +47,10 @@ export default{
     },
 
     mounted() {
-        const data = this.fetchFile()
+        //const data = this.fetchFile()
+        const data = this.getFile()
         if (data.students) {
-            this.useDataScore.setResults(data)
+            this.dataStore.setResults(data)
         }
         else if (data.completed === 'not started') {
             this.examDets = data
@@ -64,6 +66,27 @@ export default{
         fetchFile() {
             //going to fetch
         },
+
+        getFile() {
+            return {
+                title: 'GET 101',
+                total_score: 70,
+                start_time: '2022-08-25T15:55:00+00:00',
+                duration: '30 mins',
+                students: [
+                    {student_id: "16/67am/076", student_name: 'Ayandele Demilade', score: 70},
+                    {student_id: "16/67am/070", student_name: 'Dele lade', score: 65},
+                    {student_id: "16/67am/046", student_name: 'Bukola Fola', score: 35},
+                    {student_id: "16/67am/167", student_name: 'Joke Bolaji', score: 60},
+                    {student_id: "16/67am/089", student_name: 'Frank Paul', score: 41},
+                    {student_id: "16/67am/111", student_name: 'Olamide j k', score: 53},
+                    {student_id: "16/67am/104", student_name: 'Sy Brandon', score: 58},
+                    {student_id: "16/67am/278", student_name: 'JA Bantu', score: 54},
+                    {student_id: "16/67am/090", student_name: 'Williams Demola', score: 67},
+                    {student_id: "16/67am/073", student_name: 'Faruk Muhammed', score: 69},
+                ]
+            }
+        }
     },
 }
 </script>

@@ -7,7 +7,7 @@
             <th>Score</th>
             <th>%Score</th>
         </tr>
-        <ScoreRow v-for="result in results.students" :key="result.student_id" :total="results.total_score"/>
+        <ScoreRow v-for="result in results.students" :result="result" :key="result.student_id" :index="results.students.indexOf(result) + 1" :total="results.total_score"/>
     </table>
 </template>
 
@@ -23,6 +23,6 @@ export default{
 
     props: {
         results: Object,
-    }
+    },
 }
 </script>
