@@ -1,10 +1,10 @@
 <template>
     <tr>
-        <td>{{ index }}</td>
-        <td>{{ result.student_name }}</td>
-        <td>{{ result.student_id }}</td>
-        <td>{{ result.score }}</td>
-        <td>{{ (result.score / total) * 100 }}</td>
+        <td class="border-b border-dark1">{{ index }}</td>
+        <td class="border-b border-dark1">{{ result.student_name }}</td>
+        <td class="border-b border-dark1">{{ result.student_id }}</td>
+        <td class="border-b border-dark1">{{ result.score }}</td>
+        <td class="border-b border-dark1">{{ Math.round((result.score / total) * 100) }}%</td>
     </tr>
 </template>
 

@@ -1,13 +1,17 @@
 <template>
     <Logo/>
     
-    <div class="flex justify-center">
-        <h2>{{ examDets.title }}</h2>
-        <h2>{{ examDets.total_score }}</h2>
-        <h2>{{ examDets.start_time }}</h2>
-        <h2>{{ examDets.duration }}</h2>
-        <ScoreOverview :results="dataStore.results"/>
+    <div class="bg-brown2 space-y-4">
+        <div class="grid grid-col-1 justify-items-center">
+            <div class="text-base lg:text-lg font-medium lg:font-semibold">
+                <h2>{{ examDets.title }}</h2>
+                <h2>{{ examDets.total_score }} Marks</h2>
+                <h2>{{ examDets.start_time }}</h2>
+                <h2>{{ examDets.duration }}</h2>
+            </div>
+        </div>
         <ScoreTable :results="dataStore.results"/>
+        <ScoreOverview :results="dataStore.results"/>
     </div>
     <!--
     <button @click="fetchFile"> Button for downloading test report in excel format </button>
@@ -49,15 +53,14 @@ export default{
     mounted() {
         //const data = this.fetchFile()
         const data = this.getFile()
+        this.examDets = data;
         if (data.students) {
             this.dataStore.setResults(data)
         }
         else if (data.completed === 'not started') {
-            this.examDets = data
             //display exam has not started
         }
         else {
-            this.examDets = data
             // display exam in progress
         }
     },
