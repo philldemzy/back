@@ -1,13 +1,13 @@
 <template>
-    <div class="flex justify-center">
-        <table class="table-auto w-full border-collapse">
+    <div class="flex p-1 md:p-3 xl:w-3/4 xl:justify-center">
+        <table class="table-auto w-full">
             <thead class="bg-brown3">
                 <tr>
-                    <th>SN</th>
-                    <th>Student Name</th>
-                    <th>Student Id</th>
-                    <th>Score</th>
-                    <th>%Score</th>
+                    <th class="border-b border-dark1 text-left text-sm sm:text-base py-3 pl-2">SN</th>
+                    <th class="border-b border-dark1 text-left text-sm sm:text-base">Student Name</th>
+                    <th class="border-b border-dark1 text-left text-sm sm:text-base">Student Id</th>
+                    <th class="border-b border-dark1 text-left text-sm sm:text-base">Score</th>
+                    <th class="border-b border-dark1 text-left text-sm sm:text-base">%Score</th>
                 </tr>
             </thead>      
             <tbody>

@@ -1,6 +1,6 @@
 <template>
     <Logo/>
-    
+
     <div class="bg-brown2 space-y-4">
         <div class="grid grid-col-1 justify-items-center">
             <div class="text-base lg:text-lg font-medium lg:font-semibold">
