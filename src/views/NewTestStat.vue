@@ -1,11 +1,36 @@
 <template>
+    <Logo/>
+
+    <div v-show="!resp" class="flex flex-row self-center bg-brown3 p-3 px-5 rounded-md lg:rounded-lg">
+        <svg class="animate-spin mt-1 -ml-1 mr-3 h-5 w-5 text-orange-900" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+        </svg>
+        <span class="text-lg text-stone-900">Processing...</span>
+    </div>
+
+    <div v-show="resp" class="p-5">
+        <h2>Your exam has been processed successfully</h2>
+
+        <span>Examiner Link to Check statistics and result of exam <i>only for examiner</i>: ngunrurhus44</span>
+        <span>Test Link provided for students to take the exam: xjehsgu45</span>
+        
+        <button>Preview Exam</button>
+    </div>
 
 </template>
 
 <script>
 import { useGenStore } from '@/store/store'
+
 export default{
     name: 'NewTestStat',
+
+    data() {
+        return {
+            resp: false,
+        }
+    },
 
     setup() {
         const genStore = useGenStore();
@@ -17,6 +42,11 @@ export default{
     mounted() {
         const checkStat = setInterval(this.checkStatus(this.genStore.newTestTaskId), 500)
         if (checkStat.state == 'SUCCESS') {
+            this.resp = true
+            clearInterval(checkStat)
+        }
+        else if  (checkStat.state == 'FAILURE') {
+            this.resp = true
             clearInterval(checkStat)
         }
 
