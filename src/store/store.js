@@ -8,10 +8,15 @@ export const useGenStore = defineStore({
             status_: null,
             retries: 0,
             submitTaskId: null,
+            newTestTaskId: null,
         }
     },
 
     actions: {
+        setNewTestTaskId(task_id) {
+            this.newTestTaskId = task_id;
+        },
+
         setSubmitTaskId(task_id) {
             this.submitTaskId = task_id;
         },

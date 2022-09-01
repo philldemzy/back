@@ -50,12 +50,20 @@
 
 <script>
 import Logo from '@/components/header/Logo.vue';
+import { useGenStore } from '@/store/store';
 
 export default {
     name: 'NewTest',
 
     components: {
         Logo,
+    },
+
+    setup() {
+        const genStore = useGenStore();
+        return {
+            genStore
+        };
     },
 
     mounted() {
@@ -93,8 +101,9 @@ export default {
                 headers: {},
                 body: formData
             })
-            const data = await res.json()
-            return data
+            const data = await res.json();
+            this.genStore.setNewTestTaskId(data.task);
+            this.$router.push({path: '/new/test'});
         },
 
         fileChange() {

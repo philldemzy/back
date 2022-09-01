@@ -7,6 +7,7 @@ import Expln from '../views/Expln.vue'
 import NewTest from '../views/NewTest.vue'
 import TakeTest from '../views/TakeTest.vue'
 import Examiner from '../views/Examiner.vue'
+import NewTestStat from '../views/NewTestStat.vue'
 
 const routes = [
     {
@@ -28,6 +29,11 @@ const routes = [
         path: '/submited',
         name: Submited,
         component: Submited
+    },
+    {
+        path: '/new/test',
+        name: NewTestStat,
+        component: NewTestStat
     },
     {
         path: '/expln',
