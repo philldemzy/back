@@ -11,7 +11,6 @@
             </div>
             <div class="h-3 lg:h-4"></div>
             <span>Poorest performers</span>
-            <div>{{ results.title }}</div>
             <div class="p-1 space-x-3" v-for="worst in topAndLast.worst" :key="worst.student_id">
                 <h4>{{ worst.student_name }}</h4>
                 <h4>{{ worst.score }}</h4>
@@ -32,7 +31,6 @@ export default{
     },
 
     mounted() {
-        console.log(this.results.title)
         const chartData = {
             type: "pie",
             data: {
@@ -58,7 +56,6 @@ export default{
     methods: {
         totalPass(obj) {
             const passMrk = obj.total_score / 2;
-            console.log(obj)
             const totPass = obj.students.filter((student) => {
                 if (student.score >= passMrk) {
                     return student;

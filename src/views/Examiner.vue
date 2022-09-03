@@ -11,7 +11,7 @@
             </div>
         </div>
         <ScoreTable :results="dataStore.results"/>
-        <!----><ScoreOverview :results="dataStore.results"/>
+        <ScoreOverview :results="dataStore.results"/>
     </div>
     <!--
     <button @click="fetchFile"> Button for downloading test report in excel format </button>
@@ -50,7 +50,7 @@ export default{
         }
     },
 
-    mounted() {
+    created() {
         //const data = this.fetchFile()
         const data = this.getFile()
         this.examDets = data;
