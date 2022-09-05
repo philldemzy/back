@@ -1,19 +1,22 @@
 <template>
     <div class="grid lg:grid-col-2">
+        <!--
         <div class="shadow-lg rounded-lg overflow-hidden">
             <canvas class="p-5" id="chart"></canvas>
         </div>
-        <div class="p-3">
-            <span>Top performers</span>
-            <div class="p-1 space-x-3" v-for="best in topAndLast.best" :key="best.student_id">
-                <h4>{{ best.student_name }}</h4>
-                <h4>{{ best.score }}</h4>
+        -->
+        
+        <div class="grid justify-end p-3">
+            <span class="text-xs font-semibold">Top performers</span>
+            <div class="flex p-1 space-x-3" v-for="best in bestAndWorst.best" :key="best.student_id">
+                <span class="text-xs">{{ best.student_name }}</span>
+                <span class="text-xs">{{ best.score }}</span>
             </div>
             <div class="h-3 lg:h-4"></div>
-            <span>Poorest performers</span>
-            <div class="p-1 space-x-3" v-for="worst in topAndLast.worst" :key="worst.student_id">
-                <h4>{{ worst.student_name }}</h4>
-                <h4>{{ worst.score }}</h4>
+            <span class="text-xs font-semibold">Poorest performers</span>
+            <div class="flex p-1 space-x-3" v-for="worst in bestAndWorst.worst" :key="worst.student_id">
+                <span class="text-xs">{{ worst.student_name }}</span>
+                <span class="text-xs">{{ worst.score }}</span>
             </div>
             
         </div>
@@ -28,6 +31,16 @@ export default{
 
     props: {
         results: Object,
+    },
+
+    data() {
+        return {
+            bestAndWorst: {}
+        }
+    },
+
+    created() {
+        this.bestAndWorst = this.topAndLast(this.results)
     },
 
     mounted() {
@@ -49,8 +62,10 @@ export default{
             },
             options: {},
         }
+        /** 
         const chartElement = document.getElementById('chart');
         new Chart(chartElement, chartData);
+        */
     },
 
     methods: {

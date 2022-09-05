@@ -10,12 +10,13 @@
                 <h2>{{ examDets.duration }}</h2>
             </div>
         </div>
-        <ScoreTable :results="dataStore.results"/>
         <ScoreOverview :results="dataStore.results"/>
+        <ScoreTable :results="dataStore.results"/>
     </div>
     <!--
     <button @click="fetchFile"> Button for downloading test report in excel format </button>
     -->
+    <div class="h-5"></div>
 </template>
 
 <script>
@@ -78,12 +79,12 @@ export default{
                 duration: '30 mins',
                 students: [
                     {student_id: "16/67am/076", student_name: 'Ayandele Demilade', score: 70},
-                    {student_id: "16/67am/070", student_name: 'Dele lade', score: 65},
+                    {student_id: "16/67am/070", student_name: 'Dele lade', score: 70},
                     {student_id: "16/67am/046", student_name: 'Bukola Fola', score: 35},
                     {student_id: "16/67am/167", student_name: 'Joke Bolaji', score: 60},
                     {student_id: "16/67am/089", student_name: 'Frank Paul', score: 41},
                     {student_id: "16/67am/111", student_name: 'Olamide j k', score: 53},
-                    {student_id: "16/67am/104", student_name: 'Sy Brandon', score: 58},
+                    {student_id: "16/67am/104", student_name: 'Sy Brandon', score: 35},
                     {student_id: "16/67am/278", student_name: 'JA Bantu', score: 54},
                     {student_id: "16/67am/090", student_name: 'Williams Demola', score: 67},
                     {student_id: "16/67am/073", student_name: 'Faruk Muhammed', score: 69},
