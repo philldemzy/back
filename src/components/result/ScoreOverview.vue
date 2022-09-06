@@ -1,10 +1,10 @@
 <template>
-    <div class="grid lg:grid-col-2">
-        <div class="shadow-lg rounded-lg overflow-hidden">
+    <div class="flex justify-center shadow-xs rounded-xs">
+        <div class="overflow-hidden">
             <canvas class="p-5" id="chart"></canvas>
         </div>
         
-        <div class="grid justify-end p-3">
+        <div class="grid justify-end ml-5 p-3">
             <span class="text-xs font-semibold">Top performers</span>
             <div class="flex p-1 space-x-3" v-for="best in bestAndWorst.best" :key="best.student_id">
                 <span class="text-xs">{{ best.student_name }}</span>

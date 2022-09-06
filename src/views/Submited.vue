@@ -1,6 +1,9 @@
 <template>
     <Logo/>
-    <Status/>
+
+    <div class="bg-brown2">
+        <Status/>
+    </div>
 </template>
 
 <script>
