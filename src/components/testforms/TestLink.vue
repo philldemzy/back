@@ -51,11 +51,11 @@ export default {
         getData() {
             return {
                 name: 'GET 101',
-                start_time: '2022-08-25T-15:50+00',
+                start_time: '2022-09-25T-15:50+00',
                 duration: '30 mins',
                 mark: '30',
                 instructions: null,
-                ended: '2022-08-25T15:55:00+00:00', //might be True,
+                ended: '2022-09-06T15:00:00+00:00', //might be True,
             };
         },
     },

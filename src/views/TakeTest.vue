@@ -77,6 +77,12 @@ export default {
         Logo,
     },
 
+    data() {
+        return {
+            theFunc: Number
+        }
+    },
+
     setup() {
         const dataStore = useDataStore();
         const link = useRoute().params.link;
@@ -90,9 +96,7 @@ export default {
     mounted() {
         let timer = this.examCountDown();
         console.log(this.link);
-        return {
-            timer
-        }
+        this.theFunc = timer;
     },
 
     methods: {
@@ -126,7 +130,7 @@ export default {
             this.dataStore.setCurrQuestion()
 
             //route to exam
-            clearInterval(this.timer);
+            clearInterval(this.theFunc);
             this.$router.push({path: `/exam/${this.link}`});
         },
 

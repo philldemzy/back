@@ -30,7 +30,7 @@
                 <i>With simply a single".txt" file containing all the questions' information in a specified format,</i>
             </p>
             <div class="mt-4 sm:mt-6 float-right">
-                <router-link  to="/expln" class="inline-block px-5 py-3 rounded-lg bg-brown4 uppercase tracking-wider font-semibold text-sm text-white shadow-lg sm:text-base transform transition hover:bg-brown3 hover:shadow-2xl hover:-translate-y-0.5">
+                <router-link  to="/set_test" class="inline-block px-5 py-3 rounded-lg bg-brown4 uppercase tracking-wider font-semibold text-sm text-white shadow-lg sm:text-base transform transition hover:bg-brown3 hover:shadow-2xl hover:-translate-y-0.5">
                     Get started
                 </router-link>
             </div>

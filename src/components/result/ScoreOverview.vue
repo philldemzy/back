@@ -1,10 +1,8 @@
 <template>
     <div class="grid lg:grid-col-2">
-        <!--
         <div class="shadow-lg rounded-lg overflow-hidden">
             <canvas class="p-5" id="chart"></canvas>
         </div>
-        -->
         
         <div class="grid justify-end p-3">
             <span class="text-xs font-semibold">Top performers</span>
@@ -62,10 +60,8 @@ export default{
             },
             options: {},
         }
-        /** 
         const chartElement = document.getElementById('chart');
         new Chart(chartElement, chartData);
-        */
     },
 
     methods: {
