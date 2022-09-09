@@ -17,6 +17,7 @@
 
             <span>Examiner Link to Check statistics and result of exam <i>only for examiner</i>: ngunrurhus44</span>
             <span>Test Link provided for students to take the exam: xjehsgu45</span>
+            <span>explaining how students will take test</span>
         
             <button>Preview Exam</button>
         </div>

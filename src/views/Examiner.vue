@@ -67,8 +67,11 @@ export default{
     },
 
     methods: {
-        fetchFile() {
+        async fetchFile(link) {
             //going to fetch
+            const res = await fetch(`http://localhost:8000/check/${link}`)
+            const data = await res.json()
+            return data
         },
 
         getFile() {

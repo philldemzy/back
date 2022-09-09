@@ -36,14 +36,20 @@ export default {
 
         async goToTest(event) {
             event.preventDefault();
-            this.dataStore.setExamDet(this.getData()); //this.dataStore.setExamDet(await this.fetchData());
-            this.$router.push({path: `/take_test/${document.getElementById("test_link").value}`});
+            const testLink = document.getElementById("test_link").value;
+            if (testLink) {
+                this.dataStore.setExamDet(this.getData()); //this.dataStore.setExamDet(await this.fetchData(testLink));
+                this.$router.push({path: `/take_test/${testLink}`});
+            }
+            else {
+                this.closeTestLink()
+            }
         },
 
         //  TO BE TESTED LATER
-        async fetchData() {
+        async fetchData(testLink) {
             //get method
-            const res = await fetch(`http://localhost:8000/take/${useRoute().params.link}`)
+            const res = await fetch(`http://localhost:8000/take/${testLink}`)
             const data = await res.json()
             return data
         },

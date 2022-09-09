@@ -1,7 +1,9 @@
 <template>
-    <div @click="testLink" class="cursor-pointer" id="open">
-        <div class="rounded-lg lg:rounded-2xl float-right uppercase tracking-wider font-semibold text-sm m-1 text-dark1 border-2 border-dark1 text-center sm:text-base transform transition hover:bg-brown2 hover:shadow-2xl">
-            <h2 class="p-2 lg:p-3">Take Test</h2>
+    <div class="cursor-pointer" id="open">
+        <div class="flex rounded-msm lg:rounded-md float-right uppercase tracking-wider font-semibold text-xs mt-2 text-dark1 border-2 border-dark1 text-center sm:text-sm transform transition">
+            <h2 @click="testLink" class="p-1 lg:p-2 hover:bg-brown2 hover:shadow-2xl">Take Test</h2>
+            <div class="border-r-2 border-dark1"></div>
+            <h2 @click="checkTest" class="p-1 lg:p-2 hover:bg-brown2 hover:shadow-2xl">Check Test</h2>
         </div>
     </div>
 </template>
@@ -17,6 +19,13 @@ export default {
             let a = document.getElementById("takeTest").className;
             document.getElementById("takeTest").className = `${a} ease-in duration-300`;
         },
+
+        checkTest() {
+            document.getElementById("checkTest").style.display = 'block';
+            document.getElementById("checkTest").style.visibility = 'visible';
+            let a = document.getElementById("checkTest").className;
+            document.getElementById("checkTest").className = `${a} ease-in duration-300`;
+        }
     },
 }
 </script>

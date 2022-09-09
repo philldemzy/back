@@ -11,6 +11,7 @@
     </div>
 
     <TestLink/>
+    <CheckTestLink/>
 
     <div class="bg-brown3 grid lg:grid-cols-2 2xl:grid-cols-5 lg:mb-3 justify-center">
         <div class="hidden relative lg:block 2xl:col-span-3">
@@ -41,13 +42,15 @@
 <script>
 import TestLink from '@/components/testforms/TestLink.vue';
 import TakeTest from '@/components/header/menu/TakeTest.vue';
+import CheckTestLink from '@/components/testforms/CheckTestLink.vue';
 
 export default {
     name: "Index",
 
     components: {
         TestLink,
-        TakeTest
+        TakeTest,
+        CheckTestLink
     },
 }
 </script>
