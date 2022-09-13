@@ -86,10 +86,10 @@ export default{
                     {student_id: "16/67am/046", student_name: 'Bukola Fola', score: 35},
                     {student_id: "16/67am/167", student_name: 'Joke Bolaji', score: 60},
                     {student_id: "16/67am/089", student_name: 'Frank Paul', score: 41},
-                    {student_id: "16/67am/111", student_name: 'Olamide j k', score: 53},
-                    {student_id: "16/67am/104", student_name: 'Sy Brandon', score: 35},
+                    {student_id: "16/67am/111", student_name: 'Olamide j k', score: 21},
+                    {student_id: "16/67am/104", student_name: 'Sy Brandon', score: 32},
                     {student_id: "16/67am/278", student_name: 'JA Bantu', score: 54},
-                    {student_id: "16/67am/090", student_name: 'Williams Demola', score: 67},
+                    {student_id: "16/67am/090", student_name: 'Williams Demola', score: 26},
                     {student_id: "16/67am/073", student_name: 'Faruk Muhammed', score: 69},
                 ]
             }
