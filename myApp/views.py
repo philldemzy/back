@@ -218,7 +218,7 @@ def check_test(request, link):
 
     elif datetime.now(exam.start_time.tzinfo) <= exam.start_time:
         return JsonResponse({
-            'completed': 'Exam not started',
+            'completed': False,
             'title': exam.exam_name,
             'total_score': exam.total_score,
             'start_time': exam.start_time,
@@ -226,7 +226,7 @@ def check_test(request, link):
         })
 
     return JsonResponse({
-        'completed': 'Exam in progress',
+        'completed': False,
         'title': exam.exam_name,
         'total_score': exam.total_score,
         'start_time': exam.start_time,
