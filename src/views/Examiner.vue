@@ -15,7 +15,7 @@
         <p v-show="!done" class="text-center text-sm px-5">Sorry Examination has not eneded yet. You can only get the results after examination has been done.</p>
     </div>
     <!--
-    <button @click="fetchFile"> Button for downloading test report in excel format </button>
+    <button @click="setExcelFile"> Button for downloading test report in excel format </button>
     -->
     <div class="h-5"></div>
 </template>
@@ -26,6 +26,7 @@ import ScoreOverview from '@/components/result/ScoreOverview.vue';
 import Logo from '@/components/header/Logo.vue';
 import { useDataStore } from '@/store/data';
 import { useRoute } from 'vue-router';
+import { XLSX } from 'xlsx';
 
 export default{
     name: 'Examiner',
@@ -69,6 +70,15 @@ export default{
             const res = await fetch(`http://localhost:8000/check/${link}`)
             const data = await res.json()
             return data
+        },
+
+        setExcelFile() {
+            //create excel file for download
+            const worksheet = XLSX.utils.json_to_sheet(rows);
+            const workbook = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(workbook, worksheet, "results");
+            XLSX.utils.sheet_add_aoa(worksheet, [["Id", "Name", "Score"]], { origin: "A1" });
+            XLSX.writeFile(workbook, "results.xlsx");
         },
 
         getFile() {

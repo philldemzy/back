@@ -115,7 +115,7 @@ export default {
 
         fileChange() {
             let input = document.getElementById("test_file");
-            let fileName = document.getElementById("fileName")
+            let fileName = document.getElementById("fileName");
 
             input.addEventListener("change", ()=>{
                 let inputFile = document.querySelector("input[type=file]").files[0];
