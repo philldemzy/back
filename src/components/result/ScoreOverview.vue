@@ -1,22 +1,26 @@
 <template>
-    <div class="flex justify-center shadow-xs rounded-xs">
-        <div class="overflow-hidden">
-            <canvas class="p-5" id="chart"></canvas>
+    <div class="grid grid-col-2 sm:-space-x-20 sm:flex justify-center shadow-xs rounded-xs lg:w-2/3 p-3">
+        <div class="overflow-hidden sm:w-2/3 lg:h-64">
+            <div>
+                <canvas class="p-5" id="chart"></canvas>
+            </div>
         </div>
         
-        <div class="grid justify-end ml-5 p-3">
-            <span class="text-xs font-semibold">Top performers</span>
-            <div class="flex p-1 space-x-3" v-for="best in bestAndWorst.best" :key="best.student_id">
-                <span class="text-xs">{{ best.student_name }}</span>
-                <span class="text-xs">{{ best.score }}</span>
+        <div class="grid grid-cols-2 sm:grid-cols-1 justify-end ml-5 p-3 lg:w-1/3  sm:-space-y-11 md:-space-y-14">
+            <div>
+                <span class="m-1 text-xs font-semibold">Top performers</span>
+                <div class="flex p-1 space-x-1 sm:space-x-3" v-for="best in bestAndWorst.best" :key="best.student_id">
+                    <span class="text-xs">{{ best.student_name }}</span>
+                    <span class="text-xs">{{ best.score }}</span>
+                </div>
             </div>
-            <div class="h-3 lg:h-4"></div>
-            <span class="text-xs font-semibold">Poorest performers</span>
-            <div class="flex p-1 space-x-3" v-for="worst in bestAndWorst.worst" :key="worst.student_id">
-                <span class="text-xs">{{ worst.student_name }}</span>
-                <span class="text-xs">{{ worst.score }}</span>
+            <div>
+                <span class="m-1 text-xs font-semibold">Poorest performers</span>
+                <div class="flex p-1 space-x-1 sm:space-x-3" v-for="worst in bestAndWorst.worst" :key="worst.student_id">
+                    <span class="text-xs">{{ worst.student_name }}</span>
+                    <span class="text-xs">{{ worst.score }}</span>
+                </div>
             </div>
-            
         </div>
     </div>
 </template>
@@ -58,7 +62,9 @@ export default{
                     },
                 ],
             },
-            options: {},
+            options: {
+                responsive: true
+            },
         }
         const chartElement = document.getElementById('chart');
         new Chart(chartElement, chartData);

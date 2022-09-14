@@ -4,12 +4,12 @@
     <div class="bg-[#facea2] w-full grid px-6 sm:px-14 lg:px-0">    
         <div class="w-4/5 mx-5 my-4">
             <div class="bg-[#facea2] flex justify-end">
-            <router-link to="/expln" class="hover:bg-brown3 shadow-2xl inline-block text-dark1 hover:text-white px-1 py-1 rounded-lg tracking-wider font-semibold text-sm text-white hover:shadow-lg sm:text-base">
-                <span class="font-semibold text-xs">format for Test File</span>
-            </router-link>
-        </div>
+                <router-link to="/expln" class="hover:bg-brown3 shadow-2xl inline-block text-dark1 hover:text-white px-1 py-1 rounded-lg tracking-wider font-semibold text-sm text-white hover:shadow-lg sm:text-base">
+                    <span class="font-semibold text-xs border-r-2 hover:border-r-0 pr-1 border-red-700">format for Test File</span>
+                </router-link>
+            </div>
             <form method="post" class="flex flex-col w-full space-y-4 justify-items-center">
-                <h3 class="flex justify-center text-sm font-semibold lg:text-base">Set New Test</h3>
+                <h3 class="flex text-sm font-semibold lg:text-base">Set New Test</h3>
                 <input style="display: none;" type="text" value="{% csrf_token %}" name="csrf_token" id="csrf_token">
                 <div class="lg:flex">
                     <span class="my-4 text-lg lg:text-xl lg:w-1/6">Test File</span>

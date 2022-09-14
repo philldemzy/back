@@ -10,8 +10,9 @@
                 <h2>{{ examDets.duration }}</h2>
             </div>
         </div>
-        <ScoreOverview :results="dataStore.results"/>
-        <ScoreTable :results="dataStore.results"/>
+        <ScoreOverview v-if="done" :results="dataStore.results"/>
+        <ScoreTable v-if="done" :results="dataStore.results"/>
+        <p v-show="!done" class="text-center text-sm px-5">Sorry Examination has not eneded yet. You can only get the results after examination has been done.</p>
     </div>
     <!--
     <button @click="fetchFile"> Button for downloading test report in excel format </button>
@@ -48,6 +49,7 @@ export default{
     data() {
         return{
             examDets: {},
+            done: false
         }
     },
 
@@ -57,12 +59,7 @@ export default{
         this.examDets = data;
         if (data.students) {
             this.dataStore.setResults(data)
-        }
-        else if (data.completed === 'not started') {
-            //display exam has not started
-        }
-        else {
-            // display exam in progress
+            this.done = true
         }
     },
 
@@ -80,6 +77,7 @@ export default{
                 total_score: 70,
                 start_time: '2022-08-25T15:55:00+00:00',
                 duration: '30 mins',
+                /*completed: false*/
                 students: [
                     {student_id: "16/67am/076", student_name: 'Ayandele Demilade', score: 70},
                     {student_id: "16/67am/070", student_name: 'Dele lade', score: 70},
