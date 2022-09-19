@@ -38,7 +38,7 @@ export default {
             event.preventDefault();
             const testLink = document.getElementById("test_link").value;
             if (testLink) {
-                this.dataStore.setExamDet(this.getData()); //this.dataStore.setExamDet(await this.fetchData(testLink));
+                this.dataStore.setExamDet(await this.fetchData(testLink));
                 this.$router.push({path: `/take_test/${testLink}`});
             }
             else {
@@ -46,23 +46,13 @@ export default {
             }
         },
 
-        //  TO BE TESTED LATER
+        // fetch data
         async fetchData(testLink) {
             //get method
-            const res = await fetch(`http://localhost:8000/take/${testLink}`)
+            const res = await fetch(`http://127.0.0.1:8000/take/${testLink}`)
             const data = await res.json()
+            console.log(data)
             return data
-        },
-        
-        getData() {
-            return {
-                name: 'GET 101',
-                start_time: '2022-09-25T-15:50+00',
-                duration: '30 mins',
-                mark: '30',
-                instructions: null,
-                ended: '2022-09-06T15:00:00+00:00', //might be True,
-            };
         },
     },
 }

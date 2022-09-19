@@ -118,20 +118,23 @@ export default {
             })
 
             //send data abd get response save in datastore
-            /**TO BE TESTED */
-            /*
             const allData = await this.getExam(formData);
-            this.dataStore.setQuestions(this.doOptions(this.shuffuleQuest(allData.questions))),
-            this.dataStore.setDetails(allData),
-            this.dataStore.setCurrQuestion()
-            */
-            this.dataStore.setQuestions(this.doOptions(this.shuffuleQuest(this.getData().questions))),
-            this.dataStore.setDetails(this.getData()),
-            this.dataStore.setCurrQuestion()
+            console.log(allData);
+            if (!allData.expired && !allData.not_time) {
+                this.dataStore.setQuestions(this.doOptions(this.shuffuleQuest(allData.questions))),
+                this.dataStore.setDetails(allData),
+                this.dataStore.setCurrQuestion()
+                clearInterval(this.theFunc);
+                this.$router.push({path: `/exam/${this.link}`});
+            }
+            else if (allData.expired) {
+                alert(`${allData.expired}`);
+            }
 
-            //route to exam
-            clearInterval(this.theFunc);
-            this.$router.push({path: `/exam/${this.link}`});
+            else if (allData.not_time) {
+                alert(`${allData.not_time}`);
+            }
+
         },
 
         async getExam(formData) {
@@ -170,50 +173,11 @@ export default {
             return retrnArr;
         },
 
-        // would be deleted later
-        getData() {
-            const data = {
-                name: 'Ayandele Demilade',
-                title: 'GET 101',
-                duration: '1 hr',
-                start_time: '12:30 PM',
-                student_id: 'MATRIC NO?',
-                questions: [
-                    {
-                        id: 1,
-                        question: 'A Container used in carrying farm product is ___',
-                        options: ['Cutlass', 'basket', 'hoe'],
-                    },
-                    {
-                        id: 2,
-                        question: 'A Container used in carrying farm product is ___',
-                        options: ['Cutlass', 'basket', 'is any instrument held in the hand and used for work on the Farm is any instrument held in the hand and used for work on the Farm '],
-                    },
-                    {
-                        id: 3,
-                        question: 'Weeds are ___',
-                        options: ['planted plants', 'timber tree', 'unwanted plants'],
-                    },
-                    {
-                        id: 4,
-                        question: '___ is not a vegetable',
-                        options: ['Onion', 'Carrot', 'Mango'],
-                    },
-                    {
-                        id: 5,
-                        question: '___ is the surface of the earth on which plants grow and animals live',
-                        options: ['Land', 'Labour', 'Management'],
-                    }
-                ]
-            };
-            return data;
-        },
-
         examCountDown() {
             let _end = document.getElementById("countdown").innerHTML;
             let update;
 
-            if (_end !== "True") {
+            if (this.dataStore.examDet.ended !== true) {
                 let end = new Date(_end);
 
                 update = setInterval( function() {
