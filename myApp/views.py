@@ -224,14 +224,14 @@ def check_test(request, link):
             'completed': False,
             'title': exam.exam_name,
             'total_score': exam.total_score,
-            'start_time': exam.start_time,
-            'duration': exam.duration,
+            'start_time': display_date(exam.start_time),
+            'duration': get_duration(exam.duration.total_seconds()),
         })
 
     return JsonResponse({
         'completed': False,
         'title': exam.exam_name,
         'total_score': exam.total_score,
-        'start_time': exam.start_time,
-        'duration': exam.duration,
+        'start_time': display_date(exam.start_time),
+        'duration': get_duration(exam.duration.total_seconds()),
     })
