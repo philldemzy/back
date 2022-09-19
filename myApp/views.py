@@ -10,7 +10,7 @@ from celery.result import AsyncResult
 
 from .serializer import send_question, send_exam_info
 from .models import Exam, TestTaker, Question
-from .utils import generate_examiner_link, generate_exam_link, get_datetime_obj, get_duration
+from .utils import generate_examiner_link, generate_exam_link, get_datetime_obj, get_duration, display_date
 from .tasks import process_file, mark_tests
 
 
@@ -97,9 +97,12 @@ def get_test(request, link):
     if f'exam_{link}' in request.session:  # Check if exam is in session
         exam = pickle_loads(request.session['exam'])  # Using pickle to get query object from session
     else:  # User just starting exam
-        exam = Exam.objects.get(test_link=link)
-        request.session['exam'] = pickle_dumps(exam)  # Using pickle to store the query object in session
-        request.session.set_expiry(exam.duration.total_seconds())
+        try:
+            exam = Exam.objects.get(test_link=link)
+            request.session['exam'] = pickle_dumps(exam)  # Using pickle to store the query object in session
+            request.session.set_expiry(exam.duration.total_seconds())
+        except:
+            return JsonResponse({'error': 'Link does not exist'}, status=404)
 
     if request.method == "POST":
         student_id = request.POST["student_id"]
@@ -137,15 +140,15 @@ def get_test(request, link):
                 }, safe=False)
                 
             # Exam has ended
-            return JsonResponse({'Expired': 'Exam has ended'}, status=403)
+            return JsonResponse({'expired': 'Exam has ended'}, status=403)
 
         # If exam has not started
-        return JsonResponse({'Not time': 'Test has not started'}, status=403)
+        return JsonResponse({'not_time': 'Test has not started'}, status=403)
 
     # Get method
     return JsonResponse({
         'name': exam.exam_name,
-        'start_time': exam.start_time,
+        'start_time': display_date(exam.start_time),
         'duration': get_duration(exam.duration.total_seconds()),
         'mark': exam.total_score,
         'instructions': exam.test_instructions,

@@ -44,6 +44,15 @@ def get_duration(total_seconds):
     return f'{hours} {minutes}' if hr > 0 else f'{minutes}'
 
 
+def display_date(date):
+    date_ = date.ctime().split()
+    month = date_[1]
+    day_name = date_[0]
+    day = date_[2]
+    time = date.strftime("%I:%M %p")
+    return f"{day_name} {month} {day} {time}"
+
+
 # reading and analysing file
 def read_file(file_location, exam_id):
     """

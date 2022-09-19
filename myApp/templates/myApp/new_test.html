@@ -38,7 +38,7 @@
                     <span class="my-4 text-lg lg:text-xl lg:w-1/6">Test File</span>
                     <label class="flex w-full lg:w-3/4" for="test_file">
                         <input type="file" id="test_file" name="exam_file" accept=".txt" class="hidden lg:h-14 h-9">
-                        <div class="rounded-bl-md text-md lg:text-xl inline-block py-1 lg:py-3 align-middle text-center rounded-sm w-3/5 bg-white h-9 lg:h-14" id="imageName"></div>
+                        <div class="rounded-bl-md text-md lg:text-xl inline-block py-1 lg:py-3 align-middle text-center rounded-sm w-3/5 bg-white h-9 lg:h-14" id="fileName"></div>
                         <div class="text-clip overflow-hidden rounded-br-md text-md lg:text-xl border-1 border-dark1 inline-block py-1 lg:py-3 align-middle text-center hover:outline rounded-sm w-2/5 bg-gray-400 h-9 lg:h-14">Select File</div>
                     </label>
                 </div>
@@ -51,12 +51,12 @@
 
     <script>
         let input = document.getElementById("test_file");
-        let imageName = document.getElementById("imageName")
+        let fileName = document.getElementById("fileName")
 
         input.addEventListener("change", ()=>{
-            let inputImage = document.querySelector("input[type=file]").files[0];
+            let inputFile = document.querySelector("input[type=file]").files[0];
 
-            imageName.innerText = inputImage.name;
+            fileName.innerText = inputFile.name;
         })
     </script>
 {% endblock %}
