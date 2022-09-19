@@ -119,7 +119,6 @@ export default {
 
             //send data abd get response save in datastore
             const allData = await this.getExam(formData);
-            console.log(allData);
             if (!allData.expired && !allData.not_time) {
                 this.dataStore.setQuestions(this.doOptions(this.shuffuleQuest(allData.questions))),
                 this.dataStore.setDetails(allData),
