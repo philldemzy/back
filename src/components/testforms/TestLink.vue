@@ -61,7 +61,7 @@ export default {
                 duration: '30 mins',
                 mark: '30',
                 instructions: null,
-                ended: '2022-09-06T15:00:00+00:00', //might be True,
+                ended: '2022-09-16T15:00:00+00:00', //might be True,
             };
         },
     },

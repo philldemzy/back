@@ -14,9 +14,7 @@
         <ScoreTable v-if="done" :results="dataStore.results"/>
         <p v-show="!done" class="text-center text-sm px-5">Sorry Examination has not eneded yet. You can only get the results after examination has been done.</p>
     </div>
-    <!--
     <button @click="setExcelFile"> Button for downloading test report in excel format </button>
-    -->
     <div class="h-5"></div>
 </template>
 
@@ -26,7 +24,7 @@ import ScoreOverview from '@/components/result/ScoreOverview.vue';
 import Logo from '@/components/header/Logo.vue';
 import { useDataStore } from '@/store/data';
 import { useRoute } from 'vue-router';
-import { XLSX } from 'xlsx';
+import { writeXLSX } from 'xlsx';
 
 export default{
     name: 'Examiner',
