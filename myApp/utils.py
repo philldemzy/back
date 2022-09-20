@@ -35,11 +35,11 @@ def get_datetime_obj(time):
 # Get duration in hours and minutes
 def get_duration(total_seconds):
     hr = total_seconds // 3600
-    hours = f'{hr} hours' if hr > 1 else f'{hr} hour'
+    hours = f'{int(hr)} hours' if hr > 1 else f'{int(hr)} hour'
 
     mins = total_seconds % 3600
     minutes = mins / 60
-    minutes = f'{minutes} minutes'
+    minutes = f'{int(minutes)} minutes'
 
     return f'{hours} {minutes}' if hr > 0 else f'{minutes}'
 
