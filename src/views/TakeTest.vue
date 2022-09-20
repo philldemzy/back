@@ -48,7 +48,6 @@
                 </div>
             </div>
             <form method="post" class="pt-7 lg:space-y-3">
-                {% csrf_token %}
                 <div class="lg:flex lg:space-x-20">
                     <label class="my-4 lg:mt-0 text-lg lg:text-2xl lg:w-1/5" for="student_id">Student Id</label>
                     <input type="text" id="student_id" name="student_id" class="rounded-t-sm lg:rounded-t-md hover:border text-lg lg:text-2xl h-9 lg:h-14 border-dark1 rounded-sm w-full lg:w-3/4">
@@ -86,10 +85,13 @@ export default {
     setup() {
         const dataStore = useDataStore();
         const link = useRoute().params.link;
+        const token = useRoute().params.token;
+        console.log(token);
 
         return {
             dataStore,
-            link
+            link,
+            token
         }
     },
 
@@ -140,7 +142,7 @@ export default {
             // post method
             const res = await fetch(`http://localhost:8000/take/${this.link}`, {
                 method: 'POST',
-                headers: {},
+                headers: {'X-CSRFToken': this.token},
                 body: formData
             })
             const data = await res.json()

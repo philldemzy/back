@@ -66,6 +66,12 @@ export default {
         Logo,
     },
 
+    data () {
+        return {
+            token: String,
+        }
+    },
+
     setup() {
         const genStore = useGenStore();
         return {
@@ -73,11 +79,21 @@ export default {
         };
     },
 
+    created() {
+        this.fetchToken
+    },
+
     mounted() {
         this.fileChange();
     },
 
     methods: {
+        async fetchToken() {
+            const res = await fetch(`http://localhost:8000/exam/setup`);
+            const data = await res.json();
+            this.token = data;
+        },
+
         async submitNewTest(event) {
             event.preventDefault();
 
@@ -105,7 +121,7 @@ export default {
             // post method
             const res = await fetch(`http://localhost:8000/exam/setup`, {
                 method: 'POST',
-                headers: {},
+                headers: { "X-CSRFToken": this.token },
                 body: formData
             })
             const data = await res.json();
