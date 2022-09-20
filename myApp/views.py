@@ -3,6 +3,7 @@ from pickle import loads as pickle_loads, dumps as pickle_dumps
 from datetime import timedelta, datetime
 
 from django.http import HttpResponse, JsonResponse
+from django.middleware.csrf import get_token
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 
@@ -53,6 +54,9 @@ def set_test(request):
         res = process_file.delay(new_exam.test_file.path, new_exam.id)  # Processing of file done async
         return JsonResponse({'task': res.id}, status=202)
 
+    # get token first
+    return JsonResponse({'token': get_token(request)})
+
 
 # View for checking result of celery async task and progress information
 def set_test_progress(request, task_id):
@@ -80,14 +84,6 @@ def set_test_progress(request, task_id):
         'info': "None"
     }
     return JsonResponse(response, status=200)
-
-
-def expln(request):
-    return render(request, "myApp/expln.html")
-
-
-def newtst(request):
-    return render(request, "myApp/new_test.html")
 
 
 # View for getting questions for exam and registration
@@ -136,7 +132,8 @@ def get_test(request, link):
                     'duration': exam.duration,
                     'mark': exam.total_score,
                     'student': registered.id,
-                    'questions': [send_question(question) for question in questions]
+                    'questions': [send_question(question) for question in questions],
+                    'token': get_token(request),
                 }, safe=False)
                 
             # Exam has ended
@@ -152,6 +149,7 @@ def get_test(request, link):
         'duration': get_duration(exam.duration.total_seconds()),
         'mark': exam.total_score,
         'instructions': exam.test_instructions,
+        'token': get_token(request),
         'ended': datetime.now(exam.start_time.tzinfo) > (exam.start_time + exam.duration)
         if datetime.now(exam.start_time.tzinfo) > (exam.start_time + exam.duration) else exam.start_time.isoformat(),
     }, status=200, safe=False)
