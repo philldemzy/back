@@ -85,7 +85,7 @@ export default {
     setup() {
         const dataStore = useDataStore();
         const link = useRoute().params.link;
-        const token = useRoute().params.token;
+        const token = this.$route.params.token;
         console.log(token);
 
         return {
