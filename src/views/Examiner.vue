@@ -2,8 +2,8 @@
     <Logo/>
 
     <div class="bg-brown2 space-y-4">
-        <div class="grid grid-col-1 justify-items-center">
-            <div class="text-base lg:text-lg font-medium lg:font-semibold">
+        <div class="grid grid-col-1 justify-items-center xl:justify-items-start xl:ml-96">
+            <div class=" text-base lg:text-lg font-medium lg:font-semibold">
                 <h2>{{ examDets.title }}</h2>
                 <h2>{{ examDets.total_score }} Marks</h2>
                 <h2>{{ examDets.start_time }}</h2>
@@ -12,7 +12,7 @@
         </div>
         <ScoreOverview v-if="done" :results="dataStore.results"/>
         <ScoreTable v-if="done" :results="dataStore.results"/>
-        <p v-show="!done" class="text-center text-sm px-5">Sorry Examination has not eneded yet. You can only get the results after examination has been done.</p>
+        <p v-show="!done" class="text-center text-sm px-5">Sorry Examination has not ended yet. You can only get the results after examination has been done.</p>
     </div>
     <button @click="setExcelFile"> Button for downloading test report in excel format </button>
     <div class="h-5"></div>
@@ -53,13 +53,7 @@ export default{
     },
 
     created() {
-        //const data = this.fetchFile()
-        const data = this.getFile()
-        this.examDets = data;
-        if (data.students) {
-            this.dataStore.setResults(data)
-            this.done = true
-        }
+        this.fetchFile(this.link)
     },
 
     methods: {
@@ -67,7 +61,11 @@ export default{
             //going to fetch
             const res = await fetch(`http://localhost:8000/check/${link}`)
             const data = await res.json()
-            return data
+            this.examDets = data;
+            if (data.students) {
+                this.dataStore.setResults(data)
+                this.done = true
+            }
         },
 
         setExcelFile() {

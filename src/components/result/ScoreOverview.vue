@@ -1,12 +1,12 @@
 <template>
-    <div class="grid grid-col-2 sm:-space-x-20 sm:flex justify-center shadow-xs rounded-xs lg:w-2/3 p-3">
-        <div class="overflow-hidden sm:w-2/3 lg:h-64">
+    <div class="grid grid-col-2 sm:-space-x-20 sm:flex justify-center shadow-xs rounded-xs w-full lg:w-2/3 p-3 xl:pt-0 xl:pb-4">
+        <div class="overflow-visible sm:w-2/3 lg:h-64">
             <div>
                 <canvas class="p-5" id="chart"></canvas>
             </div>
         </div>
         
-        <div class="grid grid-cols-2 sm:grid-cols-1 justify-end ml-5 p-3 lg:w-1/3  sm:-space-y-11 md:-space-y-14">
+        <div class="grid grid-cols-2 sm:grid-cols-1 justify-end ml-5 p-3 lg:w-1/3 sm:-space-y-11 md:-space-y-14">
             <div>
                 <span class="m-1 text-xs font-semibold">Top performers</span>
                 <div class="flex p-1 space-x-1 sm:space-x-3" v-for="best in bestAndWorst.best" :key="best.student_id">

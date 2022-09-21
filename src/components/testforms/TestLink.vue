@@ -38,8 +38,9 @@ export default {
             event.preventDefault();
             const testLink = document.getElementById("test_link").value;
             if (testLink) {
-                this.dataStore.setExamDet(await this.fetchData(testLink));
-                this.$router.push({path: `/take_test/${testLink}`});
+                const apiData = await this.fetchData(testLink)
+                this.dataStore.setExamDet(await apiData);
+                this.$router.push({path: `/take_test/${testLink}`}, {params:  {token: apiData.token} });
             }
             else {
                 this.closeTestLink()

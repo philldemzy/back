@@ -33,7 +33,7 @@ export default {
             // post method
             const res = fetch(`http://localhost:8000/mark`, {
                 method: 'POST',
-                headers: {},
+                headers: { "X-CSRFToken": this.token },
                 body: JSON.stringify(bodyData)
             })
             const data = res.json()
