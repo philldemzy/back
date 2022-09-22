@@ -17,15 +17,18 @@
 
 <script>
 import { useDataStore } from '../../store/data.js'
+import { useGenStore } from '@/store/store.js'
 
 export default {
     name: 'TestLink',
 
     setup() {
-        const dataStore = useDataStore()
+        const dataStore = useDataStore();
+        const genStore = useGenStore();
 
         return {
             dataStore,
+            genStore,
         }
     },
 
@@ -40,7 +43,8 @@ export default {
             if (testLink) {
                 const apiData = await this.fetchData(testLink)
                 this.dataStore.setExamDet(await apiData);
-                this.$router.push({path: `/take_test/${testLink}`}, {params:  {token: apiData.token} });
+                this.genStore.setToken(await apiData.token)
+                this.$router.push({path: `/take_test/${testLink}`},);
             }
             else {
                 this.closeTestLink()

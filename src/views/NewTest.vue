@@ -125,7 +125,7 @@ export default {
                 body: formData
             })
             const data = await res.json();
-            this.genStore.setNewTestTaskId(data.task);
+            this.genStore.setNewTest(data);
             this.$router.push({path: '/new/test'});
         },
 

@@ -68,6 +68,7 @@
 import Logo from '@/components/header/Logo.vue';
 import { useRoute } from 'vue-router';
 import { useDataStore } from '../store/data.js'
+import { useGenStore } from '@/store/store.js';
 
 export default {
     name: "TakeTest",
@@ -84,20 +85,18 @@ export default {
 
     setup() {
         const dataStore = useDataStore();
+        const genStore = useGenStore();
         const link = useRoute().params.link;
-        const token = this.$route.params.token;
-        console.log(token);
 
         return {
             dataStore,
-            link,
-            token
+            genStore,
+            link
         }
     },
 
     mounted() {
         let timer = this.examCountDown();
-        console.log(this.link);
         this.theFunc = timer;
     },
 
@@ -140,9 +139,10 @@ export default {
 
         async getExam(formData) {
             // post method
+            console.log(this.genStore.token);
             const res = await fetch(`http://localhost:8000/take/${this.link}`, {
                 method: 'POST',
-                headers: {'X-CSRFToken': this.token},
+                headers: {'X-CSRFToken': this.genStore.token},
                 body: formData
             })
             const data = await res.json()

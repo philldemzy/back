@@ -12,11 +12,11 @@
             </div>
         </div>
 
-        <div v-show="resp" class="p-5">
+        <div v-show="resp" class="grid grid-col-1 p-5">
             <h2>Your exam has been processed successfully</h2>
 
-            <span>Examiner Link to Check statistics and result of exam <i>only for examiner</i>: ngunrurhus44</span>
-            <span>Test Link provided for students to take the exam: xjehsgu45</span>
+            <span>Examiner Link to Check statistics and result of exam <i>only for examiner</i>: {{ genStore.newTest.examiner_link }}</span>
+            <span>Test Link provided for students to take the exam: {{ genStore.newTest.test_link }}</span>
             <span>explaining how students will take test</span>
         
             <button>Preview Exam</button>
@@ -52,26 +52,22 @@ export default{
 
     mounted() {
         const checkStat = setInterval( () => {
-            let data = this.checkStatus(this.genStore.newTestTaskId);
-            if (data.state == 'SUCCESS') {
-                this.resp = true
-                clearInterval(checkStat)
-            }
-            else if  (data.state == 'FAILURE') {
-                this.resp = true
-                clearInterval(checkStat)
-            }
+            fetch(`http://localhost:8000/exam/setup/${this.genStore.newTest.task}`)
+            .then((response) => response.json())
+            .then((data) => {
+                if (data.state == 'SUCCESS') {
+                    this.resp = true
+                    clearInterval(checkStat)
+                }
+                else if  (data.state == 'FAILURE') {
+                    this.resp = true
+                    clearInterval(checkStat)
+                }
+            });
         }, 500)
-        
     },
 
     methods: {
-        checkStatus(statusId) {
-            const res = fetch(`http://localhost:8000/setup/${statusId}`)
-
-            const data = res.json()
-            return data;
-        },
     },
 }
 </script>
