@@ -52,7 +52,11 @@ def set_test(request):
         new_exam.save()
 
         res = process_file.delay(new_exam.test_file.path, new_exam.id)  # Processing of file done async
-        return JsonResponse({'task': res.id}, status=202)
+        return JsonResponse({
+            'examiner_link': new_exam.examiner_link,
+            'test_link': new_exam.test_link,
+            'task': res.id
+        }, status=202)
 
     # get token first
     return JsonResponse({'token': get_token(request)})
@@ -64,6 +68,7 @@ def set_test_progress(request, task_id):
     Reporting task result to front end which would ping back till task is done
     """
     task = AsyncResult(task_id)
+    print(task.state)
 
     # Checking if task has started or is still pending
     if task.state == 'FAILURE' or task.state == 'PENDING':
@@ -74,16 +79,15 @@ def set_test_progress(request, task_id):
         }
         return JsonResponse(response, status=200)
 
-    current = task.info.get('current', 0)
-    total = task.info.get('total', 1)
-    progression = (int(current) / int(total)) * 100  # to display a percentage of progress of the task
-    response = {
-        'task_id': task_id,
-        'state': task.state,
-        'progression': progression,
-        'info': "None"
-    }
-    return JsonResponse(response, status=200)
+    if task.state == 'SUCCESS':
+
+        response = {
+            'task_id': task_id,
+            'state': task.state,
+            'info': "None"
+        }
+
+        return JsonResponse(response, status=200)
 
 
 # View for getting questions for exam and registration
