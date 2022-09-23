@@ -8,6 +8,7 @@ import NewTest from '../views/NewTest.vue'
 import TakeTest from '../views/TakeTest.vue'
 import Examiner from '../views/Examiner.vue'
 import NewTestStat from '../views/NewTestStat.vue'
+import PrevEditExam from '../views/PrevEditExam.vue'
 
 const routes = [
     {
@@ -49,6 +50,11 @@ const routes = [
         path: '/set_test',
         name: NewTest,
         component: NewTest
+    },
+    {
+        path: '/preview/:link',
+        name: PrevEditExam,
+        component: PrevEditExam
     },
 ]
 
