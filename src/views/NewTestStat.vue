@@ -13,13 +13,36 @@
         </div>
 
         <div v-show="resp" class="grid grid-col-1 p-5">
-            <h2>Your exam has been processed successfully</h2>
+            <div class="flex">
+                <h2 class="mt-5 text-green-700 text-xl lg:text-2xl">Success !!</h2>
+                <svg xmlns="http://www.w3.org/2000/svg" class="lg:h-20 lg:w-16 h-16 w-14 lg:stroke-4 stroke-2 text-green-900" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                </svg>
+            </div>
+            <h5 class="text-align-center text-zinc-900 text-md lg:text-lg">Your test has been created successfully</h5>
 
-            <span>Examiner Link to Check statistics and result of exam <i>only for examiner</i>: {{ genStore.newTest.examiner_link }}</span>
-            <span>Test Link provided for students to take the exam: {{ genStore.newTest.test_link }}</span>
-            <span>explaining how students will take test</span>
+            <div class="grid mt-4">
+                <h3><span class="text-md lg:text-xl text-semibold">Examiner Link: </span> Link would be used to Check statistics and result of exam <u>only for examiner</u></h3>
+                <div class="flex space-x-3 mt-1">
+                    <span class="text-sm">EXAMINER LINK</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="text-green-400 w-6 h-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M11.25 4.5l7.5 7.5-7.5 7.5m-6-15l7.5 7.5-7.5 7.5" />
+                    </svg>
+                    <span class="text-semibold">{{ genStore.newTest.examiner_link }}</span>
+                </div>
+            </div>
+            <div class="grid mt-3">
+                <h3><span class="text-md lg:text-xl text-semibold">Test Link: </span> Link would be used for students to navigate to take test <u>for students</u></h3>
+                <div class="flex space-x-3 mt-1">
+                    <span class="text-sm">TEST LINK</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="text-green-400 w-6 h-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M11.25 4.5l7.5 7.5-7.5 7.5m-6-15l7.5 7.5-7.5 7.5" />
+                    </svg>
+                    <span @click="goTo" class="text-semibold">{{ genStore.newTest.test_link }}</span>
+                </div>
+            </div>
         
-            <button>Preview Exam</button>
+            <button @click="previewExam" class="p-3 border border-dark1 mt-4">Preview Exam</button>
         </div>
         <div class="h-5"></div>
     </div>
@@ -68,6 +91,10 @@ export default{
     },
 
     methods: {
+        goTo() {
+            this.$router.push({path: `/take_test/${this.genStore.newTest.test_link}`})
+        },
     },
 }
+//pRUPBOlTVm
 </script>

@@ -114,6 +114,7 @@ export default {
             formData.append('student_name', studentName);
 
             this.dataStore.setStudentId({
+                test_link: this.link,
                 student_id: studentId,
                 student_name: studentName
             })

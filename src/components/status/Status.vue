@@ -1,5 +1,5 @@
 <template>
-    <div class="flex flex-col items-center p-5 mt-48">
+    <div class="flex flex-col items-center p-5">
         <div v-show="dataStore.notDone" class="flex flex-row self-center bg-brown3 p-3 px-5 rounded-md lg:rounded-lg">
             <svg class="animate-spin mt-1 -ml-1 mr-3 h-5 w-5 text-orange-900" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                 <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
@@ -39,26 +39,23 @@ export default {
     },
 
     mounted() {
-        //this.submitTestProgress(this.dataStore.submitTaskId)
+        let myInterval = setInterval(() => {
+            fetch(`http://localhost:8000/mark/${this.dataStore.submitTaskId}`)
+            .then((response) => response.json())
+            .then((data) => {
+                if (data.state == "SUCCESS") {
+                    this.dataStore.isSuccess();
+                    clearInterval(myInterval)
+                }
+                else if (data.state == "FAILURE") {
+                    this.dataStore.isFailed();
+                    clearInterval(myInterval)
+                }
+            })
+        }, 5000)
     },
 
     methods: {
-        submitTestProgress() {
-            let myInterval = setInterval((task_id) => {
-                console.log(task_id)
-                const res = fetch(`http://localhost:8000/mark/task_id`)
-                const data = res.json()
-                if (data.state == "SUCCESS") {
-                    dataStore.isSuccess();
-                    this.clearInterval(myInterval)
-                }
-                else if (data.state == "FAILURE") {
-                    dataStore.isFailed();
-                    this.clearInterval(myInterval)
-                }
-            }, 500)
-        },
-
         clearIntervals(func) {
             clearInterval(func)
         }

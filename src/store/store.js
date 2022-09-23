@@ -4,7 +4,7 @@ export const useGenStore = defineStore({
     id: 'success',
     state: () => {
         return {
-            success: 0,
+            success: false,
             status_: null,
             retries: 0,
             submitTaskId: null,
@@ -39,15 +39,15 @@ export const useGenStore = defineStore({
 
     getters: {
         isSuccessfull: (state) => {
-            return state.success  === 1 && state.status_ === 'DONE';
+            return state.success  === true && state.status_ === 'DONE';
         },
 
         isUnsuccessful: (state) => {
-            return state.success  === 0 && state.status_ === 'DONE';
+            return state.success  === false && state.status_ === 'DONE';
         },
 
         notDone: (state) => {
-            return state.success  === 0 && state.status_ === null;
+            return state.success  === false && state.status_ === null;
         },
     }
 })

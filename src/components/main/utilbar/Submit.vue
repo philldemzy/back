@@ -22,7 +22,7 @@ export default {
     },
 
     methods: {
-        submit(event) {
+        async submit(event) {
             event.preventDefault();
 
             const bodyData = {
@@ -31,13 +31,13 @@ export default {
             }
 
             // post method
-            const res = fetch(`http://localhost:8000/mark`, {
+            const res = await fetch(`http://localhost:8000/mark`, {
                 method: 'POST',
                 headers: { "X-CSRFToken": this.token },
                 body: JSON.stringify(bodyData)
             })
-            const data = res.json()
-            this.genStore.setSubmitTaskId(data);
+            const data = await res.json()
+            this.genStore.setSubmitTaskId(data.task);
 
             this.$router.replace({path: '/submited'});
         },
