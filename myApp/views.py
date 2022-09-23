@@ -68,7 +68,6 @@ def set_test_progress(request, task_id):
     Reporting task result to front end which would ping back till task is done
     """
     task = AsyncResult(task_id)
-    print(task.state)
 
     # Checking if task has started or is still pending
     if task.state == 'FAILURE' or task.state == 'PENDING':
@@ -79,15 +78,13 @@ def set_test_progress(request, task_id):
         }
         return JsonResponse(response, status=200)
 
-    if task.state == 'SUCCESS':
+    response = {
+        'task_id': task_id,
+        'state': task.state,
+        'info': "None"
+    }
 
-        response = {
-            'task_id': task_id,
-            'state': task.state,
-            'info': "None"
-        }
-
-        return JsonResponse(response, status=200)
+    return JsonResponse(response, status=200)
 
 
 # View for getting questions for exam and registration
@@ -125,6 +122,8 @@ def get_test(request, link):
         For now answers would be kept in the client side till user clicks submit
         """
         # Check if exam has started
+        print(datetime.now(exam.start_time.tzinfo).ctime(), exam.start_time.ctime())
+        print(datetime.now(exam.start_time.tzinfo).ctime(), (exam.start_time + exam.duration).ctime())
         if datetime.now(exam.start_time.tzinfo) >= exam.start_time:
             # Send questions to client side only if exam has not ended
             if datetime.now(exam.start_time.tzinfo) <= exam.start_time + exam.duration:
@@ -154,8 +153,8 @@ def get_test(request, link):
         'mark': exam.total_score,
         'instructions': exam.test_instructions,
         'token': get_token(request),
-        'ended': datetime.now(exam.start_time.tzinfo) > (exam.start_time + exam.duration)
-        if datetime.now(exam.start_time.tzinfo) > (exam.start_time + exam.duration) else exam.start_time.isoformat(),
+        'ended': datetime.now(exam.start_time.tzinfo) > exam.start_time + exam.duration
+        if datetime.now(exam.start_time.tzinfo) > exam.start_time + exam.duration else exam.start_time.isoformat(),
     }, status=200, safe=False)
 
 
@@ -197,13 +196,9 @@ def mark_test_progress(request, task_id):
         }
         return JsonResponse(response, status=200)
 
-    current = task.info.get('current', 0)
-    total = task.info.get('total', 1)
-    progression = (int(current) / int(total)) * 100  # to display a percentage of progress of the task
     response = {
         'task_id': task_id,
         'state': task.state,
-        'progression': progression,
         'info': "None"
     }
     return JsonResponse(response, status=200)

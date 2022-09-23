@@ -87,7 +87,8 @@ def mark_tests(self, data):
         self.update_state(state='PROGRESS', meta={'current': i, 'total': len(data.get("answers"))})
 
     # After marking update score of test taker in the table
-    test_taker = TestTaker.objects.get(pk=data.get("student"))
+    test_taker = TestTaker.objects.get(student_id=data.get("student")["student_id"],
+                                          test=Exam.objects.get(test_link=data.get("student")["test_link"]))
     test_taker.score = total_score
     test_taker.save()
     return True
