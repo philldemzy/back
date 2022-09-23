@@ -9,8 +9,8 @@ from django.views.decorators.csrf import csrf_exempt
 
 from celery.result import AsyncResult
 
-from .serializer import send_question, send_exam_info
-from .models import Exam, TestTaker, Question
+from .serializer import send_question, send_exam_info, send_preview_question
+from .models import Exam, TestTaker, Question, Option
 from .utils import generate_examiner_link, generate_exam_link, get_datetime_obj, get_duration, display_date
 from .tasks import process_file, mark_tests
 
@@ -232,3 +232,42 @@ def check_test(request, link):
         'start_time': display_date(exam.start_time),
         'duration': get_duration(exam.duration.total_seconds()),
     })
+
+
+# View for previewing and editing exam
+def preview_and_edit_test(request, link):
+    exam = Exam.objects.get(examiner_link=link)
+    questions = Question.objects.prefetch_related('option_question').filter(test=exam)
+
+    if request.method == "PUT":
+        data = json_loads(request.body)
+
+        if data.type == 'question':
+            quest = Question.objects.get(pk=data.get('id'))
+            quest.question = data.get('data')
+            quest.save()
+
+            return JsonResponse({'type': 'question', 'id': quest.id, 'data': quest.question})
+
+        elif data.type == 'option':
+            opt = Option.objects.get(pk=data.get('id'))
+            opt.option = data.get('data')
+            opt.save()
+
+            return JsonResponse({'type': 'option', 'id': opt.id, 'data': opt.option})
+
+        elif data.type == 'answer':
+            quest = Question.objects.get(pk=data.get('id'))
+            quest.answer = data.get('data')
+            quest.save()
+
+            return JsonResponse({'type': 'answer', 'id': quest.id, 'data': quest.answer})
+
+    return JsonResponse({
+        'name': exam.exam_name,
+        'start_time': display_date(exam.start_time),
+        'duration': get_duration(exam.duration.total_seconds()),
+        'mark': exam.total_score,
+        'questions': [send_preview_question(question) for question in questions],
+        'token': get_token(request),
+    }, safe=False)

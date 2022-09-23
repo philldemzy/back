@@ -10,6 +10,14 @@ def send_question(question):
     }
 
 
+def send_preview_question(question):
+    return {
+        'id': question.id,
+        'question': question.question,
+        'options': [{'option': opt.option, 'option_id': opt.id} for opt in question.option_question.all()]
+    }
+
+
 def send_exam_info(exam):
     return {
         'title': exam.exam_name,

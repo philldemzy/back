@@ -10,4 +10,5 @@ urlpatterns = [
     path("mark", views.mark_test, name="mark_exam"),
     path("mark/<str:task_id>", views.mark_test_progress, name="mark_test_progress"),
     path("check/<str:link>", views.check_test, name="check_exam"),
+    path("prev/<str:link>", views.preview_and_edit_test, name="preview_and_edit_test"),
 ]
