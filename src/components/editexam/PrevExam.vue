@@ -14,18 +14,31 @@
         </div>
 
         <div class="bg-brown3 space-y-2">
-            <div v-for="question in questions" :key="question.id" class="hover:shadow-lg p-3">
-                <div class="text-base lg:text-lg text-semibold p-3 mt-1">
-                    <span>{{ question.question }}</span>
+            <div v-for="question in questions" :key="question.id" class="hover:shadow-lg p-3 xl:w-2/3">
+                <div class="flex text-base lg:text-lg text-semibold p-3 mt-1">
                     <span class="hidden">{{ question.id }}</span>
+                    <span class="md:text-base text-sm">{{ question.question }}</span>
+                    <svg @click="getInfo" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="ml-20 my-auto transition ease-in-out hover:translate-y-1 stroke-1 hover:w-7 hover:h-7 w-6 h-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
+                    </svg>
                 </div>
                 <div class="ml-5 relative flex justify-left">
                     <section class="grid grid-cols-1 p-3 space-y-2 place-items-stretch w-full">
-                        <div v-for="option in question.options" :key="option.id" class="flex border border-dark1 min-w-min cursor-pointer hover:shadow-lg text-left min-h-max">
+                        <div v-for="option in question.options" :key="option.id" :class="[ question.answer === option.option ? 'bg-amber-900 text-orange-50 border-orange-50' : 'border-dark1' ,'flex border min-w-min justify-between cursor-pointer hover:shadow-lg text-left min-h-max']">
                             <div class="hidden">{{ option.id }}</div>
-                            <p class="text-sm lg:text-base p-3">{{ option.option }}</p>
+                            <p class="text-sm lg:text-base font-light p-3">{{ option.option }}</p>
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="my-auto mr-5 transition ease-in-out hover:translate-y-1 stroke-1 hover:w-7 hover:h-7 w-6 h-6">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
+                            </svg>
                         </div>
                     </section>
+                </div>
+                <div class="flex">
+                    <span class="mt-1 font-medium">ANSWER: </span>
+                    <span class="ml-3 text-align-center font-light text-lg">{{ isAnswer(question) }}</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="ml-20 my-auto transition ease-in-out hover:translate-y-1 stroke-1 hover:w-7 hover:h-7 w-6 h-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
+                    </svg>
                 </div>
             </div>
             <div class="w-full border-b border-dark1"></div>
@@ -43,6 +56,7 @@ export default{
         return {
             exam: {},
             questions: [],
+            targetInfo: {},
             token: null,
         }
     },
@@ -61,6 +75,15 @@ export default{
     },
 
     methods: {
+        isAnswer(question) {
+            const index = question.options.findIndex((elemn) => {
+                return elemn === question.answer
+            })
+
+            const ans = index !== -1 ? 'No Answer': question.answer
+            return ans
+        },
+
         fetchData(link) {
             fetch(`http://localhost:8000/prev/${link}`)
             .then((response) => response.json())
@@ -76,8 +99,9 @@ export default{
             })
         },
 
-        getEdit(){
-            const data = document.getElementById('change').value;
+        getInfo(event){
+            const target = event.target;
+            console.log(target)
         },
 
         editExam(id, type, data) {
