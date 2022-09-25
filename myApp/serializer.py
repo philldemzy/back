@@ -15,7 +15,7 @@ def send_preview_question(question):
         'id': question.id,
         'question': question.question,
         'answer': question.answer,
-        'options': [{'option': opt.option, 'option_id': opt.id} for opt in question.option_question.all()]
+        'options': [{'option': opt.option, 'id': opt.id} for opt in question.option_question.all()]
     }
 
 

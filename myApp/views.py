@@ -235,6 +235,7 @@ def check_test(request, link):
 
 
 # View for previewing and editing exam
+@csrf_exempt
 def preview_and_edit_test(request, link):
     exam = Exam.objects.get(examiner_link=link)
     questions = Question.objects.prefetch_related('option_question').filter(test=exam)
@@ -242,21 +243,21 @@ def preview_and_edit_test(request, link):
     if request.method == "PUT":
         data = json_loads(request.body)
 
-        if data.type == 'question':
+        if data.get('type') == 'question':
             quest = Question.objects.get(pk=data.get('id'))
             quest.question = data.get('data')
             quest.save()
 
             return JsonResponse({'type': 'question', 'id': quest.id, 'data': quest.question})
 
-        elif data.type == 'option':
+        elif data.get('type') == 'option':
             opt = Option.objects.get(pk=data.get('id'))
             opt.option = data.get('data')
             opt.save()
 
             return JsonResponse({'type': 'option', 'id': opt.id, 'data': opt.option})
 
-        elif data.type == 'answer':
+        elif data.get('type') == 'answer':
             quest = Question.objects.get(pk=data.get('id'))
             quest.answer = data.get('data')
             quest.save()
