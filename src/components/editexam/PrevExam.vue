@@ -7,6 +7,7 @@
                 <h2>{{ exam.start_time }}</h2>
                 <h2>{{ exam.duration }}</h2>
             </div>
+            <h2 class="my-3 text-sm font-mono">EXAM questions, answers and options can be edited from here</h2>
         </div>
 
         <div class="w-full p-3">
@@ -18,7 +19,7 @@
                 <div class="flex text-base lg:text-lg text-semibold p-3 mt-1">
                     <span class="hidden">{{ question.id }}</span>
                     <span class="md:text-base text-sm">{{ question.question }}</span>
-                    <svg @click="getInfo" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="ml-20 my-auto transition ease-in-out hover:translate-y-1 stroke-1 hover:w-7 hover:h-7 w-6 h-6">
+                    <svg @click="getQuestion" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="ml-20 my-auto transition ease-in-out hover:translate-y-1 stroke-1 duration-500 hover:scale-125 w-4 h-4 lg:w-6 lg:h-6">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
                     </svg>
                 </div>
@@ -27,21 +28,32 @@
                         <div v-for="option in question.options" :key="option.id" :class="[ question.answer === option.option ? 'bg-amber-900 text-orange-50 border-orange-50' : 'border-dark1' ,'flex border min-w-min justify-between cursor-pointer hover:shadow-lg text-left min-h-max']">
                             <div class="hidden">{{ option.id }}</div>
                             <p class="text-sm lg:text-base font-light p-3">{{ option.option }}</p>
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="my-auto mr-5 transition ease-in-out hover:translate-y-1 stroke-1 hover:w-7 hover:h-7 w-6 h-6">
+                            <svg @click="getOption" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="my-auto mr-5 transition ease-in-out hover:translate-y-1 stroke-1 duration-500 hover:scale-125 w-4 h-4 lg:w-6 lg:h-6">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
                             </svg>
                         </div>
                     </section>
                 </div>
                 <div class="flex">
+                    <span class="hidden"> {{ question.id }} </span>
                     <span class="mt-1 font-medium">ANSWER: </span>
                     <span class="ml-3 text-align-center font-light text-lg">{{ isAnswer(question) }}</span>
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="ml-20 my-auto transition ease-in-out hover:translate-y-1 stroke-1 hover:w-7 hover:h-7 w-6 h-6">
+                    <svg @click="getAnswer" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="ml-20 my-auto transition ease-in-out hover:translate-y-1 stroke-1 duration-500 hover:scale-125 w-4 h-4 lg:w-6 lg:h-6">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
                     </svg>
                 </div>
+                <div class="w-full border-b border-dark1"></div>
             </div>
-            <div class="w-full border-b border-dark1"></div>
+            <div id="editExam" class="hidden grid fixed bottom-2 space-y-2 left-10">
+                <svg @click="closeEditForm" xmlns="http://www.w3.org/2000/svg" class="justify-self-end h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
+                </svg>
+                <form action="" class="flex w-full lg:w-3/2 mx-auto h-10 transition -translate-y-2 duration-500 opacity-90">
+                    <input type="text" id="edit">
+                    <button @click="mainEditExam" class="px-2 lowercase bg-dark1 text-white">submit</button>
+                </form>
+            </div>
+            
         </div>
     </div>
 </template>
@@ -75,6 +87,10 @@ export default{
     },
 
     methods: {
+        closeEditForm() {
+            let styleClass = document.getElementById('editExam').className
+            document.getElementById('editExam').className = `hidden ${styleClass}`
+        },
         isAnswer(question) {
             const index = question.options.findIndex((elemn) => {
                 return elemn === question.answer
@@ -99,55 +115,110 @@ export default{
             })
         },
 
-        getInfo(event){
-            const target = event.target;
-            console.log(target)
+        mainEditExam(event) {
+            event.preventDefault();
+            const data = document.getElementById('edit').value
+            let styleClass = document.getElementById('editExam').className
+            document.getElementById('editExam').className = `hidden ${styleClass}`
+            if (data.length < 1) {
+                return;
+            }
+            this.targetInfo.data = data;
+            document.getElementById('edit').value = '';
+            if (this.editExam(this.targetInfo)) {
+                this.targetInfo = {};
+            }
         },
 
-        editExam(id, type, data) {
-            //this function would be called by another function 
-            const bodyData = {
-                type: type,
+        getQuestion(event){
+            const id = event.target.parentElement.firstChild.innerHTML;
+            if (typeof(id) !== 'string' || id.length < 1) {
+                alert('An error occured, please retry')
+                return;
+            }
+            let styleClass = document.getElementById('editExam').className
+            document.getElementById('editExam').className = styleClass.replace('hidden', '')
+            this.targetInfo = {
+                type: 'question',
                 id: id,
-                data: data
-            };
+            }
+        },
 
-            fetch(`http://localhost:8000/prev/${link}`, {
+        getOption(event) {
+            const id = event.target.parentElement.firstChild.innerHTML;
+            if (typeof(id) !== 'string' || id.length < 1) {
+                alert('An error occured, please retry')
+                return;
+            }
+            let styleClass = document.getElementById('editExam').className
+            document.getElementById('editExam').className = styleClass.replace('hidden', '')
+            this.targetInfo = {
+                type: 'option',
+                id: id,
+            }
+        },
+
+        getAnswer(event) {
+            const id = event.target.parentElement.firstChild.innerHTML;
+            if (typeof(id) !== 'string' || id.length < 1) {
+                alert('An error occured, please retry')
+                return;
+            }
+            let styleClass = document.getElementById('editExam').className
+            document.getElementById('editExam').className = styleClass.replace('hidden', '')
+            this.targetInfo = {
+                type: 'answer',
+                id: id,
+            }
+            console.log(this.targetInfo)
+        },
+
+        editExam(bodyData) {
+            //this function would be called by another function 
+            fetch(`http://localhost:8000/prev/${this.link}`, {
                 method: 'PUT',
                 headers: { "X-CSRFToken": this.token },
                 body: JSON.stringify(bodyData)
             })
             .then((response) => response.json())
             .then((data) => {
-                console.log(data);
                 if (data.type == 'question') {
-                    const index = questions.findIndex(quest => {
+                    const index = this.questions.findIndex(quest => {
                         return quest.id === data.id;
                     });
                     if (index !== -1) {
-                        questions[index].question = data.data;
+                        this.questions[index].question = data.data;
                     }
                 }
 
                 else if (data.type == 'option') {
-                    const index = questions.options.findIndex(opt => {
-                        return opt.id === data.id;
-                    });
-                    if (index !== -1) {
-                        questions.options[index].option = data.data;
+                    let qIndex;
+                    let oIndex;
+                    for (let i=0; i<this.questions.length; i++) {
+                        const index = this.questions[i].options.findIndex(opt => {
+                            return opt.id === data.id;
+                        });
+                        if (index !== -1) {
+                            qIndex = i;
+                            oIndex = index;
+                            break;
+                        }
+                    }
+                    if (oIndex !== -1) {
+                        this.questions[qIndex].options[oIndex].option = data.data;
                     }
                 }
 
-                else if (data.type == 'option') {
-                    const index = questions.findIndex(quest => {
+                else if (data.type == 'answer') {
+                    const index = this.questions.findIndex(quest => {
                         return quest.id === data.id;
                     });
                     if (index !== -1) {
-                        questions[index].answer = data.data;
+                        this.questions[index].answer = data.data;
                     }
                 }
-                
             })
+            return true;
         },
     },
 }

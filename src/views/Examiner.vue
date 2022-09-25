@@ -12,7 +12,7 @@
         </div>
         <ScoreOverview v-if="done" :results="dataStore.results"/>
         <ScoreTable v-if="done" :results="dataStore.results"/>
-        <p v-show="!done" class="text-center text-sm px-5">Sorry Examination has not ended yet. You can only get the results after examination has been done.</p>
+        <p v-show="!done" class="text-center text-sm px-5 font-mono">Sorry Examination has not ended yet. You can only get the results after examination has been done.</p>
     </div>
     <button @click="setExcelFile"> Button for downloading test report in excel format </button>
     <div class="h-5"></div>
