@@ -19,30 +19,30 @@
                     <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
                 </svg>
             </div>
-            <h5 class="text-align-center text-zinc-900 text-md lg:text-lg">Your test has been created successfully</h5>
+            <h5 class="text-align-center text-zinc-900 text-md lg:text-lg">Your test has been created successfully. <i class="uppercase">Please copy both links provided</i></h5>
 
             <div class="grid mt-4">
-                <h3><span class="text-md lg:text-xl text-semibold">Examiner Link: </span> Link would be used to Check statistics and result of exam <u>only for examiner</u></h3>
+                <h3 class="font-mono"><span class="text-md lg:text-xl text-semibold font-serif">Examiner Link:</span> Link would be used to Check statistics, result of exam it can be used to edit the exam <u>only for examiner</u></h3>
                 <div class="flex space-x-3 mt-1">
-                    <span class="text-sm">EXAMINER LINK</span>
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="text-green-400 w-6 h-6">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M11.25 4.5l7.5 7.5-7.5 7.5m-6-15l7.5 7.5-7.5 7.5" />
+                    <span class="text-md font-serif pt-3">EXAMINER LINK</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="mt-3 w-6 h-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3" />
                     </svg>
-                    <span class="text-semibold">{{ genStore.newTest.examiner_link }}</span>
+                    <span @click="goTo" class="text-semibold font-mono p-2 bg-dark1 opacity-90 text-white rounded lg:rounded-md">{{ genStore.newTest.examiner_link }}</span>
                 </div>
             </div>
             <div class="grid mt-3">
-                <h3><span class="text-md lg:text-xl text-semibold">Test Link: </span> Link would be used for students to navigate to take test <u>for students</u></h3>
+                <h3 class="font-mono"><span class="text-md lg:text-xl text-semibold font-serif">Test Link: </span> Link would be used for students to navigate to take test <u>for students</u></h3>
                 <div class="flex space-x-3 mt-1">
-                    <span class="text-sm">TEST LINK</span>
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="text-green-400 w-6 h-6">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M11.25 4.5l7.5 7.5-7.5 7.5m-6-15l7.5 7.5-7.5 7.5" />
+                    <span class="text-md font-serif pt-3">TEST LINK</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="mt-3 w-6 h-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3" />
                     </svg>
-                    <span @click="goTo" class="text-semibold">{{ genStore.newTest.test_link }}</span>
+                    <span class="text-semibold font-mono p-2 bg-dark1 opacity-90 text-white rounded lg:rounded-md">{{ genStore.newTest.test_link }}</span>
                 </div>
             </div>
         
-            <button @click="previewExam" class="p-3 border border-dark1 mt-4">Preview Exam</button>
+            <button @click="previewExam" class="p-3 border border-dark1 mt-4 md:w-1/3 md:mx-auto hover:-translate-y-1 dutation-500 transform ease-in-out">Preview Exam</button>
         </div>
         <div class="h-5"></div>
     </div>
@@ -91,8 +91,8 @@ export default{
     },
 
     methods: {
-        goTo() {
-            this.$router.push({path: `/take_test/${this.genStore.newTest.test_link}`})
+        previewExam () {
+            this.$router.push({path: `/preview/${this.genStore.newTest.examiner_link}`})
         },
     },
 }

@@ -15,7 +15,7 @@
         </div>
 
         <div class="bg-brown3 space-y-2">
-            <div v-for="question in questions" :key="question.id" class="hover:shadow-lg p-3 xl:w-2/3">
+            <div v-for="question in questions" :key="question.id" class="hover:shadow-lg p-3 lg:w-2/3">
                 <div class="flex text-base lg:text-lg text-semibold p-3 mt-1">
                     <span class="hidden">{{ question.id }}</span>
                     <span class="md:text-base text-sm">{{ question.question }}</span>
@@ -44,16 +44,17 @@
                 </div>
                 <div class="w-full border-b border-dark1"></div>
             </div>
-            <div id="editExam" class="hidden grid fixed bottom-2 space-y-2 left-10">
-                <svg @click="closeEditForm" xmlns="http://www.w3.org/2000/svg" class="justify-self-end h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
-                </svg>
-                <form action="" class="flex w-full lg:w-3/2 mx-auto h-10 transition -translate-y-2 duration-500 opacity-90">
-                    <input type="text" id="edit">
-                    <button @click="mainEditExam" class="px-2 lowercase bg-dark1 text-white">submit</button>
-                </form>
+            <div id="editExam" class="hidden fixed bottom-2 w-full">
+                <div class="grid relative justify-items-end w-full lg:w-2/3 mr-5 space-y-3 px-4">
+                    <svg @click="closeEditForm" xmlns="http://www.w3.org/2000/svg" class="justify-self-end h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
+                    </svg>
+                    <form action="" class="flex w-full mx-auto h-10 lg:h-14 transition -translate-y-2 duration-500 opacity-90">
+                        <input type="text" id="edit" class="w-2/3">
+                        <button @click="mainEditExam" class="px-2 w-1/3 lowercase bg-dark1 text-white">submit</button>
+                    </form>
+                </div>
             </div>
-            
         </div>
     </div>
 </template>

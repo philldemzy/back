@@ -13,8 +13,18 @@
         <ScoreOverview v-if="done" :results="dataStore.results"/>
         <ScoreTable v-if="done" :results="dataStore.results"/>
         <p v-show="!done" class="text-center text-sm px-5 font-mono">Sorry Examination has not ended yet. You can only get the results after examination has been done.</p>
+        <div v-show="!done" class="grid grid-col-1 justify-items-center xl:justify-items-start xl:ml-96 pb-5">
+            <div @click="goToEdit" class="p-3 bg-brown3 rounded-2xl hover:-translate-y-1">
+                Edit Exam
+            </div>
+        </div>
+        
+        <div v-if="done" class="grid grid-col-1 justify-items-center xl:justify-items-start xl:ml-96 pb-5">
+            <div class="">
+                <button  @click="setExcelFile" class="p-3 bg-brown3 rounded-2xl hover:-translate-y-1"> DOWNLOAD </button>
+            </div>
+        </div>
     </div>
-    <button @click="setExcelFile"> Button for downloading test report in excel format </button>
     <div class="h-5"></div>
 </template>
 
@@ -57,6 +67,10 @@ export default{
     },
 
     methods: {
+        goToEdit() {
+            this.$router.push({path: `/preview/${this.link}`})
+        },
+
         async fetchFile(link) {
             //going to fetch
             const res = await fetch(`http://localhost:8000/check/${link}`)
