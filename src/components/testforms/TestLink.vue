@@ -41,22 +41,11 @@ export default {
             event.preventDefault();
             const testLink = document.getElementById("test_link").value;
             if (testLink) {
-                const apiData = await this.fetchData(testLink)
-                this.dataStore.setExamDet(await apiData);
-                this.genStore.setToken(await apiData.token)
                 this.$router.push({path: `/take_test/${testLink}`},);
             }
             else {
                 this.closeTestLink()
             }
-        },
-
-        // fetch data
-        async fetchData(testLink) {
-            //get method
-            const res = await fetch(`http://127.0.0.1:8000/take/${testLink}`)
-            const data = await res.json()
-            return data
         },
     },
 }

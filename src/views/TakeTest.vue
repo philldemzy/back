@@ -95,6 +95,10 @@ export default {
         }
     },
 
+    created () {
+        this.fetchData(this.link)
+    },
+
     mounted() {
         let timer = this.examCountDown();
         this.theFunc = timer;
@@ -133,9 +137,25 @@ export default {
             }
 
             else if (allData.not_time) {
+                document.getElementById('count').remove();
                 alert(`${allData.not_time}`);
             }
 
+        },
+
+        // fetch data
+        async fetchData(testLink) {
+            //get method
+            const res = await fetch(`http://127.0.0.1:8000/take/${testLink}`)
+            const data = await res.json()
+            if (data.name) {
+                this.dataStore.setExamDet(await data);
+                this.genStore.setToken(await data.token)
+            }
+            //TODO display 404 exam
+            else if (data.error) {
+                alert('Error Exam was not found.')
+            }
         },
 
         async getExam(formData) {
