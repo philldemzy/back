@@ -1,7 +1,7 @@
 <template>
     <Logo/>
 
-    <div class="grid bg-brown2 justify-items-center">
+    <div id="exam_dets" class="grid bg-brown2 justify-items-center">
         <div class="grid gap-y-2 p-2.5 lg:p-6 lg:w-2/3">
             <div class="flex space-x-4 lg:space-x-6 w-3/4 lg:w-full">
                 <h4 class="text-lg lg:text-2xl w-1/2">Title</h4>
@@ -61,6 +61,11 @@
                 </div>
             </form>
         </div>
+    </div>
+
+    <div id="404_exam" class="grid bg-brown2 justify-items-center">
+        <img class="w-1/3 h-52" src="https://banner2.cleanpng.com/20180511/pee/kisspng-http-404-error-web-browser-5af65b7e3e0fb0.9779316415260947182542.jpg" alt="404 Error">
+        <h1 class="font-serif text-light text-lg lg:text-2xl">Exam not found, please cross check exam link.</h1>
     </div>
 </template>
 
@@ -154,6 +159,8 @@ export default {
             }
             //TODO display 404 exam for loading exam get details of exam before and in exam if exam not there get
             else if (data.error) {
+                document.getElementById('exam_dets').style.display = 'none';
+                document.getElementById('404_exam').style.display = 'block';
                 alert('Error Exam was not found.')
             }
         },
