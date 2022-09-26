@@ -152,7 +152,7 @@ export default {
                 this.dataStore.setExamDet(await data);
                 this.genStore.setToken(await data.token)
             }
-            //TODO display 404 exam
+            //TODO display 404 exam for loading exam get details of exam before and in exam if exam not there get
             else if (data.error) {
                 alert('Error Exam was not found.')
             }
