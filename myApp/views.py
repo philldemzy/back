@@ -272,3 +272,14 @@ def preview_and_edit_test(request, link):
         'questions': [send_preview_question(question) for question in questions],
         'token': get_token(request),
     }, safe=False)
+# TODO
+"""
+A. BACK
+    1. UTC bug (started?)
+    2. Editing Exam time frame
+    ...
+B. FRONT
+    1. Life cycle hooks related bugs
+    2. exam countdown timer
+    3. 
+"""
