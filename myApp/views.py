@@ -6,6 +6,7 @@ from django.http import HttpResponse, JsonResponse
 from django.middleware.csrf import get_token
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
+from django.utils import timezone
 
 from celery.result import AsyncResult
 
@@ -30,7 +31,7 @@ def set_test(request):
         hours = request.POST.get('hours')  # Get hours of exam duration
         minutes = request.POST.get('minutes')  # Get minutes of exam duration
 
-        # Convert string of time to datetime object (%d:%m:%y:%H:%M e.g '23:04:22:06:20')
+        # Convert string of time to datetime object (%d:%m:%y:%H:%M e.g '28:09:22:20:43')
         time = request.POST.get('time').split(':')
         start_time = get_datetime_obj(time)  # Convert to datetime object
 
@@ -122,11 +123,9 @@ def get_test(request, link):
         For now answers would be kept in the client side till user clicks submit
         """
         # Check if exam has started
-        print(datetime.now(exam.start_time.tzinfo).ctime(), exam.start_time.ctime())
-        print(datetime.now(exam.start_time.tzinfo).ctime(), (exam.start_time + exam.duration).ctime())
-        if datetime.now(exam.start_time.tzinfo) >= exam.start_time:
+        if timezone.make_aware(datetime.now()) >= exam.start_time:
             # Send questions to client side only if exam has not ended
-            if datetime.now(exam.start_time.tzinfo) <= exam.start_time + exam.duration:
+            if timezone.make_aware(datetime.now()) <= exam.start_time + exam.duration:
                 questions = Question.objects.prefetch_related('option_question').filter(test=exam)
                 # use Json format
                 return JsonResponse({
@@ -213,10 +212,10 @@ def check_test(request, link):
     exam = Exam.objects.prefetch_related('get_exam').get(examiner_link=link)
 
     # add checks for if results have been collated
-    if datetime.now(exam.start_time.tzinfo) >= exam.start_time + exam.duration:
+    if timezone.make_aware(datetime.now()) >= exam.start_time + exam.duration:
         return JsonResponse(send_exam_info(exam))  # send student scores and info about an exam
 
-    elif datetime.now(exam.start_time.tzinfo) <= exam.start_time:
+    elif timezone.make_aware(datetime.now()) <= exam.start_time:
         return JsonResponse({
             'completed': False,
             'title': exam.exam_name,
@@ -241,28 +240,33 @@ def preview_and_edit_test(request, link):
     questions = Question.objects.prefetch_related('option_question').filter(test=exam)
 
     if request.method == "PUT":
-        data = json_loads(request.body)
+        # Only edit quesstions if exam has not started
+        if timezone.make_aware(datetime.now()) <= exam.start_time:
+            data = json_loads(request.body)
 
-        if data.get('type') == 'question':
-            quest = Question.objects.get(pk=data.get('id'))
-            quest.question = data.get('data')
-            quest.save()
+            if data.get('type') == 'question':
+                quest = Question.objects.get(pk=data.get('id'))
+                quest.question = data.get('data')
+                quest.save()
 
-            return JsonResponse({'type': 'question', 'id': quest.id, 'data': quest.question})
+                return JsonResponse({'type': 'question', 'id': quest.id, 'data': quest.question})
 
-        elif data.get('type') == 'option':
-            opt = Option.objects.get(pk=data.get('id'))
-            opt.option = data.get('data')
-            opt.save()
+            elif data.get('type') == 'option':
+                opt = Option.objects.get(pk=data.get('id'))
+                opt.option = data.get('data')
+                opt.save()
 
-            return JsonResponse({'type': 'option', 'id': opt.id, 'data': opt.option})
+                return JsonResponse({'type': 'option', 'id': opt.id, 'data': opt.option})
 
-        elif data.get('type') == 'answer':
-            quest = Question.objects.get(pk=data.get('id'))
-            quest.answer = data.get('data')
-            quest.save()
+            elif data.get('type') == 'answer':
+                quest = Question.objects.get(pk=data.get('id'))
+                quest.answer = data.get('data')
+                quest.save()
 
-            return JsonResponse({'type': 'answer', 'id': quest.id, 'data': quest.answer})
+                return JsonResponse({'type': 'answer', 'id': quest.id, 'data': quest.answer})
+
+        # Return error
+        return JsonResponse({'error': 'exam in progress or has ended'}, status=403)
 
     return JsonResponse({
         'name': exam.exam_name,
@@ -272,3 +276,12 @@ def preview_and_edit_test(request, link):
         'questions': [send_preview_question(question) for question in questions],
         'token': get_token(request),
     }, safe=False)
+# TODO
+"""
+A. BACK
+    ...
+B. FRONT
+    1. Life cycle hooks related bugs
+    2. exam countdown timer
+    3. 
+"""
