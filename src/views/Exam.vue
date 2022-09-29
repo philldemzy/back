@@ -40,32 +40,37 @@ export default {
     },
 
     mounted() {
-        this.countDown;
-    },
-
-    methods: {
-        //submit after countdown
-        countDown() {
-            const duration = this.dataStore.details.duration;
-            console.log(duration)
-            setTimeout(() => {
-                const bodyData = {
-                    student: this.dataStore.studentId,
-                    answers: this.dataStore.pickedAns
-                }
-
-                // post method
-                const res = fetch(`http://localhost:8000/mark`, {
-                    method: 'POST',
-                    headers: { "X-CSRFToken": this.genStore.token },
-                    body: JSON.stringify(bodyData)
-                })
-                const data = res.json()
+        //return seconds from api not milliseconds
+        const duration = this.dataStore.details.duration;
+        //returns date in isoformat
+        const start = this.dataStore.details.start_time;
+        const start_time = new Date(start);
+        console.log(`start time - ${start_time.getTime()}`)
+        const total = start_time.getTime() + (parseInt(duration) * 1000)
+        console.log(`total - ${total}`)
+        const now = new Date()
+        console.log(`now - ${now.getTime()}`)
+        const diff = total - now.getTime()
+        console.log(`diff - ${diff/1000}`)
+        console.log(`now - start ${now.getTime() - start_time.getTime()}`)
+        setTimeout(() => {
+            const bodyData = {
+                student: this.dataStore.studentId,
+                answers: this.dataStore.pickedAns
+            }
+            console.log(this.dataStore.studentId)
+            // post method
+            fetch(`http://localhost:8000/mark`, {
+                method: 'POST',
+                headers: { "X-CSRFToken": this.genStore.token },
+                body: JSON.stringify(bodyData)
+            })
+            .then((response) => response.json())
+            .then((data) => {
                 this.genStore.setSubmitTaskId(data.task);
-
-                this.$router.replace({path: '/submited'});
-            }, parseInt(duration));
-        },
+            });
+            this.$router.replace({path: '/submited'});
+        }, diff)
     },
 }
 </script>

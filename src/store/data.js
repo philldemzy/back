@@ -27,6 +27,7 @@ export const useDataStore = defineStore({
         setExamDet(dets) {
             this.examDet = dets;
         },
+        
         addAnswer(answer) {
             this.pickedAns = this.pickedAns.filter((elemnt) => {
                 return elemnt.id !== answer.id;
@@ -64,6 +65,7 @@ export const useDataStore = defineStore({
                 student_id: data.student_id,
                 student_name: data.name,
                 duration: data.duration,
+                start_time: data.start_time,
             }
         },
 

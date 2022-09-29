@@ -63,7 +63,7 @@
         </div>
     </div>
 
-    <div id="404_exam" class="grid bg-brown2 justify-items-center">
+    <div id="404_exam" class="hidden grid bg-brown2 justify-items-center">
         <img class="w-1/3 h-52" src="https://banner2.cleanpng.com/20180511/pee/kisspng-http-404-error-web-browser-5af65b7e3e0fb0.9779316415260947182542.jpg" alt="404 Error">
         <h1 class="font-serif text-light text-lg lg:text-2xl">Exam not found, please cross check exam link.</h1>
     </div>
@@ -204,6 +204,7 @@ export default {
 
         examCountDown() {
             let _end = this.dataStore.examDet.ended;
+            console.log(_end);
             let update;
 
             if (this.dataStore.examDet.ended !== true) {
@@ -211,7 +212,7 @@ export default {
 
                 update = setInterval( function() {
                     let now = new Date();
-                    if (_end.length >= 0) {
+                    if (_end === undefined) {
                         let diff = end.getTime() - now.getTime();
                         if (diff <= 1) {
                             document.getElementById("count").innerHTML = "EXAM IN PROGRESS";
@@ -221,6 +222,7 @@ export default {
                         let hours = Math.floor( (diff % (1000 * 3600 * 24)) / (1000 * 3600) );
                         let minutes = Math.floor( (diff % (1000 * 3600)) / (1000 * 60) );
                         let seconds = Math.floor( (diff % (1000 * 60)) / 1000 );
+                        console.log(days, hours, minutes, seconds)
 
                         if (days == 0) {
                             document.getElementById("days").style.display = "none";
