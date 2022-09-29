@@ -37,13 +37,5 @@ export default {
             dataStore,
         }
     },
-
-    methods: {
-        testOneTwo (ans, id) {
-            this.pickedAns = ans;
-            console.log(id);
-            this.$emit('answer-picked', ans, id);
-        },
-    },
 }
 </script>

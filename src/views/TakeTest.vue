@@ -100,7 +100,7 @@ export default {
         }
     },
 
-    created () {
+    created() {
         this.fetchData(this.link)
     },
 
@@ -211,25 +211,29 @@ export default {
 
                 update = setInterval( function() {
                     let now = new Date();
-                    let diff = end.getTime() - now.getTime();
-                    if (diff <= 1) {
-                        document.getElementById("count").innerHTML = "EXAM IN PROGRESS";
-                        clearInterval(update);
-                    }
-                    let days = Math.floor( diff / (1000 * 3600 * 24) );
-                    let hours = Math.floor( (diff % (1000 * 3600 * 24)) / (1000 * 3600) );
-                    let minutes = Math.floor( (diff % (1000 * 3600)) / (1000 * 60) );
-                    let seconds = Math.floor( (diff % (1000 * 60)) / 1000 );
+                    if (_end.length >= 0) {
+                        let diff = end.getTime() - now.getTime();
+                        if (diff <= 1) {
+                            document.getElementById("count").innerHTML = "EXAM IN PROGRESS";
+                            clearInterval(update);
+                        }
+                        let days = Math.floor( diff / (1000 * 3600 * 24) );
+                        let hours = Math.floor( (diff % (1000 * 3600 * 24)) / (1000 * 3600) );
+                        let minutes = Math.floor( (diff % (1000 * 3600)) / (1000 * 60) );
+                        let seconds = Math.floor( (diff % (1000 * 60)) / 1000 );
 
-                    if (days == 0) {
-                        document.getElementById("days").style.display = "none";
-                        document.getElementById("first").style.display = "none";
-                    }
+                        if (days == 0) {
+                            document.getElementById("days").style.display = "none";
+                            document.getElementById("first").style.display = "none";
+                        }
 
-                    document.getElementById("days").children[0].innerHTML = days;
-                    document.getElementById("hours").children[0].innerHTML = hours;
-                    document.getElementById("minutes").children[0].innerHTML = minutes;
-                    document.getElementById("seconds").children[0].innerHTML = seconds;
+                        if (document.getElementById("days").style.display != "none") {
+                            document.getElementById("days").children[0].innerHTML = days;
+                        }
+                        document.getElementById("hours").children[0].innerHTML = hours;
+                        document.getElementById("minutes").children[0].innerHTML = minutes;
+                        document.getElementById("seconds").children[0].innerHTML = seconds;
+                    }
                 }, 1000)
                 return update;
             }

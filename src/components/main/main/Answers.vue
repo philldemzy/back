@@ -1,6 +1,6 @@
 <template>
     <div v-for="option in dataStore.currQuestion.options" :key="option.main" >
-        <Answer @answer-picked="testOneTwo" :option="option" />
+        <Answer @answer-picked="changeAnswer" :option="option" />
     </div>
 </template>
 
@@ -24,7 +24,7 @@ export default {
     },
 
     methods: {
-        testOneTwo (ans) {
+        changeAnswer (ans) {
             const answer = {
                 id: this.dataStore.currQuestion.id,
                 answer: ans
