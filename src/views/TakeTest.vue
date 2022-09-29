@@ -203,7 +203,7 @@ export default {
         },
 
         examCountDown() {
-            let _end = document.getElementById("countdown").innerHTML;
+            let _end = dataStore.examDet.ended;
             let update;
 
             if (this.dataStore.examDet.ended !== true) {
