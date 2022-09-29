@@ -27,7 +27,7 @@ export default {
         changeAnswer (ans) {
             const answer = {
                 id: this.dataStore.currQuestion.id,
-                answer: ans
+                answer: ans,
             };
             this.dataStore.addAnswer(answer);
         },

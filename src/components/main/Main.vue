@@ -1,5 +1,6 @@
 <template>
     <questNum />
+    <Counter/>
     <Question />
     <div class="lg:h-4"></div>
     <div class="relative flex justify-center">
@@ -18,6 +19,7 @@ import questNum from './main/questNum.vue'
 import Question from './main/Question.vue'
 import Answers from './main/Answers.vue'
 import PrevNext from './main/PrevNext.vue'
+import Counter from './main/Counter.vue'
 import { useDataStore } from '../../store/data.js'
 
 export default {
@@ -28,6 +30,7 @@ export default {
         Question,
         Answers,
         PrevNext,
+        Counter
     },
 
     setup() {

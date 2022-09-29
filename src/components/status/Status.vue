@@ -52,7 +52,7 @@ export default {
                     clearInterval(myInterval)
                 }
             })
-        }, 5000)
+        }, 500)
     },
 
     methods: {

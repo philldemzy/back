@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import { useGenStore } from '@/store/store'
+import { useGenStore } from '@/store/store.js'
 import { useDataStore } from '@/store/data.js'
 
 export default {
@@ -33,7 +33,7 @@ export default {
             // post method
             const res = await fetch(`http://localhost:8000/mark`, {
                 method: 'POST',
-                headers: { "X-CSRFToken": this.token },
+                headers: { "X-CSRFToken": this.genStore.token },
                 body: JSON.stringify(bodyData)
             })
             const data = await res.json()
