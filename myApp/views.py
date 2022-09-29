@@ -130,7 +130,7 @@ def get_test(request, link):
                 # use Json format
                 return JsonResponse({
                     'name': exam.exam_name,
-                    'start_time': exam.start_time,
+                    'start_time': exam.start_time.isoformat(),
                     'duration': exam.duration,
                     'mark': exam.total_score,
                     'student': registered.id,
