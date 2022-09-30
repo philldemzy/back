@@ -154,6 +154,10 @@ export default {
             const res = await fetch(`http://127.0.0.1:8000/take/${testLink}`)
             const data = await res.json()
             if (data.name) {
+                let a = new Date(data.ended)
+                let now = new Date()
+                console.log(`start time -> ${a}`)
+                console.log(`now -> ${now}`)
                 this.dataStore.setExamDet(await data);
                 this.genStore.setToken(await data.token)
             }
@@ -207,7 +211,7 @@ export default {
             console.log(_end);
             let update;
 
-            if (this.dataStore.examDet.ended !== true) {
+            if (_end !== true) {
                 let end = new Date(_end);
 
                 update = setInterval( function() {

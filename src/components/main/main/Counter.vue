@@ -23,7 +23,7 @@ export default{
     },
 
     mounted() {
-        this.countDown()
+        //this.countDown()
     },
 
     methods: {
@@ -35,10 +35,13 @@ export default{
             const before = new Date(start)
             const seconds = duration * 1000
             const future = new Date(before.getTime() + seconds)
+            const future_utc = new Date(future.getTime() + future.getTimezoneOffset() * 60000)
+
+            let update;
 
             update = setInterval( function() {
                 const now = new Date();
-                let diff = future.getTime() - now.getTime()
+                let diff = future_utc.getTime() - now.getTime()
                 if (diff <= 1) {
                     clearInterval(update);
                 }
