@@ -143,7 +143,8 @@ def get_test(request, link):
 
         # If exam has not started
         return JsonResponse({'not_time': 'Test has not started'}, status=403)
-
+    print(display_date(exam.start_time))
+    print(exam.start_time.tzinfo)
     # Get method
     return JsonResponse({
         'name': exam.exam_name,

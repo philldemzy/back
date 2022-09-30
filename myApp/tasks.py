@@ -88,7 +88,7 @@ def mark_tests(self, data):
 
     # After marking update score of test taker in the table
     test_taker = TestTaker.objects.get(student_id=data.get("student")["student_id"],
-                                          test=Exam.objects.get(test_link=data.get("student")["test_link"]))
+                                       test=Exam.objects.get(test_link=data.get("student")["test_link"]))
     test_taker.score = total_score
     test_taker.save()
     return True
