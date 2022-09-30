@@ -44,15 +44,11 @@ export default {
         const duration = this.dataStore.details.duration;
         //returns date in isoformat
         const start = this.dataStore.details.start_time;
-        const start_time = new Date(start);
-        console.log(`start time - ${start_time.getTime()}`)
-        const total = start_time.getTime() + (parseInt(duration) * 1000)
-        console.log(`total - ${total}`)
-        const now = new Date()
-        console.log(`now - ${now.getTime()}`)
-        const diff = total - now.getTime()
-        console.log(`diff - ${diff/1000}`)
-        console.log(`now - start ${now.getTime() - start_time.getTime()}`)
+        const before = new Date(start)
+        const seconds = duration * 1000
+        const future = new Date(before.getTime() + seconds)
+        const now = new Date();
+        const diff = future.getTime() - now.getTime()
         setTimeout(() => {
             const bodyData = {
                 student: this.dataStore.studentId,
