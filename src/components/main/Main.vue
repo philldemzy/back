@@ -1,6 +1,5 @@
 <template>
     <questNum />
-    <Counter/>
     <Question />
     <div class="lg:h-4"></div>
     <div class="relative flex justify-center">

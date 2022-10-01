@@ -24,10 +24,6 @@
                     <input type="text" id="test_name" name="exam_name" class="hover:outline text-lg lg:text-2xl h-9 lg:h-12 border-1 border-dark1 rounded-sm w-full lg:w-3/4">
                 </div>
                 <div class="lg:flex">
-                    <label class="my-4 text-lg lg:text-xl lg:w-1/6" for="final_score">Final Score</label>
-                    <input type="text" id="final_score" name="score" class="hover:outline text-lg lg:text-2xl h-9 lg:h-12 border-1 border-dark1 rounded-sm w-full lg:w-3/4">
-                </div>
-                <div class="lg:flex">
                     <label class="my-4 text-lg lg:text-xl lg:w-1/6" for="test_date">Date</label>
                     <input type="date" id="test_date" name="exam_date" class="hover:outline text-lg lg:text-2xl h-9 lg:h-12 border-1 border-dark1 rounded-sm w-full lg:w-3/4">
                 </div>
@@ -100,9 +96,8 @@ export default {
             //get value of all inputs
             let file = document.querySelector("input[type=file]").files[0];
             let testName = document.getElementById("test_name").value;
-            let testScore = document.getElementById("final_score").value;
-            let testDurHr = document.getElementById("exam_dur_hr").value;
-            let testDurMins = document.getElementById("exam_dur_mins").value;
+            let testDurHr = document.getElementById("exam_dur_hr").value !== undefined ? document.getElementById("exam_dur_hr").value : 0;
+            let testDurMins = document.getElementById("exam_dur_mins").value !== undefined ? document.getElementById("exam_dur_mins").value : 0;;
             let testInstructions = document.getElementById("test_instructions").value;
             let testDate = document.getElementById("test_date").value;
             let testStartTime = document.getElementById("exam_start_time").value;
@@ -110,7 +105,6 @@ export default {
             //put all into formdata
             let formData = new FormData();
             formData.append('test_name', testName);
-            formData.append('final_score', testScore);
             formData.append('exam', file);
             formData.append('test_instructions', testInstructions);
             formData.append('hours', testDurHr);
@@ -125,6 +119,22 @@ export default {
                 body: formData
             })
             const data = await res.json();
+
+            document.querySelector("input[type=file]").value = null;
+            document.getElementById("test_name").value = null;
+            document.getElementById("exam_dur_hr").value = null;
+            document.getElementById("exam_dur_mins").value = null;
+            document.getElementById("test_instructions").value = null;
+            document.getElementById("test_date").value = null;
+            document.getElementById("exam_start_time").value = null;
+
+            formData.delete('test_name');
+            formData.delete('exam');
+            formData.delete('test_instructions');
+            formData.delete('hours');
+            formData.delete('minutes');
+            formData.delete('time');
+
             this.genStore.setNewTest(data);
             this.$router.push({path: '/new/test'});
         },

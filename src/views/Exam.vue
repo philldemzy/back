@@ -47,19 +47,13 @@ export default {
         
         const before = new Date(start)
         console.log(`before -> ${before}`)
-
         const seconds = duration * 1000
-
         const future = new Date(before.getTime() + seconds)
         console.log(`future -> ${future}`)
-        //get exam end time in utc
-        const future_utc = new Date(future.getTime() + future.getTimezoneOffset() * 60000)
-        console.log(`future_utc -> ${future_utc}`)
-
         const now = new Date();
         console.log(`now -> ${now}`)
 
-        const diff = future_utc.getTime() - now.getTime()
+        const diff = future.getTime() - now.getTime()
         console.log((diff/1000) / 60);
         setTimeout(() => {
             const bodyData = {

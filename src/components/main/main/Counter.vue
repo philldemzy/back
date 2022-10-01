@@ -1,5 +1,14 @@
 <template>
-    {{ timeLeft }}
+    <div class="flex space-x-2 mr-3 mx-auto items-center">
+        <div class="grid grid-rows-2 content-center">
+            <span class="font-thin text-center text-sm">MINS</span>
+            <span class="font-semibold text-xs text-center" id="minutesLeft"></span>
+        </div>
+        <div class="grid grid-rows-2 content-center">
+            <span class="font-thin text-center text-sm">SECS</span>
+            <span class="font-semibold text-xs text-center" id="secondsLeft"></span>
+        </div>
+    </div>
 </template>
 
 <script>
@@ -7,12 +16,6 @@ import { useDataStore } from '@/store/data';
 
 export default{
     name: 'Counter',
-
-    data() {
-        return {
-            timeLeft: String,
-        }
-    },
 
     setup() {
         const dataStore = useDataStore();
@@ -23,7 +26,7 @@ export default{
     },
 
     mounted() {
-        //this.countDown()
+        this.countDown()
     },
 
     methods: {
@@ -35,13 +38,12 @@ export default{
             const before = new Date(start)
             const seconds = duration * 1000
             const future = new Date(before.getTime() + seconds)
-            const future_utc = new Date(future.getTime() + future.getTimezoneOffset() * 60000)
 
             let update;
 
             update = setInterval( function() {
                 const now = new Date();
-                let diff = future_utc.getTime() - now.getTime()
+                let diff = future.getTime() - now.getTime()
                 if (diff <= 1) {
                     clearInterval(update);
                 }
@@ -53,8 +55,8 @@ export default{
                 if (hours > 0) {
                     minutes += (hours * 60)
                 }
-
-                this.timeLeft = `${minutes} ${seconds}`
+                document.getElementById('minutesLeft').innerHTML = minutes
+                document.getElementById('secondsLeft').innerHTML = seconds
             }, 1000)
             return update;
         }

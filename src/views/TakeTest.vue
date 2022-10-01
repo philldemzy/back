@@ -13,7 +13,7 @@
             </div>
             <div class="flex space-x-4 lg:space-x-6 w-3/4 lg:w-full">
                 <h4 class="text-lg lg:text-2xl w-1/2">Time</h4>
-                <span class="lg:w-3/4 w-1/2 text-sm lg:text-md inline-block mt-2 uppercase font-medium">{{ dataStore.examDet.start_time }}</span>
+                <span class="lg:w-3/4 w-1/2 text-sm lg:text-md inline-block mt-2 uppercase font-medium">{{ new Date(dataStore.examDet.start_time) }}</span>
             </div>
             <div class="flex space-x-4 lg:space-x-6 w-3/4 lg:w-full">
                 <h4 class="text-lg lg:text-2xl w-1/2">Score</h4>
@@ -161,7 +161,7 @@ export default {
                 this.dataStore.setExamDet(await data);
                 this.genStore.setToken(await data.token)
             }
-            //TODO display 404 exam for loading exam get details of exam before and in exam if exam not there get
+            //display 404 exam for loading exam get details of exam before and in exam if exam not there get
             else if (data.error) {
                 document.getElementById('exam_dets').style.display = 'none';
                 document.getElementById('404_exam').style.display = 'block';
