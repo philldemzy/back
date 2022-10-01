@@ -19,6 +19,7 @@ import UtilBar from '../components/main/UtilBar.vue'
 import Main from '../components/main/Main.vue'
 import { useDataStore } from '../store/data.js'
 import { useGenStore } from '@/store/store.js'
+import { useRoute } from 'vue-router';
 
 export default {
     name: 'Exam',
@@ -32,26 +33,38 @@ export default {
     setup() {
         const dataStore = useDataStore()
         const genStore = useGenStore()
+        const link = useRoute().params.link;
+        let allData;
+
+        if (dataStore.questions.length < 1 && !dataStore.details.title) {
+            allData = JSON.parse(localStorage.getItem(`test${link}`));
+        }
 
         return {
             dataStore,
-            genStore
+            genStore,
+            link,
+            allData
         }
     },
 
     mounted() {
+        if (this.dataStore.questions.length < 1 && !this.dataStore.details.title) {
+            console.log(this.allData)
+            this.dataStore.setDetails(this.allData);
+            this.dataStore.setCurrQuestion();
+            this.dataStore.setQuestions(this.doOptions(this.shuffuleQuest(this.allData.questions)));
+        }
+
         //return seconds from api not milliseconds
         const duration = this.dataStore.details.duration;
         //returns date in isoformat
         const start = this.dataStore.details.start_time;
         
         const before = new Date(start)
-        console.log(`before -> ${before}`)
         const seconds = duration * 1000
         const future = new Date(before.getTime() + seconds)
-        console.log(`future -> ${future}`)
         const now = new Date();
-        console.log(`now -> ${now}`)
 
         const diff = future.getTime() - now.getTime()
         console.log((diff/1000) / 60);
@@ -73,6 +86,33 @@ export default {
             });
             this.$router.replace({path: '/submited'});
         }, diff)
+    },
+
+    methods: {
+        shuffuleQuest(arr) {
+            for (let i = arr.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                const temp = arr[i];
+                arr[i] = arr[j];
+                arr[j] = temp;
+            }
+            return arr;
+        },
+
+        doOptions(arrObj) {
+            const alphabet = 'ABCDEF';
+            const retrnArr = arrObj.map(
+                (ques) => {
+                    this.shuffuleQuest(ques.options);
+                    const optns = ques.options.map((option, index) => ({
+                        main:option,
+                        alpha:alphabet[index]
+                    }));
+                    ques.options = optns;
+                    return ques;
+                });
+            return retrnArr;
+        }
     },
 }
 </script>

@@ -134,7 +134,15 @@ export default {
                 this.dataStore.setQuestions(this.doOptions(this.shuffuleQuest(allData.questions))),
                 this.dataStore.setDetails(allData),
                 this.dataStore.setCurrQuestion()
+
+                //save in local storage
+                localStorage.setItem(`test${this.link}`, JSON.stringify(allData));
+                localStorage.setItem(`studentInfo${this.link}`, JSON.stringify(this.dataStore.studentId));
+
                 clearInterval(this.theFunc);
+                document.getElementById("student_id").value = null;
+                document.getElementById("student_name").value = null;
+
                 this.$router.push({path: `/exam/${this.link}`});
             }
             else if (allData.expired) {
@@ -154,12 +162,8 @@ export default {
             const res = await fetch(`http://127.0.0.1:8000/take/${testLink}`)
             const data = await res.json()
             if (data.name) {
-                let a = new Date(data.ended)
-                let now = new Date()
-                console.log(`start time -> ${a}`)
-                console.log(`now -> ${now}`)
                 this.dataStore.setExamDet(await data);
-                this.genStore.setToken(await data.token)
+                this.genStore.setToken(await data.token);
             }
             //display 404 exam for loading exam get details of exam before and in exam if exam not there get
             else if (data.error) {
@@ -171,7 +175,6 @@ export default {
 
         async getExam(formData) {
             // post method
-            console.log(this.genStore.token);
             const res = await fetch(`http://localhost:8000/take/${this.link}`, {
                 method: 'POST',
                 headers: {'X-CSRFToken': this.genStore.token},
@@ -226,7 +229,6 @@ export default {
                         let hours = Math.floor( (diff % (1000 * 3600 * 24)) / (1000 * 3600) );
                         let minutes = Math.floor( (diff % (1000 * 3600)) / (1000 * 60) );
                         let seconds = Math.floor( (diff % (1000 * 60)) / 1000 );
-                        console.log(days, hours, minutes, seconds)
 
                         if (days == 0) {
                             document.getElementById("days").style.display = "none";
