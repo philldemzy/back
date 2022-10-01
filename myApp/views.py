@@ -6,7 +6,6 @@ from django.http import HttpResponse, JsonResponse
 from django.middleware.csrf import get_token
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
-from django.utils import timezone
 
 from celery.result import AsyncResult
 
@@ -36,7 +35,6 @@ def set_test(request):
         start_time = get_datetime_obj(time)  # Convert to datetime object
 
         file = request.FILES.get('exam')
-        score = request.POST.get('final_score')
         exam_name = request.POST.get('test_name')
         test_instructions = request.POST.get('test_instructions')
 
@@ -48,7 +46,7 @@ def set_test(request):
             test_instructions=test_instructions,
             start_time=start_time,
             duration=timedelta(hours=int(hours), minutes=int(minutes)),
-            total_score=score
+            total_score=0
         )
         new_exam.save()
 
@@ -123,9 +121,9 @@ def get_test(request, link):
         For now answers would be kept in the client side till user clicks submit
         """
         # Check if exam has started
-        if timezone.make_aware(datetime.now()) >= exam.start_time:
+        if datetime.now(tz=exam.start_time.tzinfo) >= exam.start_time:
             # Send questions to client side only if exam has not ended
-            if timezone.make_aware(datetime.now()) <= exam.start_time + exam.duration:
+            if datetime.now(tz=exam.start_time.tzinfo) <= exam.start_time + exam.duration:
                 questions = Question.objects.prefetch_related('option_question').filter(test=exam)
                 # use Json format
                 return JsonResponse({
@@ -143,12 +141,11 @@ def get_test(request, link):
 
         # If exam has not started
         return JsonResponse({'not_time': 'Test has not started'}, status=403)
-    print(display_date(exam.start_time))
-    print(exam.start_time.tzinfo)
+
     # Get method
     return JsonResponse({
         'name': exam.exam_name,
-        'start_time': display_date(exam.start_time),
+        'start_time': exam.start_time.isoformat(),
         'duration': get_duration(exam.duration.total_seconds()),
         'mark': exam.total_score,
         'instructions': exam.test_instructions,
@@ -213,15 +210,15 @@ def check_test(request, link):
     exam = Exam.objects.prefetch_related('get_exam').get(examiner_link=link)
 
     # add checks for if results have been collated
-    if timezone.make_aware(datetime.now()) >= exam.start_time + exam.duration:
+    if datetime.now(tz=exam.start_time.tzinfo) >= exam.start_time + exam.duration:
         return JsonResponse(send_exam_info(exam))  # send student scores and info about an exam
 
-    elif timezone.make_aware(datetime.now()) <= exam.start_time:
+    elif datetime.now(tz=exam.start_time.tzinfo) <= exam.start_time:
         return JsonResponse({
             'completed': False,
             'title': exam.exam_name,
             'total_score': exam.total_score,
-            'start_time': display_date(exam.start_time),
+            'start_time': exam.start_time.isoformat(),
             'duration': get_duration(exam.duration.total_seconds()),
         })
 
@@ -229,7 +226,7 @@ def check_test(request, link):
         'completed': False,
         'title': exam.exam_name,
         'total_score': exam.total_score,
-        'start_time': display_date(exam.start_time),
+        'start_time': exam.start_time.isoformat(),
         'duration': get_duration(exam.duration.total_seconds()),
     })
 
@@ -242,7 +239,7 @@ def preview_and_edit_test(request, link):
 
     if request.method == "PUT":
         # Only edit quesstions if exam has not started
-        if timezone.make_aware(datetime.now()) <= exam.start_time:
+        if datetime.now(tz=exam.start_time.tzinfo) <= exam.start_time:
             data = json_loads(request.body)
 
             if data.get('type') == 'question':
@@ -271,7 +268,7 @@ def preview_and_edit_test(request, link):
 
     return JsonResponse({
         'name': exam.exam_name,
-        'start_time': display_date(exam.start_time),
+        'start_time': exam.start_time.isoformat(),
         'duration': get_duration(exam.duration.total_seconds()),
         'mark': exam.total_score,
         'questions': [send_preview_question(question) for question in questions],
@@ -282,7 +279,8 @@ def preview_and_edit_test(request, link):
 A. BACK
     ...
 B. FRONT
-    1. Life cycle hooks related bugs
-    2. exam countdown timer
+    1. life cycle hooks related bugs
+    2. exam countdown timer[2]
     3. persisting data (Storage)
+    4. 
 """

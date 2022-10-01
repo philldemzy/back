@@ -1,7 +1,8 @@
 from re import compile
-from datetime import datetime
+from datetime import datetime, timezone
 from random import choice
 
+import pytz
 from django.utils.crypto import get_random_string
 
 from .models import Exam, Question, Option
@@ -27,9 +28,9 @@ def generate_exam_link():
 
 # Convert time gotten from client side to datetime object
 def get_datetime_obj(time):
-    time_format = f'{time[0]}/{time[1]}/{time[2]} {time[3]}:{time[4]}:{0} +0000'
-    start_time = datetime.strptime(time_format, '%d/%m/%y %H:%M:%S %z')
-    return start_time
+    start_time = datetime(int(f'20{time[2]}'), int(time[1]), int(time[0]), int(time[3]), int(time[4]), 0, 0)
+    start_time_utc = datetime.utcfromtimestamp(float(start_time.timestamp()))
+    return start_time_utc.replace(tzinfo=pytz.UTC)
 
 
 # Get duration in hours and minutes

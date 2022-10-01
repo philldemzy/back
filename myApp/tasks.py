@@ -62,6 +62,8 @@ def process_file(self, file_location, exam_id):
                     j += 1
                 i += 1
                 self.update_state(state='PROGRESS', meta={'current': i, 'total': total_q})
+            exam.total_score = total_q
+            exam.save()
         return True
     except IOError:
         return {'Error': 'File Can Not Be Opened'}
