@@ -280,7 +280,6 @@ A. BACK
     ...
 B. FRONT
     1. life cycle hooks related bugs
-    2. exam countdown timer[2]
-    3. persisting data (Storage)
-    4. 
+    2. persisting data (Storage)
+    3. xlxs ish
 """
