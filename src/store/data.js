@@ -17,11 +17,16 @@ export const useDataStore = defineStore({
     },
 
     actions: {
+        getAnswered(arr) {
+            this.pickedAns = arr;
+        },
+
         setResults(obj) {
             this.results = obj;
         },
+
         setStudentId(id) {
-            this.studentId = id
+            this.studentId = id;
         },
 
         setExamDet(dets) {

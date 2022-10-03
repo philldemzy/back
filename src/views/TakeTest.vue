@@ -145,13 +145,13 @@ export default {
             //send data abd get response save in datastore
             const allData = await this.getExam(formData);
             if (!allData.expired && !allData.not_time) {
-                this.dataStore.setQuestions(this.doOptions(this.shuffuleQuest(allData.questions))),
-                this.dataStore.setDetails(allData),
-                this.dataStore.setCurrQuestion()
-
                 //save in local storage
                 localStorage.setItem(`test${this.link}`, JSON.stringify(allData));
                 localStorage.setItem(`studentInfo${this.link}`, JSON.stringify(this.dataStore.studentId));
+
+                this.dataStore.setQuestions(this.doOptions(this.shuffuleQuest(allData.questions))),
+                this.dataStore.setDetails(allData),
+                this.dataStore.setCurrQuestion()
 
                 clearInterval(this.theFunc);
                 document.getElementById("student_id").value = null;

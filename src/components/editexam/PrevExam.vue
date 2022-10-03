@@ -184,7 +184,6 @@ export default{
                 type: 'answer',
                 id: id,
             }
-            console.log(this.targetInfo)
         },
 
         editExam(bodyData) {

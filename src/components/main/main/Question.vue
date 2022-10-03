@@ -12,7 +12,6 @@ export default {
 
     setup() {
         const dataStore = useDataStore()
-        console.log(dataStore.currQuestion)
 
         return {
             dataStore,

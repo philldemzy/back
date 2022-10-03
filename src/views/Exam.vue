@@ -51,13 +51,23 @@ export default {
     created() {
         if (this.dataStore.questions.length < 1 && !this.dataStore.details.title) {
             const allData = JSON.parse(localStorage.getItem(`test${this.link}`));
-            console.log(allData);
             this.dataStore.setQuestions(this.doOptions(this.shuffuleQuest(allData.questions)));
             this.dataStore.setDetails(allData);
             this.dataStore.setCurrQuestion();
-            console.log(this.dataStore.currQuestion);
-            this.check = true
-            console.log('did this')
+
+            //set previous answers
+            const answered = JSON.parse(localStorage.getItem(`answers${this.link}`));
+            this.dataStore.getAnswered(answered);
+
+            //set student id
+            const studentId = JSON.parse(localStorage.getItem(`studentInfo${this.link}`));
+            this.dataStore.setStudentId(studentId);
+        }
+
+        if (JSON.parse(localStorage.getItem(`answers${this.link}`))) {
+            //set previous answers
+            const answered = JSON.parse(localStorage.getItem(`answers${this.link}`));
+            this.dataStore.getAnswered(answered);
         }
         this.check = true
     },

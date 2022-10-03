@@ -1,5 +1,5 @@
 <template>
-    <div v-for="option in dataStore.currQuestion.options" :key="option.main" >
+    <div v-for="option in dataStore.currQuestion.options" :key="option.id" >
         <Answer @answer-picked="changeAnswer" :option="option" />
     </div>
 </template>
