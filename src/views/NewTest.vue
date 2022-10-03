@@ -96,8 +96,8 @@ export default {
             //get value of all inputs
             let file = document.querySelector("input[type=file]").files[0];
             let testName = document.getElementById("test_name").value;
-            let testDurHr = document.getElementById("exam_dur_hr").value !== undefined ? document.getElementById("exam_dur_hr").value : 0;
-            let testDurMins = document.getElementById("exam_dur_mins").value !== undefined ? document.getElementById("exam_dur_mins").value : 0;;
+            let testDurHr = document.getElementById("exam_dur_hr").value.length > 0 ? document.getElementById("exam_dur_hr").value : 0;
+            let testDurMins = document.getElementById("exam_dur_mins").value.length > 0 ? document.getElementById("exam_dur_mins").value : 0;;
             let testInstructions = document.getElementById("test_instructions").value;
             let testDate = document.getElementById("test_date").value;
             let testStartTime = document.getElementById("exam_start_time").value;

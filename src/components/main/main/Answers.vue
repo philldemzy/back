@@ -7,15 +7,18 @@
 <script>
 import Answer from './Answer.vue'
 import { useDataStore } from '../../../store/data.js'
+import { useRoute } from 'vue-router';
 
 export default {
     name: 'Answers',
 
     setup() {
-        const dataStore = useDataStore()
+        const dataStore = useDataStore();
+        const link = useRoute().params.link;
 
         return {
             dataStore,
+            link
         }
     },
 
@@ -29,7 +32,14 @@ export default {
                 id: this.dataStore.currQuestion.id,
                 answer: ans,
             };
+            // add answer to pinia store
             this.dataStore.addAnswer(answer);
+
+            // change whole answers picked array in localstorage
+            if (localStorage.getItem(`answers${this.link}`)) {
+                localStorage.removeItem(`answers${this.link}`);
+            }
+            localStorage.setItem(`answers${this.link}`, JSON.stringify(this.dataStore.pickedAns));
         },
     },
 }

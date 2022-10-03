@@ -6,7 +6,7 @@
             <div class=" text-base lg:text-lg font-medium lg:font-semibold">
                 <h2>{{ examDets.title }}</h2>
                 <h2>{{ examDets.total_score }} Marks</h2>
-                <h2>{{ new Date(examDets.start_time) }}</h2>
+                <h2>{{ displayDate(examDets.start_time) }}</h2>
                 <h2>{{ examDets.duration }}</h2>
             </div>
         </div>
@@ -67,6 +67,18 @@ export default{
     },
 
     methods: {
+        displayDate(date) {
+            const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+            const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+            const dispDate = new Date(date);
+            const day = days[dispDate.getDay()];
+            const month = months[dispDate.getMonth()];
+            const hr = dispDate.getHours()
+            const mins = dispDate.getMinutes()
+            const time = hr > 12 ? `${hr - 12}:${mins} PM` : `${hr}:${mins} AM`;
+            return `${day}, ${month} ${dispDate.getDate()}, ${dispDate.getFullYear()} ${time}`;
+        },
+
         goToEdit() {
             this.$router.push({path: `/preview/${this.link}`})
         },

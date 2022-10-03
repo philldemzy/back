@@ -3,12 +3,12 @@
         <Header />
     </header>
     <main class="grid lg:grid-cols-10 lg:w-full">
-        <div id="utilbar" class="hidden lg:block lg:col-span-2 bg-brown2 grid p-3 md:space-x-10 lg:-space-x-1 justify-center">
-            <UtilBar />
+        <div id="utilbar" v-if="check" class="hidden lg:block lg:col-span-2 bg-brown2 grid p-3 md:space-x-10 lg:-space-x-1 justify-center">
+            <UtilBar/>
         </div>
 
-        <div id="main" class="block bg-brown3 lg:col-span-8 space-y-10 border-y">
-            <Main />
+        <div id="main" v-if="check" class="block bg-brown3 lg:col-span-8 space-y-10 border-y">
+            <Main/>
         </div>
     </main>
 </template>
@@ -24,6 +24,12 @@ import { useRoute } from 'vue-router';
 export default {
     name: 'Exam',
 
+    data() {
+        return {
+            check: false
+        }
+    },
+
     components: {
         UtilBar,
         Main,
@@ -34,28 +40,29 @@ export default {
         const dataStore = useDataStore()
         const genStore = useGenStore()
         const link = useRoute().params.link;
-        let allData;
-
-        if (dataStore.questions.length < 1 && !dataStore.details.title) {
-            allData = JSON.parse(localStorage.getItem(`test${link}`));
-        }
 
         return {
             dataStore,
             genStore,
             link,
-            allData
         }
     },
 
-    mounted() {
+    created() {
         if (this.dataStore.questions.length < 1 && !this.dataStore.details.title) {
-            console.log(this.allData)
-            this.dataStore.setDetails(this.allData);
+            const allData = JSON.parse(localStorage.getItem(`test${this.link}`));
+            console.log(allData);
+            this.dataStore.setQuestions(this.doOptions(this.shuffuleQuest(allData.questions)));
+            this.dataStore.setDetails(allData);
             this.dataStore.setCurrQuestion();
-            this.dataStore.setQuestions(this.doOptions(this.shuffuleQuest(this.allData.questions)));
+            console.log(this.dataStore.currQuestion);
+            this.check = true
+            console.log('did this')
         }
+        this.check = true
+    },
 
+    mounted() {
         //return seconds from api not milliseconds
         const duration = this.dataStore.details.duration;
         //returns date in isoformat
@@ -67,13 +74,11 @@ export default {
         const now = new Date();
 
         const diff = future.getTime() - now.getTime()
-        console.log((diff/1000) / 60);
         setTimeout(() => {
             const bodyData = {
                 student: this.dataStore.studentId,
                 answers: this.dataStore.pickedAns
             }
-            console.log(this.dataStore.studentId)
             // post method
             fetch(`http://localhost:8000/mark`, {
                 method: 'POST',

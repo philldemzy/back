@@ -1,8 +1,8 @@
 <template>
     <Logo/>
 
-    <div id="exam_dets" class="grid bg-brown2 justify-items-center">
-        <div class="grid gap-y-2 p-2.5 lg:p-6 lg:w-2/3">
+    <div class="grid bg-brown2 justify-items-center">
+        <div id="exam_dets" class="grid gap-y-2 p-2.5 lg:p-6 lg:w-2/3">
             <div class="flex space-x-4 lg:space-x-6 w-3/4 lg:w-full">
                 <h4 class="text-lg lg:text-2xl w-1/2">Title</h4>
                 <span class="lg:w-3/4 w-1/2 text-sm lg:text-md inline-block mt-2 uppercase font-medium">{{ dataStore.examDet.name }}</span>
@@ -13,7 +13,7 @@
             </div>
             <div class="flex space-x-4 lg:space-x-6 w-3/4 lg:w-full">
                 <h4 class="text-lg lg:text-2xl w-1/2">Time</h4>
-                <span class="lg:w-3/4 w-1/2 text-sm lg:text-md inline-block mt-2 uppercase font-medium">{{ new Date(dataStore.examDet.start_time) }}</span>
+                <span class="lg:w-3/4 w-1/2 text-sm lg:text-md inline-block mt-2 uppercase font-medium">{{ displayDate(dataStore.examDet.start_time) }}</span>
             </div>
             <div class="flex space-x-4 lg:space-x-6 w-3/4 lg:w-full">
                 <h4 class="text-lg lg:text-2xl w-1/2">Score</h4>
@@ -61,11 +61,11 @@
                 </div>
             </form>
         </div>
-    </div>
 
-    <div id="404_exam" class="hidden grid bg-brown2 justify-items-center">
-        <img class="w-1/3 h-52" src="https://banner2.cleanpng.com/20180511/pee/kisspng-http-404-error-web-browser-5af65b7e3e0fb0.9779316415260947182542.jpg" alt="404 Error">
-        <h1 class="font-serif text-light text-lg lg:text-2xl">Exam not found, please cross check exam link.</h1>
+        <div id="404_exam" class="hidden grid bg-brown2 justify-items-center">
+            <img class="w-1/3 h-52" src="https://banner2.cleanpng.com/20180511/pee/kisspng-http-404-error-web-browser-5af65b7e3e0fb0.9779316415260947182542.jpg" alt="404 Error">
+            <h1 class="font-serif text-light text-lg lg:text-2xl">Exam not found, please cross check exam link.</h1>
+        </div>
     </div>
 </template>
 
@@ -84,7 +84,8 @@ export default {
 
     data() {
         return {
-            theFunc: Number
+            theFunc: Number,
+            time_: ''
         }
     },
 
@@ -104,12 +105,25 @@ export default {
         this.fetchData(this.link)
     },
 
-    mounted() {
-        let timer = this.examCountDown();
-        this.theFunc = timer;
+    watch: {
+        time_(newTime, oldTime) {
+            this.examCountDown(newTime)
+        }
     },
 
     methods: {
+        displayDate(date) {
+            const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+            const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+            const dispDate = new Date(date);
+            const day = days[dispDate.getDay()];
+            const month = months[dispDate.getMonth()];
+            const hr = dispDate.getHours()
+            const mins = dispDate.getMinutes()
+            const time = hr > 12 ? `${hr - 12}:${mins} PM` : `${hr}:${mins} AM`;
+            return `${day}, ${month} ${dispDate.getDate()}, ${dispDate.getFullYear()} ${time}`;
+        },
+
         async submitTakeTest(event) {
             event.preventDefault();
 
@@ -162,6 +176,7 @@ export default {
             const res = await fetch(`http://127.0.0.1:8000/take/${testLink}`)
             const data = await res.json()
             if (data.name) {
+                this.time_ = data.ended
                 this.dataStore.setExamDet(await data);
                 this.genStore.setToken(await data.token);
             }
@@ -209,9 +224,7 @@ export default {
             return retrnArr;
         },
 
-        examCountDown() {
-            let _end = this.dataStore.examDet.ended;
-            console.log(_end);
+        examCountDown(_end) {
             let update;
 
             if (_end !== true) {
@@ -219,29 +232,27 @@ export default {
 
                 update = setInterval( function() {
                     let now = new Date();
-                    if (_end === undefined) {
-                        let diff = end.getTime() - now.getTime();
-                        if (diff <= 1) {
-                            document.getElementById("count").innerHTML = "EXAM IN PROGRESS";
-                            clearInterval(update);
-                        }
-                        let days = Math.floor( diff / (1000 * 3600 * 24) );
-                        let hours = Math.floor( (diff % (1000 * 3600 * 24)) / (1000 * 3600) );
-                        let minutes = Math.floor( (diff % (1000 * 3600)) / (1000 * 60) );
-                        let seconds = Math.floor( (diff % (1000 * 60)) / 1000 );
-
-                        if (days == 0) {
-                            document.getElementById("days").style.display = "none";
-                            document.getElementById("first").style.display = "none";
-                        }
-
-                        if (document.getElementById("days").style.display != "none") {
-                            document.getElementById("days").children[0].innerHTML = days;
-                        }
-                        document.getElementById("hours").children[0].innerHTML = hours;
-                        document.getElementById("minutes").children[0].innerHTML = minutes;
-                        document.getElementById("seconds").children[0].innerHTML = seconds;
+                    let diff = end.getTime() - now.getTime();
+                    if (diff <= 1) {
+                        document.getElementById("count").innerHTML = "EXAM IN PROGRESS";
+                        clearInterval(update);
                     }
+                    let days = Math.floor( diff / (1000 * 3600 * 24) );
+                    let hours = Math.floor( (diff % (1000 * 3600 * 24)) / (1000 * 3600) );
+                    let minutes = Math.floor( (diff % (1000 * 3600)) / (1000 * 60) );
+                    let seconds = Math.floor( (diff % (1000 * 60)) / 1000 );
+
+                    if (days == 0) {
+                        document.getElementById("days").style.display = "none";
+                        document.getElementById("first").style.display = "none";
+                    }
+
+                    if (document.getElementById("days").style.display != "none") {
+                        document.getElementById("days").children[0].innerHTML = days;
+                    }
+                    document.getElementById("hours").children[0].innerHTML = hours;
+                    document.getElementById("minutes").children[0].innerHTML = minutes;
+                    document.getElementById("seconds").children[0].innerHTML = seconds;
                 }, 1000)
                 return update;
             }

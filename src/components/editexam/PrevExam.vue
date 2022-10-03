@@ -4,7 +4,7 @@
             <div class=" text-base lg:text-lg font-medium lg:font-semibold">
                 <h2>{{ exam.name }}</h2>
                 <h2>{{ exam.mark }} Marks</h2>
-                <h2>{{ new Date(exam.start_time) }}</h2>
+                <h2>{{ displayDate(exam.start_time) }}</h2>
                 <h2>{{ exam.duration }}</h2>
             </div>
             <h2 class="my-3 text-sm font-mono">EXAM questions, answers and options can be edited from here</h2>
@@ -88,10 +88,23 @@ export default{
     },
 
     methods: {
+        displayDate(date) {
+            const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+            const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+            const dispDate = new Date(date);
+            const day = days[dispDate.getDay()];
+            const month = months[dispDate.getMonth()];
+            const hr = dispDate.getHours()
+            const mins = dispDate.getMinutes()
+            const time = hr > 12 ? `${hr - 12}:${mins} PM` : `${hr}:${mins} AM`;
+            return `${day}, ${month} ${dispDate.getDate()}, ${dispDate.getFullYear()} ${time}`;
+        },
+
         closeEditForm() {
             let styleClass = document.getElementById('editExam').className
             document.getElementById('editExam').className = `hidden ${styleClass}`
         },
+
         isAnswer(question) {
             const index = question.options.findIndex((elemn) => {
                 return elemn === question.answer

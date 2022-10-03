@@ -46,6 +46,7 @@ export default {
                 if (data.state == "SUCCESS") {
                     this.dataStore.isSuccess();
                     clearInterval(myInterval)
+                    localStorage.clear();
                 }
                 else if (data.state == "FAILURE") {
                     this.dataStore.isFailed();
