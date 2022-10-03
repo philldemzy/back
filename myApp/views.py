@@ -279,7 +279,6 @@ def preview_and_edit_test(request, link):
 A. BACK
     ...
 B. FRONT
-    1. life cycle hooks related bugs
-    2. persisting data (Storage)
-    3. xlxs ish
+    1. xlxs ish
+    ...
 """
