@@ -34,7 +34,7 @@ import ScoreOverview from '@/components/result/ScoreOverview.vue';
 import Logo from '@/components/header/Logo.vue';
 import { useDataStore } from '@/store/data';
 import { useRoute } from 'vue-router';
-import { writeXLSX } from 'xlsx';
+import { utils, writeFile } from 'xlsx';
 
 export default{
     name: 'Examiner',
@@ -96,11 +96,11 @@ export default{
 
         setExcelFile() {
             //create excel file for download
-            const worksheet = XLSX.utils.json_to_sheet(rows);
-            const workbook = XLSX.utils.book_new();
-            XLSX.utils.book_append_sheet(workbook, worksheet, "results");
-            XLSX.utils.sheet_add_aoa(worksheet, [["Id", "Name", "Score"]], { origin: "A1" });
-            XLSX.writeFile(workbook, "results.xlsx");
+            const worksheet = utils.json_to_sheet(this.dataStore.results.students);
+            const workbook = utils.book_new();
+            utils.book_append_sheet(workbook, worksheet, "results");
+            utils.sheet_add_aoa(worksheet, [["Id", "Name", "Score"]], { origin: "A1" });
+            writeFile(workbook, "results.xlsx");
         },
 
     },
