@@ -65,4 +65,5 @@ export default{
         }
     },
 }
+//lt --port 8080 --subdomain my-app --local-host localhost
 </script>
