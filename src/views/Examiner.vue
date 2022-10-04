@@ -34,7 +34,7 @@ import ScoreOverview from '@/components/result/ScoreOverview.vue';
 import Logo from '@/components/header/Logo.vue';
 import { useDataStore } from '@/store/data';
 import { useRoute } from 'vue-router';
-import { writeXLSX } from 'xlsx';
+import { read, utils, writeFile } from 'xlsx';
 
 export default{
     name: 'Examiner',
@@ -67,6 +67,17 @@ export default{
     },
 
     methods: {
+        setExcelFile() {
+            //create excel file for download
+            const wb = read(this.dataStore.results.students);
+            const rows = utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]]);
+            const worksheet = utils.json_to_sheet(rows);
+            const workbook = utils.book_new();
+            utils.book_append_sheet(workbook, worksheet, "results");
+            utils.sheet_add_aoa(worksheet, [["Id", "Name", "Score"]], { origin: "A1" });
+            writeFile(workbook, "results.xlsx");
+        },
+
         displayDate(date) {
             const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
             const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
@@ -93,16 +104,6 @@ export default{
                 this.done = true
             }
         },
-
-        setExcelFile() {
-            //create excel file for download
-            const worksheet = XLSX.utils.json_to_sheet(rows);
-            const workbook = XLSX.utils.book_new();
-            XLSX.utils.book_append_sheet(workbook, worksheet, "results");
-            XLSX.utils.sheet_add_aoa(worksheet, [["Id", "Name", "Score"]], { origin: "A1" });
-            XLSX.writeFile(workbook, "results.xlsx");
-        },
-
     },
 }
 </script>
