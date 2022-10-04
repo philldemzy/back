@@ -67,17 +67,6 @@ export default{
     },
 
     methods: {
-        setExcelFile() {
-            //create excel file for download
-            const wb = read(this.dataStore.results.students);
-            const rows = utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]]);
-            const worksheet = utils.json_to_sheet(rows);
-            const workbook = utils.book_new();
-            utils.book_append_sheet(workbook, worksheet, "results");
-            utils.sheet_add_aoa(worksheet, [["Id", "Name", "Score"]], { origin: "A1" });
-            writeFile(workbook, "results.xlsx");
-        },
-
         displayDate(date) {
             const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
             const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
@@ -113,7 +102,6 @@ export default{
             utils.sheet_add_aoa(worksheet, [["Id", "Name", "Score"]], { origin: "A1" });
             writeFile(workbook, "results.xlsx");
         },
-
     },
 }
 </script>
