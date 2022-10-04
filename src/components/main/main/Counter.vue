@@ -42,21 +42,24 @@ export default{
             let update;
 
             update = setInterval( function() {
-                const now = new Date();
-                let diff = future.getTime() - now.getTime()
-                if (diff <= 1) {
-                    clearInterval(update);
-                }
-                let hours = Math.floor( (diff % (1000 * 3600 * 24)) / (1000 * 3600) );
-                let minutes = Math.floor( (diff % (1000 * 3600)) / (1000 * 60) );
-                let seconds = Math.floor( (diff % (1000 * 60)) / 1000 );
+                try {
+                    const now = new Date();
+                    let diff = future.getTime() - now.getTime()
+                    if (diff <= 1) {
+                        clearInterval(update);
+                    }
+                    let hours = Math.floor( (diff % (1000 * 3600 * 24)) / (1000 * 3600) );
+                    let minutes = Math.floor( (diff % (1000 * 3600)) / (1000 * 60) );
+                    let seconds = Math.floor( (diff % (1000 * 60)) / 1000 );
 
-                //display all in only minutes and seconds no hours
-                if (hours > 0) {
-                    minutes += (hours * 60)
+                    //display all in only minutes and seconds no hours
+                    if (hours > 0) {
+                        minutes += (hours * 60)
+                    }
+                    document.getElementById('minutesLeft').innerHTML = minutes
+                    document.getElementById('secondsLeft').innerHTML = seconds
                 }
-                document.getElementById('minutesLeft').innerHTML = minutes
-                document.getElementById('secondsLeft').innerHTML = seconds
+                catch (err) {}
             }, 1000)
             return update;
         }
