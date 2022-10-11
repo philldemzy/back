@@ -21,27 +21,27 @@
                 </div>
                 <div class="lg:flex">
                     <label class="my-4 text-lg lg:text-xl lg:w-1/6" for="test_name">Title</label>
-                    <input type="text" id="test_name" name="exam_name" class="hover:outline text-lg lg:text-2xl h-9 lg:h-12 border-1 border-dark1 rounded-sm w-full lg:w-3/4">
+                    <input type="text" id="test_name" name="exam_name" class="hover:outline text-lg lg:text-2xl h-8 lg:h-10 border-1 border-dark1 rounded-sm w-full lg:w-3/4">
                 </div>
                 <div class="lg:flex">
                     <label class="my-4 text-lg lg:text-xl lg:w-1/6" for="test_date">Date</label>
-                    <input type="date" id="test_date" name="exam_date" class="hover:outline text-lg lg:text-2xl h-9 lg:h-12 border-1 border-dark1 rounded-sm w-full lg:w-3/4">
+                    <input type="date" id="test_date" name="exam_date" class="hover:outline text-lg lg:text-2xl h-8 lg:h-10 border-1 border-dark1 rounded-sm w-full lg:w-3/4">
                 </div>
                 <div class="lg:flex">
                     <label class="my-4 text-lg lg:text-xl lg:w-1/6" for="exam_start_time">Start Time</label>
-                    <input type="time" id="exam_start_time" name="exam_start_time" class="hover:outline text-lg lg:text-2xl h-9 lg:h-12 border-1 border-dark1 rounded-sm w-full lg:w-3/4">
+                    <input type="time" id="exam_start_time" name="exam_start_time" class="hover:outline text-lg lg:text-2xl h-8 lg:h-10 border-1 border-dark1 rounded-sm w-full lg:w-3/4">
                 </div>
                 <div class="lg:flex">
                     <label class="my-4 text-lg lg:text-xl lg:w-1/6" for="exam_dur">Duration Hours</label>
-                    <input placeholder="Total Hours" type="text" id="exam_dur_hr" name="exam_dur" class="hover:outline text-lg lg:text-2xl h-9 lg:h-12 border-1 border-dark1 rounded-sm w-full lg:w-3/4">
+                    <input placeholder="Total Hours" type="text" id="exam_dur_hr" name="exam_dur" class="hover:outline text-lg lg:text-2xl h-8 lg:h-10 border-1 border-dark1 rounded-sm w-full lg:w-3/4">
                 </div>
                 <div class="lg:flex">
                     <label class="my-4 text-lg lg:text-xl lg:w-1/6" for="exam_dur">Duration Minutes</label>
-                    <input placeholder="Remaining Minutes" type="text" id="exam_dur_mins" name="exam_dur" class="hover:outline text-lg lg:text-2xl h-9 lg:h-12 border-1 border-dark1 rounded-sm w-full lg:w-3/4">
+                    <input placeholder="Remaining Minutes" type="text" id="exam_dur_mins" name="exam_dur" class="hover:outline text-lg lg:text-2xl h-8 lg:h-10 border-1 border-dark1 rounded-sm w-full lg:w-3/4">
                 </div>
                 <div class="lg:flex">
                     <label class="my-4 text-lg lg:text-xl lg:w-1/6" for="test_instructions">Instructions</label>
-                    <input type="text" id="test_instructions" name="test_instructions" class="hover:outline text-lg lg:text-2xl h-9 lg:h-12 border-1 border-dark1 rounded-sm w-full lg:w-3/4">
+                    <input type="text" id="test_instructions" name="test_instructions" class="hover:outline text-lg lg:text-2xl h-8 lg:h-10 border-1 border-dark1 rounded-sm w-full lg:w-3/4">
                 </div>
                 <div class="flex flex-row-reverse mt-6 lg:mt-0 sm:mt-8 lg:w-11/12">
                     <input @click="submitNewTest" type="submit" value="Submit" class="hover:-translate-y-0.5 bg-brown4 hover:bg-brown3 inline-block px-3 py-2 lg:px-5 lg:py-3 rounded-lg uppercase tracking-wider font-semibold text-sm text-white shadow-lg sm:text-base">
