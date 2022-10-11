@@ -38,4 +38,4 @@ python3 ./manage.py runserver
 The link to documentation of how to format file can be seen in the top of the page after clicking get started.\
 The examiner can preview an exam after setting of exam has been concluded and subsiquently through the examiner link.\
 Students have to put in Name and Id before taking tests.\
-Only examiner can see results of students after exam has ended.\
+Only examiner can see results of students after exam has ended.
