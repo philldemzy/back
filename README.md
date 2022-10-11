@@ -22,7 +22,7 @@ npm run serve
 ```
 
 The back folder contains the backend end api written in django python
-### To run front end application
+### To run back end application
 ```bash
 pip install -r requirements.txt
 cd back
