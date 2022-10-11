@@ -13,6 +13,8 @@ CBeasy is a computer based test platform that makes creation of computer based t
 - It follows timing procedures for computer based tests also shuffling of questions and options each time exam apge is loaded.
 
 
+
+
 The front folder contains the front end application written in vue.js
 ### To run the front end application 
 ```bash
@@ -20,6 +22,8 @@ cd front
 npm install
 npm run serve
 ```
+
+
 
 The back folder contains the backend end api written in django python
 ### To run back end application
