@@ -11,6 +11,7 @@ CBeasy is a computer based test platform that makes creation of computer based t
   2. To enable examiners get results of exam and to also preview the exam before start time to correct any errors.
 - It marks the result of each students after submitting or after duration of exam set by examiner is over.
 - It follows timing procedures for computer based tests also shuffling of questions and options each time exam apge is loaded.
+- Easy navigation through questions even in mobile due to responsivity and storing of answered questions incase an issue occured.
 
 
 
