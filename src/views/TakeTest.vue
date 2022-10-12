@@ -190,7 +190,7 @@ export default {
 
         async getExam(formData) {
             // post method
-            const res = await fetch(`http://localhost:8000/take/${this.link}`, {
+            const res = await fetch(`http://127.0.0.1:8000/take/${this.link}`, {
                 method: 'POST',
                 headers: {'X-CSRFToken': this.genStore.token},
                 body: formData
