@@ -104,10 +104,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-# CORS settings
-CORS_ALLOWED_ORIGINS = [
-    'http://localhost:8080',
-]
 
 LOGIN_URL = '/login'
 
