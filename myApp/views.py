@@ -5,7 +5,7 @@ from datetime import timedelta, datetime
 from django.http import HttpResponse, JsonResponse
 from django.middleware.csrf import get_token
 from django.shortcuts import render
-from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.csrf import csrf_exempt, ensure_csrf_cookie
 
 from celery.result import AsyncResult
 
@@ -16,14 +16,13 @@ from .tasks import process_file, mark_tests
 
 
 # Create your views here.
+@ensure_csrf_cookie
 def index(request):
-    if request.method == "POST":
-        return HttpResponse('Think of a project')  # This is nonsense btw
-    return render(request, "myApp/index.html")
+    return JsonResponse({'token': get_token(request)})
 
 
 # Create a new exam
-@csrf_exempt
+# @csrf_exempt
 def set_test(request):
     if request.method == "POST":
         # Get duration of exam
@@ -58,7 +57,7 @@ def set_test(request):
         }, status=202)
 
     # get token first
-    return JsonResponse({'token': get_token(request)})
+    # return JsonResponse({'token': get_token(request)})
 
 
 # View for checking result of celery async task and progress information
@@ -133,7 +132,7 @@ def get_test(request, link):
                     'mark': exam.total_score,
                     'student': registered.id,
                     'questions': [send_question(question) for question in questions],
-                    'token': get_token(request),
+                    #'token': get_token(request),
                 }, safe=False)
                 
             # Exam has ended
@@ -149,7 +148,7 @@ def get_test(request, link):
         'duration': get_duration(exam.duration.total_seconds()),
         'mark': exam.total_score,
         'instructions': exam.test_instructions,
-        'token': get_token(request),
+        #'token': get_token(request),
         'ended': datetime.now(exam.start_time.tzinfo) > exam.start_time + exam.duration
         if datetime.now(exam.start_time.tzinfo) > exam.start_time + exam.duration else exam.start_time.isoformat(),
     }, status=200, safe=False)
@@ -272,13 +271,5 @@ def preview_and_edit_test(request, link):
         'duration': get_duration(exam.duration.total_seconds()),
         'mark': exam.total_score,
         'questions': [send_preview_question(question) for question in questions],
-        'token': get_token(request),
+        #'token': get_token(request),
     }, safe=False)
-# TODO
-"""
-A. BACK
-    ...
-B. FRONT
-    1. xlxs ish
-    ...
-"""
