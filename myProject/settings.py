@@ -28,11 +28,6 @@ DEBUG = True
 ALLOWED_HOSTS = []
 
 
-CSRF_TRUSTED_ORIGINS = [
-    "http://localhost:8080",
-]
-
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -138,6 +133,24 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 
 USE_TZ = True
+
+
+# Pure Api settings
+CSRF_COOKIE_SAMESITE = 'Lax'
+SESSION_COOKIE_SAMESITE = 'Lax'
+CSRF_COOKIE_HTTPONLY = True
+SESSION_COOKIE_HTTPONLY = True
+
+# Prod settings (send cookies through https only)
+#CSRF_COOKIE_SECURE = True
+#SESSION_COOKIE_SECURE = True
+
+# For allowing cors
+CORS_EXPOSE_HEADERS = ['Content-Type', 'X-CSRFToken']
+CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:8080",
+]
 
 
 # Cached type of session
