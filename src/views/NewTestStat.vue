@@ -75,7 +75,7 @@ export default{
 
     mounted() {
         const checkStat = setInterval( () => {
-            fetch(`http://localhost:8000/exam/setup/${this.genStore.newTest.task}`)
+            fetch(`${process.env.VUE_APP_ROOT_API}/exam/setup/${this.genStore.newTest.task}`)
             .then((response) => response.json())
             .then((data) => {
                 if (data.state == 'SUCCESS') {
@@ -96,5 +96,4 @@ export default{
         },
     },
 }
-//pRUPBOlTVm
 </script>

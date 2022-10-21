@@ -40,7 +40,7 @@ export default {
 
     mounted() {
         let myInterval = setInterval(() => {
-            fetch(`http://localhost:8000/mark/${this.dataStore.submitTaskId}`)
+            fetch(`${process.env.VUE_APP_ROOT_API}/mark/${this.dataStore.submitTaskId}`)
             .then((response) => response.json())
             .then((data) => {
                 if (data.state == "SUCCESS") {

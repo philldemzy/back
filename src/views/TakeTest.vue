@@ -173,12 +173,11 @@ export default {
         // fetch data
         async fetchData(testLink) {
             //get method
-            const res = await fetch(`http://127.0.0.1:8000/take/${testLink}`)
+            const res = await fetch(`${process.env.VUE_APP_ROOT_API}/take/${testLink}`)
             const data = await res.json()
             if (data.name) {
                 this.time_ = data.ended
                 this.dataStore.setExamDet(await data);
-                this.genStore.setToken(await data.token);
             }
             //display 404 exam for loading exam get details of exam before and in exam if exam not there get
             else if (data.error) {
@@ -190,7 +189,7 @@ export default {
 
         async getExam(formData) {
             // post method
-            const res = await fetch(`http://127.0.0.1:8000/take/${this.link}`, {
+            const res = await fetch(`${process.env.VUE_APP_ROOT_API}/take/${this.link}`, {
                 method: 'POST',
                 headers: {'X-CSRFToken': this.genStore.token},
                 body: formData

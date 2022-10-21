@@ -43,6 +43,7 @@
 import TestLink from '@/components/testforms/TestLink.vue';
 import TakeTest from '@/components/header/menu/TakeTest.vue';
 import CheckTestLink from '@/components/testforms/CheckTestLink.vue';
+import { useGenStore } from '@/store/store.js';
 
 export default {
     name: "Index",
@@ -52,5 +53,29 @@ export default {
         TakeTest,
         CheckTestLink
     },
+
+    setup() {
+        const genStore = useGenStore();
+
+        return {
+            genStore,
+        }
+    },
+
+    created() {
+        this.getToken();
+    },
+
+    methods: {
+        async getToken() {
+            const res = await fetch(`${process.env.VUE_APP_ROOT_API}/candy`);
+            const data = await res.json();
+
+            if (data.token) {
+                this.genStore.setToken(data.token);
+                sessionStorage.setItem('token', data.token)
+            }
+        },
+    }
 }
 </script>

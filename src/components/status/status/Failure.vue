@@ -44,7 +44,7 @@ export default {
             }
 
             // post method
-            const res = await fetch(`http://localhost:8000/mark`, {
+            const res = await fetch(`${process.env.VUE_APP_ROOT_API}/mark`, {
                 method: 'POST',
                 headers: { "X-CSRFToken": this.token },
                 body: JSON.stringify(bodyData)

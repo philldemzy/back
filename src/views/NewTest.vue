@@ -10,7 +10,6 @@
             </div>
             <form method="post" class="flex flex-col w-full space-y-4 justify-items-center">
                 <h3 class="flex text-sm font-semibold lg:text-base">Set New Test</h3>
-                <input style="display: none;" type="text" value="{% csrf_token %}" name="csrf_token" id="csrf_token">
                 <div class="lg:flex">
                     <span class="my-4 text-lg lg:text-xl lg:w-1/6">Test File</span>
                     <label class="flex w-full lg:w-3/4" for="test_file">
@@ -62,12 +61,6 @@ export default {
         Logo,
     },
 
-    data () {
-        return {
-            token: String,
-        }
-    },
-
     setup() {
         const genStore = useGenStore();
         return {
@@ -75,22 +68,12 @@ export default {
         };
     },
 
-    created() {
-        this.fetchToken
-    },
-
     mounted() {
         this.fileChange();
     },
 
     methods: {
-        async fetchToken() {
-            const res = await fetch(`http://localhost:8000/exam/setup`);
-            const data = await res.json();
-            this.token = data;
-        },
-
-        async submitNewTest(event) {
+            async submitNewTest(event) {
             event.preventDefault();
 
             //get value of all inputs
@@ -112,11 +95,15 @@ export default {
             formData.append('time', testDate.slice(2).split("-").reverse().join(':') + ':' + testStartTime);
 
             //make post request
+            console.log(this.genStore.token)
+            let headers = new Headers();
+            headers.append('X-CSRFToken', `${this.genStore.token}`);
             // post method
-            const res = await fetch(`http://localhost:8000/exam/setup`, {
+            const res = await fetch(`${process.env.VUE_APP_ROOT_API}/exam/setup`, {
                 method: 'POST',
-                headers: { "X-CSRFToken": this.token },
-                body: formData
+                body: formData,
+                headers: headers,
+                credentials: 'include'
             })
             const data = await res.json();
 

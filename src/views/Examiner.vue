@@ -85,7 +85,7 @@ export default{
 
         async fetchFile(link) {
             //going to fetch
-            const res = await fetch(`http://localhost:8000/check/${link}`)
+            const res = await fetch(`${process.env.VUE_APP_ROOT_API}/check/${link}`)
             const data = await res.json()
             this.examDets = data;
             if (data.students) {

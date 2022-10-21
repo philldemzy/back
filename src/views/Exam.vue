@@ -90,7 +90,7 @@ export default {
                 answers: this.dataStore.pickedAns
             }
             // post method
-            fetch(`http://localhost:8000/mark`, {
+            fetch(`${process.env.VUE_APP_ROOT_API}/mark`, {
                 method: 'POST',
                 headers: { "X-CSRFToken": this.genStore.token },
                 body: JSON.stringify(bodyData)

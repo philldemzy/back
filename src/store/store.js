@@ -9,7 +9,7 @@ export const useGenStore = defineStore({
             retries: 0,
             submitTaskId: null,
             newTest: {},
-            token: null,
+            token: sessionStorage.getItem('token') ? sessionStorage.getItem('token') : null,
         }
     },
 

@@ -115,7 +115,7 @@ export default{
         },
 
         fetchData(link) {
-            fetch(`http://localhost:8000/prev/${link}`)
+            fetch(`${process.env.VUE_APP_ROOT_API}/prev/${link}`)
             .then((response) => response.json())
             .then((data) => {
                 this.exam = {
@@ -188,7 +188,7 @@ export default{
 
         editExam(bodyData) {
             //this function would be called by another function 
-            fetch(`http://localhost:8000/prev/${this.link}`, {
+            fetch(`${process.env.VUE_APP_ROOT_API}/prev/${this.link}`, {
                 method: 'PUT',
                 headers: { "X-CSRFToken": this.token },
                 body: JSON.stringify(bodyData)
