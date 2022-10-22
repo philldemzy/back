@@ -140,9 +140,9 @@ SESSION_COOKIE_HTTPONLY = True
 #SESSION_COOKIE_SECURE = True
 
 # For allowing cors
-CSRF_TRUSTED_ORIGINS = ["http://127.0.0.1:8080",'http://localhost:8080',]
+CSRF_TRUSTED_ORIGINS = ["http://127.0.0.1:8080", 'http://localhost:8080', ]
 CORS_ALLOW_CREDENTIALS = True
-CORS_ALLOWED_ORIGINS = ["http://127.0.0.1:8080",'http://localhost:8080',]
+CORS_ALLOWED_ORIGINS = ["http://127.0.0.1:8080", 'http://localhost:8080', ]
 
 
 # Cached type of session

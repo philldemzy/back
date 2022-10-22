@@ -5,7 +5,7 @@ from random import choice
 import pytz
 from django.utils.crypto import get_random_string
 
-from .models import Exam, Question, Option
+from myApp.models import Exam, Question, Option
 
 
 # generate examiner link of len ten

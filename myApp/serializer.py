@@ -1,5 +1,5 @@
 """Serializers"""
-from myApp.utils import get_duration, display_date
+from myApp.helpers.utils import get_duration, display_date
 
 
 def send_question(question):
