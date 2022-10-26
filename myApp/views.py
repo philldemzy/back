@@ -15,46 +15,51 @@ from myApp.helpers.utils import generate_examiner_link, generate_exam_link, get_
 from .tasks import process_file, mark_tests
 
 
+@ensure_csrf_cookie
+def index(request):
+    res = JsonResponse({'token': get_token(request)})
+    return res
+
+
 # Create a new exam
-@csrf_exempt
-@my_csrf
 def set_test(request):
     if request.method == "POST":
-        # Get duration of exam
-        hours = request.POST.get('hours')  # Get hours of exam duration
-        minutes = request.POST.get('minutes')  # Get minutes of exam duration
+        try:
+            # Get duration of exam
+            hours = request.POST.get('hours')  # Get hours of exam duration
+            minutes = request.POST.get('minutes')  # Get minutes of exam duration
 
-        # Convert string of time to datetime object (%d:%m:%y:%H:%M e.g '28:09:22:20:43')
-        time = request.POST.get('time').split(':')
-        start_time = get_datetime_obj(time)  # Convert to datetime object
+            # Convert string of time to datetime object (%d:%m:%y:%H:%M e.g '28:09:22:20:43')
+            time = request.POST.get('time').split(':')
+            start_time = get_datetime_obj(time)  # Convert to datetime object
 
-        file = request.FILES.get('exam')
-        exam_name = request.POST.get('test_name')
-        test_instructions = request.POST.get('test_instructions')
+            file = request.FILES.get('exam')
+            exam_name = request.POST.get('test_name')
+            test_instructions = request.POST.get('test_instructions')
 
-        new_exam = Exam(
-            exam_name=exam_name,
-            examiner_link=generate_examiner_link(),
-            test_link=generate_exam_link(),
-            test_file=file,
-            test_instructions=test_instructions,
-            start_time=start_time,
-            duration=timedelta(hours=int(hours), minutes=int(minutes)),
-            total_score=0
-        )
-        new_exam.save()
+            new_exam = Exam(
+                exam_name=exam_name,
+                examiner_link=generate_examiner_link(),
+                test_link=generate_exam_link(),
+                test_file=file,
+                test_instructions=test_instructions,
+                start_time=start_time,
+                duration=timedelta(hours=int(hours), minutes=int(minutes)),
+                total_score=0
+            )
+            new_exam.save()
 
-        res = process_file.delay(new_exam.test_file.path, new_exam.id)  # Processing of file done async
-        return JsonResponse({
-            'examiner_link': new_exam.examiner_link,
-            'test_link': new_exam.test_link,
-            'task': res.id
-        }, status=202)
+            res = process_file.delay(new_exam.test_file.path, new_exam.id)  # Processing of file done async
+            return JsonResponse({
+                'examiner_link': new_exam.examiner_link,
+                'test_link': new_exam.test_link,
+                'task': res.id
+            }, status=202)
 
-    # For my csrf auth
-    token = get_token(request)  # get token first
-    request.session[token] = pickle_dumps(True)  # add to session
-    return JsonResponse({'token': token})
+        except:
+            return JsonResponse({'error': 'An input detail is left out'}, status=400)
+
+    return JsonResponse({'bad': 'wrong method'}, status=404)
 
 
 # View for checking result of celery async task and progress information
@@ -83,16 +88,14 @@ def set_test_progress(request, task_id):
 
 
 # View for getting questions for exam and registration
-@csrf_exempt
-@my_csrf
 def get_test(request, link):
     # Getting exam info
     if f'exam_{link}' in request.session:  # Check if exam is in session
-        exam = pickle_loads(request.session['exam'])  # Using pickle to get query object from session
+        exam = pickle_loads(request.session[f'exam_{link}'])  # Using pickle to get query object from session
     else:  # User just starting exam
         try:
             exam = Exam.objects.get(test_link=link)
-            request.session['exam'] = pickle_dumps(exam)  # Using pickle to store the query object in session
+            request.session[f'exam_{link}'] = pickle_dumps(exam)  # Using pickle to store the query object in session
             request.session.set_expiry(exam.duration.total_seconds())
         except:
             return JsonResponse({'error': 'Link does not exist'}, status=404)
@@ -130,7 +133,6 @@ def get_test(request, link):
                     'mark': exam.total_score,
                     'student': registered.id,
                     'questions': [send_question(question) for question in questions],
-                    #'token': get_token(request),
                 }, safe=False)
                 
             # Exam has ended
@@ -139,10 +141,6 @@ def get_test(request, link):
         # If exam has not started
         return JsonResponse({'not_time': 'Test has not started'}, status=403)
 
-    # For my csrf auth
-    token = get_token(request)
-    request.session[token] = pickle_dumps(True)
-
     # Get method
     return JsonResponse({
         'name': exam.exam_name,
@@ -150,15 +148,12 @@ def get_test(request, link):
         'duration': get_duration(exam.duration.total_seconds()),
         'mark': exam.total_score,
         'instructions': exam.test_instructions,
-        'token': token,
         'ended': datetime.now(exam.start_time.tzinfo) > exam.start_time + exam.duration
         if datetime.now(exam.start_time.tzinfo) > exam.start_time + exam.duration else exam.start_time.isoformat(),
     }, status=200, safe=False)
 
 
 # View for submitting answers
-@csrf_exempt
-@my_csrf
 def mark_test(request):
     """
     After each test taker submits their tests it gets marked in this route
@@ -178,10 +173,7 @@ def mark_test(request):
         # return success
         return JsonResponse({'task': res.id}, status=202)
 
-    # For my csrf auth
-    token = get_token(request)
-    request.session[token] = pickle_dumps(True)
-    return JsonResponse({'token': token})
+    return JsonResponse({'bad': 'wrong method'}, status=404)
 
 
 def mark_test_progress(request, task_id):
@@ -213,7 +205,10 @@ def check_test(request, link):
     Send all database related info about an exam to client
     Front end will deal with analysing data
     """
-    exam = Exam.objects.prefetch_related('get_exam').get(examiner_link=link)
+    try:
+        exam = Exam.objects.prefetch_related('get_exam').get(examiner_link=link)
+    except:
+        return JsonResponse({'error': 'exam does not exist'}, status=400)
 
     # add checks for if results have been collated
     if datetime.now(tz=exam.start_time.tzinfo) >= exam.start_time + exam.duration:
@@ -238,8 +233,6 @@ def check_test(request, link):
 
 
 # View for previewing and editing exam
-@csrf_exempt
-@my_csrf
 def preview_and_edit_test(request, link):
     exam = Exam.objects.get(examiner_link=link)
     questions = Question.objects.prefetch_related('option_question').filter(test=exam)
@@ -273,14 +266,10 @@ def preview_and_edit_test(request, link):
         # Return error
         return JsonResponse({'error': 'exam in progress or has ended'}, status=403)
 
-    # For my csrf auth
-    token = get_token(request)
-    request.session[token] = pickle_dumps(True)
     return JsonResponse({
         'name': exam.exam_name,
         'start_time': exam.start_time.isoformat(),
         'duration': get_duration(exam.duration.total_seconds()),
         'mark': exam.total_score,
         'questions': [send_preview_question(question) for question in questions],
-        'token': token,
     }, safe=False)

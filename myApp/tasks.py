@@ -1,6 +1,7 @@
 from re import compile
 
 from celery import shared_task
+from django.http import JsonResponse
 
 from .models import Question, TestTaker, Exam, Option
 
@@ -33,6 +34,8 @@ def process_file(self, file_location, exam_id):
             total_q = len(questions)
             if total_q > 50:  # Questions must not be more than 50
                 return False
+            elif total_q < 1:
+                return JsonResponse({'error': 'wrong file format'})
             i = 0
             while i < total_q:
                 options = o.split(questions[i])  # Getting all options and question

@@ -132,12 +132,11 @@ USE_TZ = True
 
 
 # Pure Api settings
-CSRF_COOKIE_HTTPONLY = False
-SESSION_COOKIE_HTTPONLY = True
-
 # Prod settings (send cookies through https only)
-#CSRF_COOKIE_SECURE = True
-#SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SAMESITE = 'None'
+SESSION_COOKIE_SAMESITE = 'None'
 
 # For allowing cors
 CSRF_TRUSTED_ORIGINS = ["http://127.0.0.1:8080", 'http://localhost:8080', ]
