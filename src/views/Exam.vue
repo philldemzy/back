@@ -26,7 +26,7 @@ export default {
 
     data() {
         return {
-            check: false
+            check: false,
         }
     },
 
@@ -89,11 +89,16 @@ export default {
                 student: this.dataStore.studentId,
                 answers: this.dataStore.pickedAns
             }
+
             // post method
+            let headers = new Headers();
+            headers.append('X-CSRFToken', `${this.genStore.token}`);
+            
             fetch(`${process.env.VUE_APP_ROOT_API}/mark`, {
                 method: 'POST',
-                headers: { "X-CSRFToken": this.genStore.token },
-                body: JSON.stringify(bodyData)
+                body: JSON.stringify(bodyData),
+                headers: headers,
+                credentials: 'include'
             })
             .then((response) => response.json())
             .then((data) => {

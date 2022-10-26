@@ -31,10 +31,14 @@ export default {
             }
 
             // post method
+            let headers = new Headers();
+            headers.append('X-CSRFToken', `${this.genStore.token}`);
+            
             const res = await fetch(`${process.env.VUE_APP_ROOT_API}/mark`, {
                 method: 'POST',
-                headers: { "X-CSRFToken": this.genStore.token },
-                body: JSON.stringify(bodyData)
+                body: JSON.stringify(bodyData),
+                headers: headers,
+                credentials: 'include'
             })
             const data = await res.json()
             this.genStore.setSubmitTaskId(data.task);

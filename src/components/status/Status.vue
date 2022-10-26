@@ -43,6 +43,7 @@ export default {
             fetch(`${process.env.VUE_APP_ROOT_API}/mark/${this.dataStore.submitTaskId}`)
             .then((response) => response.json())
             .then((data) => {
+                console.log(data);
                 if (data.state == "SUCCESS") {
                     this.dataStore.isSuccess();
                     clearInterval(myInterval)

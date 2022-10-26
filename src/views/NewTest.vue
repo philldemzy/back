@@ -53,6 +53,7 @@
 <script>
 import Logo from '@/components/header/Logo.vue';
 import { useGenStore } from '@/store/store';
+import { useCookies } from "vue3-cookies";
 
 export default {
     name: 'NewTest',
@@ -63,8 +64,11 @@ export default {
 
     setup() {
         const genStore = useGenStore();
+        const { cookies } = useCookies();
+        
         return {
-            genStore
+            genStore,
+            cookies
         };
     },
 
@@ -73,9 +77,11 @@ export default {
     },
 
     methods: {
-            async submitNewTest(event) {
-            event.preventDefault();
+        
 
+        async submitNewTest(event) {
+            event.preventDefault();
+            
             //get value of all inputs
             let file = document.querySelector("input[type=file]").files[0];
             let testName = document.getElementById("test_name").value;
@@ -94,8 +100,6 @@ export default {
             formData.append('minutes', testDurMins);
             formData.append('time', testDate.slice(2).split("-").reverse().join(':') + ':' + testStartTime);
 
-            //make post request
-            console.log(this.genStore.token)
             let headers = new Headers();
             headers.append('X-CSRFToken', `${this.genStore.token}`);
             // post method
@@ -106,6 +110,11 @@ export default {
                 credentials: 'include'
             })
             const data = await res.json();
+
+            if (data.error) {
+                alert('Some input might be missing');
+                return;
+            }
 
             document.querySelector("input[type=file]").value = null;
             document.getElementById("test_name").value = null;

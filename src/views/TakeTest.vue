@@ -85,7 +85,7 @@ export default {
     data() {
         return {
             theFunc: Number,
-            time_: ''
+            time_: '',
         }
     },
 
@@ -189,10 +189,14 @@ export default {
 
         async getExam(formData) {
             // post method
+            let headers = new Headers();
+            headers.append('X-CSRFToken', `${this.genStore.token}`);
+
             const res = await fetch(`${process.env.VUE_APP_ROOT_API}/take/${this.link}`, {
                 method: 'POST',
-                headers: {'X-CSRFToken': this.genStore.token},
-                body: formData
+                body: formData,
+                headers: headers,
+                credentials: 'include'
             })
             const data = await res.json()
             return data

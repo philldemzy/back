@@ -63,18 +63,19 @@ export default {
     },
 
     created() {
-        this.getToken();
+        this.authReq()
     },
 
     methods: {
-        async getToken() {
-            const res = await fetch(`${process.env.VUE_APP_ROOT_API}/candy`);
-            const data = await res.json();
-
-            if (data.token) {
-                this.genStore.setToken(data.token);
+        async authReq() {
+            fetch(`${process.env.VUE_APP_ROOT_API}/candy`, {
+                credentials: 'include'
+            })
+            .then((res) => res.json())
+            .then((data) => {
+                this.genStore.setToken(data.token)
                 sessionStorage.setItem('token', data.token)
-            }
+            })
         },
     }
 }

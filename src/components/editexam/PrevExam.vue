@@ -70,7 +70,6 @@ export default{
             exam: {},
             questions: [],
             targetInfo: {},
-            token: null,
         }
     },
 
@@ -125,7 +124,6 @@ export default{
                     mark: data.mark,
                 };
                 this.questions = data.questions;
-                this.token = data.token;
             })
         },
 
@@ -187,11 +185,15 @@ export default{
         },
 
         editExam(bodyData) {
-            //this function would be called by another function 
+            //this function would be called by another function
+            let headers = new Headers();
+            headers.append('X-CSRFToken', `${this.genStore.token}`);
+
             fetch(`${process.env.VUE_APP_ROOT_API}/prev/${this.link}`, {
                 method: 'PUT',
-                headers: { "X-CSRFToken": this.token },
-                body: JSON.stringify(bodyData)
+                body: JSON.stringify(bodyData),
+                headers: headers,
+                credentials: 'include'
             })
             .then((response) => response.json())
             .then((data) => {

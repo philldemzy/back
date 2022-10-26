@@ -1,7 +1,7 @@
 <template>
     <Logo/>
 
-    <div class="bg-brown2 space-y-4">
+    <div id="exam_det" class="bg-brown2 space-y-4">
         <div class="grid grid-col-1 justify-items-center xl:justify-items-start xl:ml-96">
             <div class=" text-base lg:text-lg font-medium lg:font-semibold">
                 <h2>{{ examDets.title }}</h2>
@@ -24,6 +24,11 @@
                 <button  @click="setExcelFile" class="p-3 bg-brown3 rounded-2xl hover:-translate-y-1"> DOWNLOAD </button>
             </div>
         </div>
+    </div>
+
+    <div id="exam_404" class="hidden grid bg-brown2 justify-items-center">
+        <img class="w-1/3 h-52" src="https://banner2.cleanpng.com/20180511/pee/kisspng-http-404-error-web-browser-5af65b7e3e0fb0.9779316415260947182542.jpg" alt="404 Error">
+        <h1 class="font-serif text-light text-lg lg:text-2xl">Exam not found, please cross check exam link.</h1>
     </div>
     <div class="h-5"></div>
 </template>
@@ -58,7 +63,8 @@ export default{
     data() {
         return{
             examDets: {},
-            done: false
+            done: false,
+            error: null
         }
     },
 
@@ -87,10 +93,17 @@ export default{
             //going to fetch
             const res = await fetch(`${process.env.VUE_APP_ROOT_API}/check/${link}`)
             const data = await res.json()
+            if (data.error) {
+                document.getElementById('exam_det').style.display = 'none';
+                document.getElementById('exam_404').style.display = 'block';
+                return;
+            }
+            document.getElementById('exam_det').style.display = 'block';
+                document.getElementById('exam_404').style.display = 'none';
             this.examDets = data;
             if (data.students) {
-                this.dataStore.setResults(data)
-                this.done = true
+                this.dataStore.setResults(data);
+                this.done = true;
             }
         },
 
