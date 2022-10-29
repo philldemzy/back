@@ -1,6 +1,7 @@
 from json import loads as json_loads
 from pickle import loads as pickle_loads, dumps as pickle_dumps
 from datetime import timedelta, datetime
+from os import environ
 
 from django.http import JsonResponse
 from django.middleware.csrf import get_token
@@ -14,6 +15,17 @@ from .models import Exam, TestTaker, Question, Option
 from myApp.helpers.utils import generate_examiner_link, generate_exam_link, get_datetime_obj, get_duration
 from .tasks import process_file, mark_tests
 
+
+# Seems childish but auth sha
+@csrf_exempt
+def auth(request):
+    if request.method == "PUT":
+        key = request.POST.get('authKey)
+        if key == environ['authkey']
+            return redirect('candy')
+        return JsonResponse({'!!': '!!'}, status=404)
+    return JsonResponse({'error': 'wrong request method'}, status=404)
+                               
 
 @ensure_csrf_cookie
 def index(request):
