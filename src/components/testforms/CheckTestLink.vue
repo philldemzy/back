@@ -8,7 +8,7 @@
         <form class="ml-3.5 lg:ml-8 mt-12" id="checkTestForm" action="">
             <div>
                 <label for="check_test_link" class="uppercase text-sm text-gray-200 lg:text-md">Enter examiner link:</label>
-                <input type="text" class="pb-1 text-black text-center w-6/7" id="check_test_link" name="check_test_link">
+                <input type="text" class="pb-1 text-black text-center w-5/6" id="check_test_link" name="check_test_link">
                 <input @click="checkTest" type="submit" class="ml-[136.5px] rounded-b-sm bg-brown1 mt-2 p-1 text-gray-900" value="Enter">
             </div>
         </form>
