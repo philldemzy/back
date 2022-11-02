@@ -8,7 +8,7 @@
         <form class="ml-3.5 lg:ml-8 mt-12" id="takeTestForm" action="">
             <div>
                 <label for="test_link" class="uppercase text-sm text-gray-200 lg:text-md">Enter test link:</label>
-                <input type="text" class="pb-1 text-black text-center" id="test_link" name="test_link">
+                <input type="text" class="pb-1 text-black text-center w-4/5" id="test_link" name="test_link">
                 <input @click="goToTest" type="submit" class="ml-[136.5px] rounded-b-sm bg-brown1 mt-2 p-1 text-gray-900" value="Enter">
             </div>
         </form>
