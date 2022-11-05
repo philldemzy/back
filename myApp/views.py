@@ -5,23 +5,23 @@ from os import environ
 
 from django.http import JsonResponse
 from django.middleware.csrf import get_token
+from django.shortcuts import redirect
 from django.views.decorators.csrf import csrf_exempt, ensure_csrf_cookie
 
 from celery.result import AsyncResult
 
-from .helpers.decorator import my_csrf
 from .serializer import send_question, send_exam_info, send_preview_question
 from .models import Exam, TestTaker, Question, Option
-from myApp.helpers.utils import generate_examiner_link, generate_exam_link, get_datetime_obj, get_duration
+from .helpers.utils import generate_examiner_link, generate_exam_link, get_datetime_obj, get_duration
 from .tasks import process_file, mark_tests
 
 
-# Seems childish but auth sha
+# my auth style
 @csrf_exempt
 def auth(request):
     if request.method == "PUT":
-        key = request.POST.get('authKey)
-        if key == environ['authkey']
+        key = request.POST.get('authKey')
+        if key == environ['authkey']:
             return redirect('candy')
         return JsonResponse({'!!': '!!'}, status=404)
     return JsonResponse({'error': 'wrong request method'}, status=404)
