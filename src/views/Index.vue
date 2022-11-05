@@ -63,7 +63,9 @@ export default {
     },
 
     created() {
-        this.authReq()
+        if (this.genStore.token === null) {
+            this.authReq();
+        }
     },
 
     methods: {

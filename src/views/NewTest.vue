@@ -24,11 +24,11 @@
                 </div>
                 <div class="lg:flex">
                     <label class="my-4 text-lg lg:text-xl lg:w-1/6" for="test_date">Date</label>
-                    <input type="date" id="test_date" name="exam_date" class="hover:outline text-lg lg:text-2xl h-8 lg:h-10 border-1 border-dark1 rounded-sm w-full lg:w-3/4">
+                    <input type="date" id="test_date" name="exam_date" class="appearance-none hover:outline text-lg lg:text-2xl h-8 lg:h-10 border-1 border-dark1 rounded-sm w-full lg:w-3/4">
                 </div>
                 <div class="lg:flex">
                     <label class="my-4 text-lg lg:text-xl lg:w-1/6" for="exam_start_time">Start Time</label>
-                    <input type="time" id="exam_start_time" name="exam_start_time" class="hover:outline text-lg lg:text-2xl h-8 lg:h-10 border-1 border-dark1 rounded-sm w-full lg:w-3/4">
+                    <input type="time" id="exam_start_time" name="exam_start_time" class="appearance-none hover:outline text-lg lg:text-2xl h-8 lg:h-10 border-1 border-dark1 rounded-sm w-full lg:w-3/4">
                 </div>
                 <div class="lg:flex">
                     <label class="my-4 text-lg lg:text-xl lg:w-1/6" for="exam_dur">Duration Hours</label>
@@ -77,7 +77,29 @@ export default {
     },
 
     methods: {
-        
+        checkFields(testDurHr, testDurMins, testDate, testStartTime, testName) {
+            if (!document.querySelector("input[type=file]").files[0]) {
+                alert("Please enter a File for  processing");
+                return false;
+            }
+            else if (testName.length <= 0) {
+                alert("A Test Name must be set");
+                return false;
+            }
+            else if (testDurHr === 0 && testDurMins === 0) {
+                alert("A Duration must be set");
+                return false;
+            }
+            else if (testDate.length <= 0) {
+                alert("A Test Date must be set");
+                return false;
+            }
+            else if (testStartTime.length <= 0) {
+                alert("A Test Start Time must be set");
+                return false;
+            }
+            return true;
+        },
 
         async submitNewTest(event) {
             event.preventDefault();
@@ -90,6 +112,10 @@ export default {
             let testInstructions = document.getElementById("test_instructions").value;
             let testDate = document.getElementById("test_date").value;
             let testStartTime = document.getElementById("exam_start_time").value;
+
+            if (!this.checkFields(testDurHr, testDurMins, testDate, testStartTime, testName)) {
+                return;
+            }
 
             //put all into formdata
             let formData = new FormData();
