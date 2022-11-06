@@ -71,7 +71,7 @@ export default {
     methods: {
         async authReq() {
             let formData = new FormData();
-            formData.append('authKey', 'asdfghjkl');
+            formData.append('authKey', process.env.KEY);
 
             fetch(`${process.env.VUE_APP_ROOT_API}/index`, {
                 method: 'POST',
@@ -80,7 +80,6 @@ export default {
             })
             .then((res) => res.json())
             .then((data) => {
-                console.log(data);
                 this.genStore.setToken(data.token)
                 sessionStorage.setItem('token', data.token)
             })
