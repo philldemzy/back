@@ -19,5 +19,5 @@ def main():
 
 
 if __name__ == '__main__':
-    os.environ["authkey"]
+    os.environ["AUTHKEY"]
     main()
