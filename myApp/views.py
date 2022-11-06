@@ -25,7 +25,7 @@ def auth(request):
             return redirect('candy')
         return JsonResponse({'!!': '!!'}, status=404)
     return JsonResponse({'error': 'wrong request method'}, status=404)
-                               
+
 
 @ensure_csrf_cookie
 def index(request):
