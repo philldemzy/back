@@ -19,9 +19,9 @@ from .tasks import process_file, mark_tests
 # my auth style
 @csrf_exempt
 def auth(request):
-    if request.method == "PUT":
+    if request.method == "POST":
         key = request.POST.get('authKey')
-        if key == environ['authkey']:
+        if key == environ["AUTHKEY"]:
             return redirect('candy')
         return JsonResponse({'!!': '!!'}, status=404)
     return JsonResponse({'error': 'wrong request method'}, status=404)
