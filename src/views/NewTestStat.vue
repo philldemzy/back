@@ -12,7 +12,11 @@
             </div>
         </div>
 
-        <div v-show="resp" class="grid grid-col-1 p-5">
+        <div v-show="err && resp" class="flex justify-center pt-3">
+            <h2 class="text-align-center text-md lg:text-xl text-semibold font-serif">{{ errorMsg }}</h2>
+        </div>
+
+        <div v-show="!err && resp" class="grid grid-col-1 p-5">
             <div class="flex">
                 <h2 class="mt-5 text-green-700 text-xl lg:text-2xl">Success !!</h2>
                 <svg xmlns="http://www.w3.org/2000/svg" class="lg:h-20 lg:w-16 h-16 w-14 lg:stroke-4 stroke-2 text-green-900" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -63,6 +67,8 @@ export default{
     data() {
         return {
             resp: false,
+            err: false,
+            errorMsg: null,
         }
     },
 
@@ -81,9 +87,16 @@ export default{
                 if (data.state == 'SUCCESS') {
                     this.resp = true
                     clearInterval(checkStat)
+                    console.log(data)
+                    if (data.info !== true) {
+                        this.err = true;
+                        this.errorMsg = data.info;
+                    }
                 }
                 else if  (data.state == 'FAILURE') {
                     this.resp = true
+                    this.err = true;
+                    this.errorMsg = data.info;
                     clearInterval(checkStat)
                 }
             });

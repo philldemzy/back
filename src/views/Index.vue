@@ -63,7 +63,7 @@ export default {
     },
 
     created() {
-        if (this.genStore.token === null) {
+        if (this.genStore.token === null || this.genStore.token == undefined || this.genStore.token.length < 1) {
             this.authReq();
         }
     },
@@ -71,7 +71,7 @@ export default {
     methods: {
         async authReq() {
             let formData = new FormData();
-            formData.append('authKey', process.env.KEY);
+            formData.append('authKey', process.env.VUE_APP_KEY);
 
             fetch(`${process.env.VUE_APP_ROOT_API}/index`, {
                 method: 'POST',
