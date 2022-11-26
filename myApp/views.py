@@ -25,7 +25,7 @@ def auth(request):
             return redirect('candy')
         return JsonResponse({'!!': '!!'}, status=404)
     return JsonResponse({'error': 'wrong request method'}, status=404)
-                               
+
 
 @ensure_csrf_cookie
 def index(request):
@@ -90,10 +90,13 @@ def set_test_progress(request, task_id):
         }
         return JsonResponse(response, status=200)
 
+    # Get result value
+    info = True if task.get() == 'success' else task.get().get('error')
+    print(info)
     response = {
         'task_id': task_id,
         'state': task.state,
-        'info': "None"
+        'info': info
     }
 
     return JsonResponse(response, status=200)
@@ -146,7 +149,7 @@ def get_test(request, link):
                     'student': registered.id,
                     'questions': [send_question(question) for question in questions],
                 }, safe=False)
-                
+
             # Exam has ended
             return JsonResponse({'expired': 'Exam has ended'}, status=403)
 

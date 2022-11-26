@@ -151,7 +151,7 @@ SESSION_ENGINE = "django.contrib.sessions.backends.cache"
 
 # Async tasks with celery using rabbitmq as broker
 CELERY_BROKER_URL = 'amqp://localhost'
-CELERY_RESULT_BACKEND = 'rpc://localhost'
+CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
 CELERY_IGNORE_RESULT = False
 
 # Static files (CSS, JavaScript, Images)
