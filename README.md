@@ -40,6 +40,7 @@ celery -A myProject worker -l info -P gevent --pool=solo
 
 ## Notes
 [Rabbitmq has to be installed before celery workers can work](https://www.rabbitmq.com/install-windows.html)\
+[Redis has to be installed as it is the store for the results from celery, for windows it can be installed from here](https://github.com/microsoftarchive/redis/releases/download/win-3.0.504/Redis-x64-3.0.504.zip)\
 The link to documentation of how to format file can be seen in the top of the page after clicking get started.\
 The examiner can preview an exam after setting of exam has been concluded and subsiquently through the examiner link.\
 Students have to put in Name and Id before taking tests.\
