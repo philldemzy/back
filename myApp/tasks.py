@@ -1,7 +1,6 @@
 from re import compile
 
 from celery import shared_task
-from django.http import JsonResponse
 
 from .models import Question, TestTaker, Exam, Option
 
@@ -23,8 +22,8 @@ def process_file(self, file_location, exam_id):
        where O is option
        where A is the answer
        """
+    exam = Exam.objects.get(pk=exam_id)
     try:
-        exam = Exam.objects.get(pk=exam_id)
         with open(file_location) as f:
             my_file = f.read()
             q = compile('[%][\\d]+')
@@ -33,9 +32,14 @@ def process_file(self, file_location, exam_id):
             questions = q.split(my_file)  # Split file into used format
             total_q = len(questions)
             if total_q > 50:  # Questions must not be more than 50
-                return False
+                exam.delete()
+                return {'error': 'questions more than 50'}
             elif total_q < 1:
-                return JsonResponse({'error': 'wrong file format'})
+                exam.delete()
+                return {'error': 'wrong file format please click FORMAT FOR TEST FILE to see the format required'}
+            elif len(q.findall(my_file)) < 1:
+                exam.delete()
+                return {'error': 'wrong file format please click FORMAT FOR TEST FILE to see the format required'}
             i = 0
             while i < total_q:
                 options = o.split(questions[i])  # Getting all options and question
@@ -67,11 +71,13 @@ def process_file(self, file_location, exam_id):
                 self.update_state(state='PROGRESS', meta={'current': i, 'total': total_q})
             exam.total_score = Question.objects.filter(test=exam).count()
             exam.save()
-        return True
+        return 'success'
     except IOError:
-        return {'Error': 'File Can Not Be Opened'}
+        exam.delete()
+        return {'error': 'File Can Not Be Opened'}
     except Exception as err:
-        return {'Error': f"Unexpected error is {repr(err)}"}
+        exam.delete()
+        return {'error': f"Unexpected error is {repr(err)}"}
 
 
 # Marking test function

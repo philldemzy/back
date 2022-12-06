@@ -1,2 +1,4 @@
 django-4.0.4
 django-cors-headers-3.13.0
+celery-5.2.7
+redis-4.3.5
