@@ -26,8 +26,8 @@ def process_file(self, file_location, exam_id):
     try:
         with open(file_location) as f:
             my_file = f.read()
-            q = compile('[%][\\d]+')
-            o = compile('[%][a-z]')
+            q = compile('%\\d+')
+            o = compile('%[a-z]')
             ans = compile('answer=')
             questions = q.split(my_file)  # Split file into used format
             total_q = len(questions)

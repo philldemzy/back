@@ -9,11 +9,18 @@ https://docs.djangoproject.com/en/4.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.0/ref/settings/
 """
-
+import os
+import environ
 from pathlib import Path
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+env = environ.Env()
+
+# Take environment variables from .env file
+environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 
 
 # Quick-start development settings - unsuitable for production
@@ -23,9 +30,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-%i5x*^%*%%ht)ko+^3@h&fm=37z^t*6u1+7(y1%bb6d@+7ji&r'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env.bool('DEBUG', default=False)
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = env.list("ALLOWED_HOSTS")
 
 
 # Application definition
@@ -78,17 +85,31 @@ WSGI_APPLICATION = 'myProject.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+if env("DATABASE_NAME") == "none":
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
     }
-}
+
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': env("DATABASE_ENGINE"),
+            'NAME': env("DATABASE_NAME"),
+            'HOST': env("DATABASE_HOST"),
+            'PORT': env("DATABASE_POST"),
+            'USER': env("DATABASE_USER"),
+            'PASSWORD': env("DATABASE_PASS"),
+        }
+    }
 
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
 
+"""
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
@@ -103,7 +124,7 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
-
+"""
 
 LOGIN_URL = '/login'
 
@@ -112,9 +133,8 @@ LOGIN_URL = '/login'
 # https://docs.djangoproject.com/en/4.0/topics/cache/
 CACHES = {
     'default': {
-        'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
-        'LOCATION': 'C:\\Users\\USER\\Documents\\myProject\\tmp\\django_cache',
-        # Path for catch file (ABS Path for Windows)
+        'BACKEND': env("CACHE_BACKEND"),
+        'LOCATION': env("CACHE_LOCATION"),
     }
 }
 
@@ -131,17 +151,14 @@ USE_I18N = True
 USE_TZ = True
 
 
-# Pure Api settings
 # Prod settings (send cookies through https only)
-CSRF_COOKIE_SECURE = True
-SESSION_COOKIE_SECURE = True
-CSRF_COOKIE_SAMESITE = 'None'
-SESSION_COOKIE_SAMESITE = 'None'
+CSRF_COOKIE_SECURE = env.bool("CSRF_COOKIE_SECURE")
+CSRF_COOKIE_SAMESITE = env.str("CSRF_COOKIE_SAMESITE")
 
-# For allowing cors
-CSRF_TRUSTED_ORIGINS = ["http://127.0.0.1:8080", 'http://localhost:8080', ]
-CORS_ALLOW_CREDENTIALS = True
-CORS_ALLOWED_ORIGINS = ["http://127.0.0.1:8080", 'http://localhost:8080', ]
+# Main Api settings
+CSRF_TRUSTED_ORIGINS = env.list("CSRF_TRUSTED_ORIGINS")
+CORS_ALLOW_CREDENTIALS = env.bool("CORS_ALLOW_CREDENTIALS")  # for allowing cors
+CORS_ALLOWED_ORIGINS = env.list("CORS_ALLOWED_ORIGINS")  # for allowing cors
 
 
 # Cached type of session
@@ -150,14 +167,14 @@ CORS_ALLOWED_ORIGINS = ["http://127.0.0.1:8080", 'http://localhost:8080', ]
 SESSION_ENGINE = "django.contrib.sessions.backends.cache"
 
 # Async tasks with celery using rabbitmq as broker
-CELERY_BROKER_URL = 'amqp://localhost'
-CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
-CELERY_IGNORE_RESULT = False
+CELERY_BROKER_URL = env("CELERY_BROKER_URL")
+CELERY_RESULT_BACKEND = env("CELERY_RESULT_BACKEND")
+CELERY_IGNORE_RESULT = env.bool("CELERY_IGNORE_RESULT", default=False)
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = env.str('STATIC_URL', default='static/')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
@@ -165,5 +182,5 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Media files folder
-MEDIA_URL = '/media/'
+MEDIA_URL = env.str('MEDIA_URL', default='/media/')
 MEDIA_ROOT = BASE_DIR / 'media'

@@ -4,6 +4,15 @@ import os
 import sys
 
 
+def check_prod_settings():
+    prod_settings = ["SECRET_KEY"]
+    for setting in prod_settings:
+        try:
+            os.environ[setting]
+        except KeyError:
+            print(f"{setting} is not set in the ENVIRONMENT !!")
+
+
 def main():
     """Run administrative tasks."""
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'myProject.settings')
@@ -19,5 +28,9 @@ def main():
 
 
 if __name__ == '__main__':
-    os.environ["AUTHKEY"]
+    try:
+        os.environ["AUTHKEY"]
+    except KeyError:
+        print('AUTHKEY has to be set')
+    check_prod_settings()
     main()

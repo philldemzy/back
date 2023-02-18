@@ -68,7 +68,8 @@ def set_test(request):
                 'task': res.id
             }, status=202)
 
-        except:
+        except Exception as err:
+            print(err)
             return JsonResponse({'error': 'An input detail is left out'}, status=400)
 
     return JsonResponse({'bad': 'wrong method'}, status=404)
@@ -92,7 +93,6 @@ def set_test_progress(request, task_id):
 
     # Get result value
     info = True if task.get() == 'success' else task.get().get('error')
-    print(info)
     response = {
         'task_id': task_id,
         'state': task.state,
@@ -120,7 +120,7 @@ def get_test(request, link):
         student_name = request.POST["student_name"]
 
         # Checking if user has registered for that exam
-        registered = TestTaker.objects.filter(test=exam, student_id=student_id, student_name=student_name).first()
+        registered = TestTaker.objects.filter(test=exam, student_id=student_id).first()
         # Register user if not registered
         if not registered:
             registered = TestTaker(
