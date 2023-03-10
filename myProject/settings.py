@@ -184,3 +184,56 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Media files folder
 MEDIA_URL = env.str('MEDIA_URL', default='/media/')
 MEDIA_ROOT = BASE_DIR / 'media'
+
+# Logging properties and config
+# https://docs.djangoproject.com/en/4.0/topics/logging/
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '{asctime} {levelname} {module} {process:d} {thread:d} {message}',
+            'style': '{',
+        },
+        'simple': {
+            'format': '{asctime} {levelname} {message}',
+            'style': '{',
+        },
+    },
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+            'level': 'WARNING',
+        },
+        'remote_network': {
+            'class': 'logging.handlers.SocketHandler',
+            'level': 'ERROR',
+            'host': '127.0.0.1',
+            'port': '7071'
+        },
+        'file': {
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': 'C:\\Users\\demilade.ayandele\\Documents\\project\\api\\back\\log\\cbeasylog.log',
+            'maxBytes': 20240,
+            'backupCount': 5,
+            'formatter': 'verbose',
+        },
+        'file1': {
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': 'C:\\Users\\demilade.ayandele\\Documents\\project\\api\\back\\log\\cbeasylog.server.log',
+            'maxBytes': 20240,
+            'backupCount': 5,
+            'formatter': 'verbose',
+        },
+    },
+    'loggers': {
+        'myApp.views': {
+            'handlers': ['file'],
+            'level': env('DJANGO_LOG_LEVEL', default='INFO'),
+        },
+        'django.server': {
+            'handlers': ['file1'],
+            'level': env('DJANGO_LOG_LEVEL_SERVER', default='WARNING'),
+        },
+    },
+}

@@ -1,6 +1,7 @@
 ## backEnd ##
 
 load_test.py
+log/
 *.log
 *.pot
 *.pyc

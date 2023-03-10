@@ -7,6 +7,9 @@ from django.http import JsonResponse
 from django.middleware.csrf import get_token
 from django.shortcuts import redirect
 from django.views.decorators.csrf import csrf_exempt, ensure_csrf_cookie
+from django.http import HttpRequest
+
+import logging
 
 from celery.result import AsyncResult
 
@@ -14,6 +17,10 @@ from .serializer import send_question, send_exam_info, send_preview_question
 from .models import Exam, TestTaker, Question, Option
 from .helpers.utils import generate_examiner_link, generate_exam_link, get_datetime_obj, get_duration
 from .tasks import process_file, mark_tests
+
+
+# Get an instance of a logger
+logger = logging.getLogger(__name__)
 
 
 # my auth style
@@ -35,7 +42,9 @@ def index(request):
 
 # Create a new exam
 def set_test(request):
+    logger.info(f'======== new SET TEST request ========')
     if request.method == "POST":
+        logger.info(f'request ==> {request.POST}')
         try:
             # Get duration of exam
             hours = request.POST.get('hours')  # Get hours of exam duration
@@ -62,6 +71,7 @@ def set_test(request):
             new_exam.save()
 
             res = process_file.delay(new_exam.test_file.path, new_exam.id)  # Processing of file done async
+            logger.info(f'======== request sent to celery successfully ========\n')
             return JsonResponse({
                 'examiner_link': new_exam.examiner_link,
                 'test_link': new_exam.test_link,
@@ -69,9 +79,11 @@ def set_test(request):
             }, status=202)
 
         except Exception as err:
-            print(err)
+            logger.error(f'an error occurred: {err}')
+            logger.info(f'======== request not sent to celery successfully ========\n')
             return JsonResponse({'error': 'An input detail is left out'}, status=400)
 
+    logger.info(f'======== wrong request method ========\n')
     return JsonResponse({'bad': 'wrong method'}, status=404)
 
 
@@ -80,7 +92,14 @@ def set_test_progress(request, task_id):
     """
     Reporting task result to front end which would ping back till task is done
     """
-    task = AsyncResult(task_id)
+    logger.info(f'======== new SET TEST PROGRESS request ========')
+    logger.info(f'{task_id}')
+    try:
+        task = AsyncResult(task_id)
+    except Exception as err:
+        logger.error(f'an error occurred: {err}')
+        logger.warning(f'========     request end     ========\n')
+        return JsonResponse({"error": "task not found"}, status=400)
 
     # Checking if task has started or is still pending
     if task.state == 'FAILURE' or task.state == 'PENDING':
@@ -89,6 +108,8 @@ def set_test_progress(request, task_id):
             'state': task.state,
             'info': str(task.info)
         }
+        logger.warning(f"task({task_id}) state is {task.state}")
+        logger.warning(f'========     request end     ========\n')
         return JsonResponse(response, status=200)
 
     # Get result value
@@ -98,13 +119,19 @@ def set_test_progress(request, task_id):
         'state': task.state,
         'info': info
     }
-
+    if info:
+        logger.info(f"test questions processed successfully")
+    else:
+        logger.warning(f"task state is {task.state}")
+    logger.info(f'========     request end     ========\n')
     return JsonResponse(response, status=200)
 
 
 # View for getting questions for exam and registration
 def get_test(request, link):
     # Getting exam info
+    logger.info(f'======== new GET TEST request ========')
+    logger.info(f"test_link: {link}")
     if f'exam_{link}' in request.session:  # Check if exam is in session
         exam = pickle_loads(request.session[f'exam_{link}'])  # Using pickle to get query object from session
     else:  # User just starting exam
@@ -112,12 +139,19 @@ def get_test(request, link):
             exam = Exam.objects.get(test_link=link)
             request.session[f'exam_{link}'] = pickle_dumps(exam)  # Using pickle to store the query object in session
             request.session.set_expiry(exam.duration.total_seconds())
-        except:
-            return JsonResponse({'error': 'Link does not exist'}, status=404)
+        except Exception as err:
+            logger.error(f'an error occurred: {err}')
+            logger.warning(f'========     request end     ========\n')
+            return JsonResponse({'error': 'Exam with link does not exist'}, status=404)
 
     if request.method == "POST":
-        student_id = request.POST["student_id"]
-        student_name = request.POST["student_name"]
+        try:
+            student_id = request.POST["student_id"]
+            student_name = request.POST["student_name"]
+        except Exception as err:
+            logger.error(f'an error occurred: {err}')
+            logger.warning(f'========     request end     ========\n')
+            return JsonResponse({'error': 'An input detail is left out'}, status=400)
 
         # Checking if user has registered for that exam
         registered = TestTaker.objects.filter(test=exam, student_id=student_id).first()
@@ -141,6 +175,7 @@ def get_test(request, link):
             if datetime.now(tz=exam.start_time.tzinfo) <= exam.start_time + exam.duration:
                 questions = Question.objects.prefetch_related('option_question').filter(test=exam)
                 # use Json format
+                logger.info(f'========   request ended (test returned)   ========\n')
                 return JsonResponse({
                     'name': exam.exam_name,
                     'start_time': exam.start_time.isoformat(),
@@ -151,12 +186,15 @@ def get_test(request, link):
                 }, safe=False)
 
             # Exam has ended
+            logger.info(f'========     request ended (test ended)     ========\n')
             return JsonResponse({'expired': 'Exam has ended'}, status=403)
 
         # If exam has not started
+        logger.info(f'========     request ended (test not started)     ========\n')
         return JsonResponse({'not_time': 'Test has not started'}, status=403)
 
     # Get method
+    logger.info(f'========     request ended (test details returned)     ========\n')
     return JsonResponse({
         'name': exam.exam_name,
         'start_time': exam.start_time.isoformat(),
@@ -180,14 +218,18 @@ def mark_test(request):
             answer: question.answer}, ...]
     }
     """
+    logger.info(f'======== new MARK TEST request ========')
     if request.method == "POST":
         # Get info from client side
         data = json_loads(request.body)
+        logger.info(f"request ==> {data}")
         res = mark_tests.delay(data)
 
         # return success
+        logger.info(f'======== request sent to celery successfully ========\n')
         return JsonResponse({'task': res.id}, status=202)
 
+    logger.info(f'======== wrong request method ========\n')
     return JsonResponse({'bad': 'wrong method'}, status=404)
 
 
@@ -195,7 +237,14 @@ def mark_test_progress(request, task_id):
     """
     Reporting task result to front end which would ping back till task is done
     """
-    task = AsyncResult(task_id)
+    logger.info(f'======== new MARK TEST PROGRESS request ========')
+    logger.info(f'{task_id}')
+    try:
+        task = AsyncResult(task_id)
+    except Exception as err:
+        logger.error(f'an error occurred: {err}')
+        logger.warning(f'========     request end     ========\n')
+        return JsonResponse({"error": "task not found"}, status=400)
 
     # Checking if task has started or is still pending
     if task.state == 'FAILURE' or task.state == 'PENDING':
@@ -204,6 +253,8 @@ def mark_test_progress(request, task_id):
             'state': task.state,
             'info': str(task.info)
         }
+        logger.warning(f"task({task_id}) state is {task.state}")
+        logger.warning(f'========     request end     ========\n')
         return JsonResponse(response, status=200)
 
     response = {
@@ -211,6 +262,11 @@ def mark_test_progress(request, task_id):
         'state': task.state,
         'info': "None"
     }
+    if task.state == 'success':
+        logger.info(f"test questions processed successfully")
+    else:
+        logger.warning(f"task state is {task.state}")
+    logger.info(f'========     request end     ========\n')
     return JsonResponse(response, status=200)
 
 
@@ -220,16 +276,22 @@ def check_test(request, link):
     Send all database related info about an exam to client
     Front end will deal with analysing data
     """
+    logger.info(f'======== new CHECK TEST request ========')
+    logger.info(f"test_link: {link}")
     try:
         exam = Exam.objects.prefetch_related('get_exam').get(examiner_link=link)
-    except:
+    except Exception as err:
+        logger.error(f'an error occurred: {err}')
+        logger.warning(f'========     request end     ========\n')
         return JsonResponse({'error': 'exam does not exist'}, status=400)
 
     # add checks for if results have been collated
     if datetime.now(tz=exam.start_time.tzinfo) >= exam.start_time + exam.duration:
+        logger.info(f'========   request ended (test returned)   ========\n')
         return JsonResponse(send_exam_info(exam))  # send student scores and info about an exam
 
     elif datetime.now(tz=exam.start_time.tzinfo) <= exam.start_time:
+        logger.info(f'========   request ended (test not started)   ========\n')
         return JsonResponse({
             'completed': False,
             'title': exam.exam_name,
@@ -238,6 +300,7 @@ def check_test(request, link):
             'duration': get_duration(exam.duration.total_seconds()),
         })
 
+    logger.info(f'========   request ended (test ongoing)   ========\n')
     return JsonResponse({
         'completed': False,
         'title': exam.exam_name,
@@ -249,19 +312,29 @@ def check_test(request, link):
 
 # View for previewing and editing exam
 def preview_and_edit_test(request, link):
-    exam = Exam.objects.get(examiner_link=link)
-    questions = Question.objects.prefetch_related('option_question').filter(test=exam)
+    logger.info(f'======== new PREV/EDIT TEST request ========')
+    logger.info(f"test_link: {link}")
+
+    try:
+        exam = Exam.objects.get(examiner_link=link)
+        questions = Question.objects.prefetch_related('option_question').filter(test=exam)
+    except Exception as err:
+        logger.error(f'an error occurred: {err}')
+        logger.warning(f'========     request end     ========\n')
+        return JsonResponse({'error': 'Exam with link does not exist'}, status=404)
 
     if request.method == "PUT":
-        # Only edit quesstions if exam has not started
+        # Only edit questions if exam has not started
         if datetime.now(tz=exam.start_time.tzinfo) <= exam.start_time:
             data = json_loads(request.body)
+            logger.info(f'request ==> {data}')
 
             if data.get('type') == 'question':
                 quest = Question.objects.get(pk=data.get('id'))
                 quest.question = data.get('data')
                 quest.save()
 
+                logger.info(f'========   question successfully changed   ========\n')
                 return JsonResponse({'type': 'question', 'id': quest.id, 'data': quest.question})
 
             elif data.get('type') == 'option':
@@ -269,6 +342,7 @@ def preview_and_edit_test(request, link):
                 opt.option = data.get('data')
                 opt.save()
 
+                logger.info(f'========   option successfully changed   ========\n')
                 return JsonResponse({'type': 'option', 'id': opt.id, 'data': opt.option})
 
             elif data.get('type') == 'answer':
@@ -276,11 +350,14 @@ def preview_and_edit_test(request, link):
                 quest.answer = data.get('data')
                 quest.save()
 
+                logger.info(f'========   answer successfully changed   ========\n')
                 return JsonResponse({'type': 'answer', 'id': quest.id, 'data': quest.answer})
 
         # Return error
+        logger.error(f'========   test ended or ongoing   ========\n')
         return JsonResponse({'error': 'exam in progress or has ended'}, status=403)
 
+    logger.info(f'========  test details sent  ========\n')
     return JsonResponse({
         'name': exam.exam_name,
         'start_time': exam.start_time.isoformat(),
