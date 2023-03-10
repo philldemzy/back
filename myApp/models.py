@@ -29,6 +29,7 @@ class TestTaker(models.Model):
     student_id = models.CharField(max_length=100)
     student_name = models.CharField(max_length=150)
     score = models.IntegerField(null=True, blank=True)
+    answers = models.JSONField(null=True, blank=True)
 
 
 class Question(models.Model):

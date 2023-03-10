@@ -223,6 +223,9 @@ def mark_test(request):
         # Get info from client side
         data = json_loads(request.body)
         logger.info(f"request ==> {data}")
+        student = TestTaker.objects.get(pk=data.get('student')['pk'])
+        student.answers = data
+        student.save()  # save data to be processed incase or disaster
         res = mark_tests.delay(data)
 
         # return success
