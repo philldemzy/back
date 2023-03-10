@@ -29,6 +29,10 @@ export const useDataStore = defineStore({
             this.studentId = id;
         },
 
+        setStudentPKId(num) {
+            this.studentId.pk = num;
+        },
+
         setExamDet(dets) {
             this.examDet = dets;
         },

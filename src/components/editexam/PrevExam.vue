@@ -61,6 +61,7 @@
 
 <script>
 import { useRoute } from 'vue-router';
+import { useGenStore } from '@/store/store';
 
 export default{
     name: 'PrevExam',
@@ -74,11 +75,12 @@ export default{
     },
 
     setup() {
-        //const dataStore = useDataStore();
+        const genStore = useGenStore();
         const link = useRoute().params.link;
 
         return {
             link,
+            genStore
         }
     },
 

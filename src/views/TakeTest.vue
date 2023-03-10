@@ -146,6 +146,7 @@ export default {
             const allData = await this.getExam(formData);
             if (!allData.expired && !allData.not_time) {
                 //save in local storage
+                this.dataStore.setStudentPKId(allData.student)
                 localStorage.setItem(`test${this.link}`, JSON.stringify(allData));
                 localStorage.setItem(`studentInfo${this.link}`, JSON.stringify(this.dataStore.studentId));
 
