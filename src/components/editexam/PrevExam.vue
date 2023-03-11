@@ -234,6 +234,10 @@ export default{
                         this.questions[index].answer = data.data;
                     }
                 }
+
+                else if (data.error) {
+                    alert(data.error);
+                }
             })
             return true;
         },
